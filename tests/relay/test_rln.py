@@ -15,6 +15,7 @@ logger = get_custom_logger(__name__)
 
 @pytest.mark.xdist_group(name="RLN serial tests")
 @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
+@pytest.mark.skip(reason="Waiting for issue resolution https://github.com/waku-org/nwaku/issues/3313")
 class TestRelayRLN(StepsRLN, StepsRelay):
     SAMPLE_INPUTS_RLN = SAMPLE_INPUTS + SAMPLE_INPUTS + SAMPLE_INPUTS
 
