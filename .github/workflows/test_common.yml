@@ -78,6 +78,11 @@ jobs:
         name: allure-results-${{ matrix.shard }}
         path: allure-results-${{ matrix.shard }}
 
+    - name: Set job result output
+      id: set_result
+      if: always()
+      run: |
+        echo "::set-output name=result::${{ job.status }}"
 
 
   aggregate-reports:
@@ -131,9 +136,16 @@ jobs:
             echo "- **Additonal Nodes**: ${{ env.ADDITIONAL_NODES }}" >> $GITHUB_STEP_SUMMARY
             echo "## Test Results" >> $GITHUB_STEP_SUMMARY
             echo "Allure report will be available at: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}/${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-            if [ "$JOB_STATUS" != "success" ]; then
+            
+            OUTCOMES="${{ join(needs.test.*.outcome, ' ') }}"
+            if [[ "$OUTCOMES" == *"failure"* ]]; then
               echo "There are failures with nwaku node. cc <@&1111608257824440330>" >> $GITHUB_STEP_SUMMARY
+              JOB_OUTCOME="failure"
+            else
+              JOB_OUTCOME="success"
             fi
+          
+            echo "JOB_OUTCOME=$JOB_OUTCOME" >> $GITHUB_ENV  
             {
               echo 'JOB_SUMMARY<<EOF'
               cat $GITHUB_STEP_SUMMARY
@@ -144,8 +156,8 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: always() && env.CALLER != 'manual'
         with:
-             severity: ${{ job.status == 'success' && 'info' || 'error' }}
+             severity: ${{ env.JOB_OUTCOME == 'success' && 'info' || 'error' }}
              username: ${{ github.workflow }}
-             description: "## Job Result:  ${{ job.status }}"
+             description: "## Job Result:  ${{ env.JOB_OUTCOME }}"
              details: ${{ env.JOB_SUMMARY }}
              webhookUrl: ${{ secrets.DISCORD_TEST_REPORTS_WH }}
