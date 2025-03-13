@@ -83,7 +83,11 @@ jobs:
       if: always()
       run: |
         echo "JOB_RESULT=${{ job.status }}" >> "$GITHUB_OUTPUT"
-        echo "$GITHUB_OUTPUT"
+
+    - name: Get color
+      env:
+        JOB_RESULT: ${{ steps.set_result.outputs.JOB_RESULT }}
+      run: echo "The job result is $JOB_RESULT"
 
   aggregate-reports:
     runs-on: ubuntu-latest
