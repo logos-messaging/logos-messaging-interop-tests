@@ -47,7 +47,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     outputs:
-      jobResult: ${{ steps.set_result.outputs.JOB_RESULT }}
+      jobResult_0: ${{ steps.set_result.outputs.JOB_RESULT_0 }}
+      jobResult_1: ${{ steps.set_result.outputs.JOB_RESULT_1 }}
+      jobResult_2: ${{ steps.set_result.outputs.JOB_RESULT_2 }}
+      jobResult_3: ${{ steps.set_result.outputs.JOB_RESULT_3 }}
+      jobResult_4: ${{ steps.set_result.outputs.JOB_RESULT_4 }}
+      jobResult_5: ${{ steps.set_result.outputs.JOB_RESULT_5 }}
+      jobResult_6: ${{ steps.set_result.outputs.JOB_RESULT_6 }}
+      jobResult_7: ${{ steps.set_result.outputs.JOB_RESULT_7 }}
+      jobResult_8: ${{ steps.set_result.outputs.JOB_RESULT_8 }}
+      jobResult_9: ${{ steps.set_result.outputs.JOB_RESULT_9 }}
+      jobResult_10: ${{ steps.set_result.outputs.JOB_RESULT_10 }}
+      jobResult_11: ${{ steps.set_result.outputs.JOB_RESULT_11 }}
+      jobResult_12: ${{ steps.set_result.outputs.JOB_RESULT_12 }}
+      jobResult_13: ${{ steps.set_result.outputs.JOB_RESULT_13 }}
+      jobResult_14: ${{ steps.set_result.outputs.JOB_RESULT_14 }}
+      jobResult_15: ${{ steps.set_result.outputs.JOB_RESULT_15 }}
+      jobResult_16: ${{ steps.set_result.outputs.JOB_RESULT_16 }}
+      jobResult_17: ${{ steps.set_result.outputs.JOB_RESULT_17 }}
     steps:
 
     - uses: actions/checkout@v4
@@ -84,16 +101,13 @@ jobs:
       id: set_result
       if: always()
       run: |
-        echo "JOB_RESULT=${{ job.status }}" >> "$GITHUB_OUTPUT"
+        version="${{ matrix.version }}"
+        echo "JOB_RESULT_${version}=${{ job.status }}" >> "$GITHUB_OUTPUT"
 
-    - name: Show job result
-      env:
-        JOB_RESULT: ${{ steps.set_result.outputs.JOB_RESULT }}
-      run: echo "The job result is $JOB_RESULT"
 
   aggregate-reports:
     runs-on: ubuntu-latest
-    needs: tests
+    needs: [tests]
     if: always()
     steps:
 #      - name: Download all allure results
@@ -130,7 +144,7 @@ jobs:
 #            destination_dir: ${{ env.CALLER }}
       - name: Show outputs from matrix job
         run: |
-            echo "Outputs from tests job: ${{ needs.tests.outputs.jobResult }}"
+            echo '${{ toJSON(needs.tests.outputs) }}'
 
       - name: Create job summary
         if: always()
