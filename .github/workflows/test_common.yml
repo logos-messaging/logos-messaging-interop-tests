@@ -142,14 +142,12 @@ jobs:
 #            publish_branch: gh-pages
 #            publish_dir: allure-history
 #            destination_dir: ${{ env.CALLER }}
-      - name: Show outputs from matrix job
+      - name: Store outputs from matrix job
         run: |
-            echo '${{ toJSON(needs.tests.outputs) }}'
+            echo '${{ toJSON(needs.tests.outputs) }}' > results.json
 
       - name: Create job summary
         if: always()
-        env:
-            JOB_STATUS: ${{ job.status }}
         run: |
             echo "## Run Information" >> $GITHUB_STEP_SUMMARY
             echo "- **Event**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
@@ -160,17 +158,30 @@ jobs:
             echo "## Test Results" >> $GITHUB_STEP_SUMMARY
             echo "Allure report will be available at: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}/${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
             
-            echo "The tests all outputs are ${{ env.OUTCOMES }}"
-          
-            OUTCOMES="${{ join(needs.tests.outputs.OUTCOMES, ' ') }}"
-            if [[ "$OUTCOMES" == *"failure"* ]]; then
+            # Evaluate overall result
+            TESTS_RESULT="success"
+            
+            for key in $(jq -r 'keys[]' results.json); do
+              result=$(jq -r --arg key "$key" '.[$key]' results.json)
+              echo "Key: $key, Value: $result"
+              # Check condition on the result
+              if [ "$result" != "success" ]; then
+                echo "Value 'success' not found at key: $key"
+                TESTS_RESULT="failure"
+                break
+              fi
+            done
+            
+            if [ "$TESTS_RESULT" != "success" ]; then
               echo "There are failures with nwaku node. cc " >> $GITHUB_STEP_SUMMARY
-              JOB_OUTCOME="failure"
-            else
-              JOB_OUTCOME="success"
             fi
-          
-            echo "JOB_OUTCOME=$JOB_OUTCOME" >> $GITHUB_ENV  
+            {
+              echo 'JOB_SUMMARY<<EOF'
+              cat $GITHUB_STEP_SUMMARY
+              echo EOF
+            } >> $GITHUB_ENV
+            
+            echo "TESTS_RESULT=$TESTS_RESULT" >> $GITHUB_ENV  
             {
               echo 'JOB_SUMMARY<<EOF'
               cat $GITHUB_STEP_SUMMARY
@@ -181,8 +192,8 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: always() && env.CALLER != 'manual'
         with:
-             severity: ${{ env.JOB_OUTCOME == 'success' && 'info' || 'error' }}
+             severity: ${{ env.TESTS_RESULT == 'success' && 'info' || 'error' }}
              username: ${{ github.workflow }}
-             description: "## Job Result:  ${{ env.JOB_OUTCOME }}"
+             description: "## Job Result:  ${{ env.TESTS_RESULT }}"
              details: ${{ env.JOB_SUMMARY }}
              webhookUrl: ${{ secrets.DISCORD_TEST_REPORTS_WH }}
