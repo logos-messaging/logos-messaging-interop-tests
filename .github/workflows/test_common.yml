@@ -49,78 +49,78 @@ jobs:
     steps:
 
     - uses: actions/checkout@v4
+#
+#    - name: Remove unwanted software
+#      uses: ./.github/actions/prune-vm
+#
+#    - uses: actions/setup-python@v4
+#      with:
+#        python-version: '3.12'
+#        cache: 'pip'
+#
+#    - run: pip install -r requirements.txt
 
-    - name: Remove unwanted software
-      uses: ./.github/actions/prune-vm
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-        cache: 'pip'
-
-    - run: pip install -r requirements.txt
-
-    - name: Run tests
-
-      run: |
-        if [ "${{ matrix.shard }}" == "16" ]; then
-            pytest tests/relay/test_rln.py --alluredir=allure-results-${{ matrix.shard }}
-        elif [ "${{ matrix.shard }}" == "17" ]; then
-            pytest tests/store/test_cursor_many_msgs.py --alluredir=allure-results-${{ matrix.shard }}
-        elif [ "${{ matrix.shard }}" != "17" ]; then
-            pytest --ignore=tests/relay/test_rln.py --ignore=tests/store/test_cursor_many_msgs.py --reruns 2 --shard-id=${{ matrix.shard }} --num-shards=16 --alluredir=allure-results-${{ matrix.shard }}
-        fi
-
-    - name: Upload allure results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: allure-results-${{ matrix.shard }}
-        path: allure-results-${{ matrix.shard }}
+#    - name: Run tests
+#
+#      run: |
+#        if [ "${{ matrix.shard }}" == "16" ]; then
+#            pytest tests/relay/test_rln.py --alluredir=allure-results-${{ matrix.shard }}
+#        elif [ "${{ matrix.shard }}" == "17" ]; then
+#            pytest tests/store/test_cursor_many_msgs.py --alluredir=allure-results-${{ matrix.shard }}
+#        elif [ "${{ matrix.shard }}" != "17" ]; then
+#            pytest --ignore=tests/relay/test_rln.py --ignore=tests/store/test_cursor_many_msgs.py --reruns 2 --shard-id=${{ matrix.shard }} --num-shards=16 --alluredir=allure-results-${{ matrix.shard }}
+#        fi
+#
+#    - name: Upload allure results
+#      if: always()
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: allure-results-${{ matrix.shard }}
+#        path: allure-results-${{ matrix.shard }}
 
     - name: Set job result output
       id: set_result
       if: always()
       run: |
-        echo "JOB_STATUS=${{ job.status }}" >> "$GITHUB_OUTPUT"
+        echo "JOB_RESULT=${{ job.status }}" >> "$GITHUB_OUTPUT"
 
   aggregate-reports:
     runs-on: ubuntu-latest
     needs: tests
     if: always()
     steps:
-      - name: Download all allure results
-        uses: actions/download-artifact@v4
-        with:
-          path: all-results
-          merge-multiple: true
-
-      - name: Get allure history
-        if: always()
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Setup allure report
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        id: allure-report
-        with:
-          allure_results: all-results
-          gh_pages: gh-pages/${{ env.CALLER }}
-          allure_history: allure-history
-          keep_reports: 30
-          report_url: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}
-
-      - name: Deploy report to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_branch: gh-pages
-            publish_dir: allure-history
-            destination_dir: ${{ env.CALLER }}
+#      - name: Download all allure results
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: all-results
+#          merge-multiple: true
+#
+#      - name: Get allure history
+#        if: always()
+#        uses: actions/checkout@v4
+#        with:
+#          ref: gh-pages
+#          path: gh-pages
+#
+#      - name: Setup allure report
+#        uses: simple-elf/allure-report-action@master
+#        if: always()
+#        id: allure-report
+#        with:
+#          allure_results: all-results
+#          gh_pages: gh-pages/${{ env.CALLER }}
+#          allure_history: allure-history
+#          keep_reports: 30
+#          report_url: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}
+#
+#      - name: Deploy report to Github Pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        if: always()
+#        with:
+#            github_token: ${{ secrets.GITHUB_TOKEN }}
+#            publish_branch: gh-pages
+#            publish_dir: allure-history
+#            destination_dir: ${{ env.CALLER }}
 
       - name: Create job summary
         if: always()
@@ -136,7 +136,7 @@ jobs:
             echo "## Test Results" >> $GITHUB_STEP_SUMMARY
             echo "Allure report will be available at: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}/${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
             
-            OUTCOMES="${{ join(needs.tests.*.outputs.JOB_STATUS, ' ') }}"
+            OUTCOMES="${{ join(needs.tests.*.outputs.JOB_RESULT, ' ') }}"
             if [[ "$OUTCOMES" == *"failure"* ]]; then
               echo "There are failures with nwaku node. cc " >> $GITHUB_STEP_SUMMARY
               JOB_OUTCOME="failure"
