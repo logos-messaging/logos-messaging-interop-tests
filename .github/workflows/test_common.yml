@@ -136,6 +136,8 @@ jobs:
             echo "## Test Results" >> $GITHUB_STEP_SUMMARY
             echo "Allure report will be available at: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}/${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
             
+            
+            echo "${{ join(needs.tests.*.outputs.JOB_RESULT, ' ') }}"
             OUTCOMES="${{ join(needs.tests.*.outputs.JOB_RESULT, ' ') }}"
             if [[ "$OUTCOMES" == *"failure"* ]]; then
               echo "There are failures with nwaku node. cc " >> $GITHUB_STEP_SUMMARY
