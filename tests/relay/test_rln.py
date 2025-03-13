@@ -39,6 +39,8 @@ class TestRelayRLN(StepsRLN, StepsRelay):
             except Exception as e:
                 assert "RLN validation failed" or "NonceLimitReached" in str(e)
 
+        assert False, "Intentional failure"
+
     def test_valid_payloads_at_slow_rate(self, pytestconfig):
         message_limit = 20
         self.register_rln_relay_nodes(0, pytestconfig.cache.get("keystore-prefixes", []))
