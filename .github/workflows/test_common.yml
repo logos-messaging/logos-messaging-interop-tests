@@ -46,6 +46,8 @@ jobs:
   # shard 17 for test_cursor_many_msgs.py as it takes time >7 mins
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    outputs:
+      jobResult: ${{ steps.set_result.outputs.JOB_RESULT }}
     steps:
 
     - uses: actions/checkout@v4
@@ -78,13 +80,13 @@ jobs:
 #        name: allure-results-${{ matrix.shard }}
 #        path: allure-results-${{ matrix.shard }}
 
-    - name: Set job result output
+    - name: Set job result
       id: set_result
       if: always()
       run: |
         echo "JOB_RESULT=${{ job.status }}" >> "$GITHUB_OUTPUT"
 
-    - name: Get color
+    - name: Show job result
       env:
         JOB_RESULT: ${{ steps.set_result.outputs.JOB_RESULT }}
       run: echo "The job result is $JOB_RESULT"
@@ -128,14 +130,12 @@ jobs:
 #            destination_dir: ${{ env.CALLER }}
       - name: Show outputs from matrix job
         run: |
-            echo "Outputs from tests job: ${{ toJSON(needs.tests.outputs) }}"
+            echo "Outputs from tests job: ${{ needs.tests.outputs.jobResult }}"
 
       - name: Create job summary
         if: always()
         env:
             JOB_STATUS: ${{ job.status }}
-            ALL_OUTPUTS: ${{ join(needs.tests.outputs, ' ') }}
-            OUTCOMES: ${{ join(needs.test.*.outputs, ' ') }}
         run: |
             echo "## Run Information" >> $GITHUB_STEP_SUMMARY
             echo "- **Event**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
