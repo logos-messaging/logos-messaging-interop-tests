@@ -46,6 +46,25 @@ jobs:
   # shard 17 for test_cursor_many_msgs.py as it takes time >7 mins
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    outputs:
+      jobResult_0: ${{ steps.set_result.outputs.JOB_RESULT_0 }}
+      jobResult_1: ${{ steps.set_result.outputs.JOB_RESULT_1 }}
+      jobResult_2: ${{ steps.set_result.outputs.JOB_RESULT_2 }}
+      jobResult_3: ${{ steps.set_result.outputs.JOB_RESULT_3 }}
+      jobResult_4: ${{ steps.set_result.outputs.JOB_RESULT_4 }}
+      jobResult_5: ${{ steps.set_result.outputs.JOB_RESULT_5 }}
+      jobResult_6: ${{ steps.set_result.outputs.JOB_RESULT_6 }}
+      jobResult_7: ${{ steps.set_result.outputs.JOB_RESULT_7 }}
+      jobResult_8: ${{ steps.set_result.outputs.JOB_RESULT_8 }}
+      jobResult_9: ${{ steps.set_result.outputs.JOB_RESULT_9 }}
+      jobResult_10: ${{ steps.set_result.outputs.JOB_RESULT_10 }}
+      jobResult_11: ${{ steps.set_result.outputs.JOB_RESULT_11 }}
+      jobResult_12: ${{ steps.set_result.outputs.JOB_RESULT_12 }}
+      jobResult_13: ${{ steps.set_result.outputs.JOB_RESULT_13 }}
+      jobResult_14: ${{ steps.set_result.outputs.JOB_RESULT_14 }}
+      jobResult_15: ${{ steps.set_result.outputs.JOB_RESULT_15 }}
+      jobResult_16: ${{ steps.set_result.outputs.JOB_RESULT_16 }}
+      jobResult_17: ${{ steps.set_result.outputs.JOB_RESULT_17 }}
     steps:
 
     - uses: actions/checkout@v4
@@ -78,11 +97,17 @@ jobs:
         name: allure-results-${{ matrix.shard }}
         path: allure-results-${{ matrix.shard }}
 
+    - name: Set job result
+      id: set_result
+      if: always()
+      run: |
+        version="${{ matrix.shard }}"
+        echo "JOB_RESULT_${version}=${{ job.status }}" >> "$GITHUB_OUTPUT"
 
 
   aggregate-reports:
     runs-on: ubuntu-latest
-    needs: tests
+    needs: [tests]
     if: always()
     steps:
       - name: Download all allure results
@@ -118,10 +143,12 @@ jobs:
             publish_dir: allure-history
             destination_dir: ${{ env.CALLER }}
 
+      - name: Store output from matrix jobs
+        run: |
+            echo '${{ toJSON(needs.tests.outputs) }}' > results.json
+
       - name: Create job summary
         if: always()
-        env:
-            JOB_STATUS: ${{ job.status }}
         run: |
             echo "## Run Information" >> $GITHUB_STEP_SUMMARY
             echo "- **Event**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
@@ -131,9 +158,27 @@ jobs:
             echo "- **Additonal Nodes**: ${{ env.ADDITIONAL_NODES }}" >> $GITHUB_STEP_SUMMARY
             echo "## Test Results" >> $GITHUB_STEP_SUMMARY
             echo "Allure report will be available at: https://waku-org.github.io/waku-interop-tests/${{ env.CALLER }}/${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-            if [ "$JOB_STATUS" != "success" ]; then
+            
+            # Evaluate overall result
+            TESTS_RESULT="success"
+            for key in $(jq -r 'keys[]' results.json); do
+              result=$(jq -r --arg key "$key" '.[$key]' results.json)
+              echo "Key: $key, Value: $result"
+              # Check condition on the result
+              if [ "$result" != "success" ]; then
+                echo "Value 'success' not found at key: $key"
+                TESTS_RESULT="failure"
+                break
+              fi
+            done
+            
+            # Notify Waku team
+            if [ "$TESTS_RESULT" != "success" ]; then
               echo "There are failures with nwaku node. cc <@&1111608257824440330>" >> $GITHUB_STEP_SUMMARY
             fi
+            
+            # Write result and summary to ENV
+            echo "TESTS_RESULT=$TESTS_RESULT" >> $GITHUB_ENV  
             {
               echo 'JOB_SUMMARY<<EOF'
               cat $GITHUB_STEP_SUMMARY
@@ -144,8 +189,8 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: always() && env.CALLER != 'manual'
         with:
-             severity: ${{ job.status == 'success' && 'info' || 'error' }}
+             severity: ${{ env.TESTS_RESULT == 'success' && 'info' || 'error' }}
              username: ${{ github.workflow }}
-             description: "## Job Result:  ${{ job.status }}"
+             description: "## Job Result:  ${{ env.TESTS_RESULT }}"
              details: ${{ env.JOB_SUMMARY }}
              webhookUrl: ${{ secrets.DISCORD_TEST_REPORTS_WH }}
