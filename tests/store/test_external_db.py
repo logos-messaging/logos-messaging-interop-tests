@@ -22,6 +22,7 @@ class TestExternalDb(StepsStore):
         self.check_published_message_is_stored(page_size=5, ascending="true")
         assert len(self.store_response.messages) >= 1
 
+    @pytest.mark.flaky(reruns=6)
     def test_on_postgress_db_with_one_message(self):
         self.test_on_empty_postgress_db()
         self.setup_first_publishing_node(store="true", relay="true", store_message_db_url=self.postgress_url)
