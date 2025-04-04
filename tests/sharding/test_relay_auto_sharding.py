@@ -29,7 +29,7 @@ class TestRelayAutosharding(StepsSharding):
             else:
                 raise AssertionError("Retrieving messages without subscribing worked!!!")
         except Exception as ex:
-            assert "Not Found" in str(ex)
+            assert "Failed to publish: Node not subscribed to topic" in str(ex)
 
     def test_subscribe_and_publish_on_another_content_topic_from_same_shard(self):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, content_topic=self.test_content_topic)

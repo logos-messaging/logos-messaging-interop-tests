@@ -152,10 +152,12 @@ class WakuNode:
 
         default_args.update(sanitize_docker_flags(kwargs))
 
-        if self.is_gowaku() and default_args.get("relay") == "false":
-            if "pubsub-topic" not in default_args:
+        if self.is_gowaku():
+            if default_args.get("relay") == "false" and "pubsub-topic" not in default_args:
                 logger.info(f"Adding pubsub-topic={VALID_PUBSUB_TOPICS[1]} to default args for go-waku")
                 default_args["pubsub-topic"] = VALID_PUBSUB_TOPICS[1]
+            if "shard" in default_args:
+                del default_args["shard"]
 
         if self.is_nwaku() and "pubsub-topic" in default_args:
             logger.debug("Removing pubsub-topic from nwaku args")

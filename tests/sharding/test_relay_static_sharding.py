@@ -31,7 +31,7 @@ class TestRelayStaticSharding(StepsSharding):
             else:
                 raise AssertionError("Retrieving messages without subscribing worked!!!")
         except Exception as ex:
-            assert "Failed to publish: Node not subscribed to topic" in str(ex)
+            assert "no subscription found for pubsubTopic" in str(ex)
 
     def test_cant_publish_on_not_subscribed_shard(self):
         self.setup_main_relay_nodes(pubsub_topic=self.test_pubsub_topic)
