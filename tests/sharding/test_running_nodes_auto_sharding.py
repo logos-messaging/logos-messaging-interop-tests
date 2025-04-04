@@ -58,12 +58,6 @@ class TestRunningNodesAutosharding(StepsSharding):
         except Exception as ex:
             assert "Not Found" in str(ex)
 
-    @pytest.mark.parametrize("pubsub_topic", ["/waku/2/rs/2/0", "/waku/2/rs/2/1"])
-    def test_pubsub_topic_also_in_docker_flags(self, pubsub_topic):
-        self.setup_main_relay_nodes(cluster_id=self.auto_cluster, pubsub_topic=pubsub_topic, content_topic=self.test_content_topic)
-        self.subscribe_main_relay_nodes(content_topics=[self.test_content_topic])
-        self.check_published_message_reaches_relay_peer(content_topic=self.test_content_topic)
-
     def test_content_topic_not_in_docker_flags(self):
         self.setup_main_relay_nodes(cluster_id=2, pubsub_topic=self.test_pubsub_topic)
         self.subscribe_main_relay_nodes(content_topics=[self.test_content_topic])

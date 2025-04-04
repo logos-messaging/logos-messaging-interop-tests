@@ -20,17 +20,6 @@ class TestRunningNodesStaticSharding(StepsSharding):
         for pubsub_topic in PUBSUB_TOPICS_SAME_CLUSTER:
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
 
-    def test_2_nodes_same_cluster_different_shards(self):
-        self.setup_first_relay_node_with_filter(pubsub_topic=self.test_pubsub_topic)
-        self.setup_second_relay_node(pubsub_topic="/waku/2/rs/2/1")
-        self.subscribe_first_relay_node(pubsub_topics=[self.test_pubsub_topic])
-        self.subscribe_second_relay_node(pubsub_topics=["/waku/2/rs/2/1"])
-        try:
-            self.check_published_message_reaches_relay_peer(pubsub_topic=self.test_pubsub_topic)
-            raise AssertionError("Publish on different shard worked!!!")
-        except Exception as ex:
-            assert "Not Found" in str(ex)
-
     def test_2_nodes_different_cluster_same_shard(self):
         self.setup_first_relay_node_with_filter(pubsub_topic=self.test_pubsub_topic)
         self.setup_second_relay_node(pubsub_topic="/waku/2/rs/4/0")

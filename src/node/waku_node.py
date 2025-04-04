@@ -62,7 +62,7 @@ def multiaddr2id(multiaddr):
 
 
 def resolve_sharding_flags(kwargs):
-    if "pubsub_topic" in kwargs:
+    if "pubsub_topic" in kwargs and kwargs["pubsub_topic"]:
         pubsub_topic = kwargs["pubsub_topic"]
         if not "cluster_id" in kwargs:
             try:
@@ -153,7 +153,13 @@ class WakuNode:
         default_args.update(sanitize_docker_flags(kwargs))
 
         if self.is_gowaku() and default_args.get("relay") == "false":
-            default_args["pubsub-topic"] = VALID_PUBSUB_TOPICS[1]
+            if "pubsub-topic" not in default_args:
+                logger.info(f"Adding pubsub-topic={VALID_PUBSUB_TOPICS[1]} to default args for go-waku")
+                default_args["pubsub-topic"] = VALID_PUBSUB_TOPICS[1]
+
+        if self.is_nwaku() and "pubsub-topic" in default_args:
+            logger.debug("Removing pubsub-topic from nwaku args")
+            del default_args["pubsub-topic"]
 
         rln_args, rln_creds_set, keystore_path = self.parse_rln_credentials(default_args, False)
 
