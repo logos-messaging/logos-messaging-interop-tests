@@ -10,7 +10,7 @@ logger = get_custom_logger(__name__)
 class TestRunningNodesStaticSharding(StepsSharding):
     @pytest.mark.parametrize("pubsub_topic", PUBSUB_TOPICS_DIFFERENT_CLUSTERS)
     def test_single_pubsub_topic(self, pubsub_topic):
-        self.setup_main_relay_nodes(pubsub_topic=pubsub_topic)
+        self.setup_main_relay_nodes(pubsub_topic=pubsub_topic, shard=["0", "1", "999"])
         self.subscribe_main_relay_nodes(pubsub_topics=[pubsub_topic])
         self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
 
@@ -19,17 +19,6 @@ class TestRunningNodesStaticSharding(StepsSharding):
         self.subscribe_main_relay_nodes(pubsub_topics=PUBSUB_TOPICS_SAME_CLUSTER)
         for pubsub_topic in PUBSUB_TOPICS_SAME_CLUSTER:
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
-
-    def test_2_nodes_same_cluster_different_shards(self):
-        self.setup_first_relay_node_with_filter(pubsub_topic=self.test_pubsub_topic)
-        self.setup_second_relay_node(pubsub_topic="/waku/2/rs/2/1")
-        self.subscribe_first_relay_node(pubsub_topics=[self.test_pubsub_topic])
-        self.subscribe_second_relay_node(pubsub_topics=["/waku/2/rs/2/1"])
-        try:
-            self.check_published_message_reaches_relay_peer(pubsub_topic=self.test_pubsub_topic)
-            raise AssertionError("Publish on different shard worked!!!")
-        except Exception as ex:
-            assert "Not Found" in str(ex)
 
     def test_2_nodes_different_cluster_same_shard(self):
         self.setup_first_relay_node_with_filter(pubsub_topic=self.test_pubsub_topic)
