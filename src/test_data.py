@@ -395,4 +395,5 @@ METRICS_WITH_INITIAL_VALUE_ZERO = [
     'waku_filter_handle_message_duration_seconds_bucket{le="15.0"}',
     'waku_filter_handle_message_duration_seconds_bucket{le="20.0"}',
     'waku_filter_handle_message_duration_seconds_bucket{le="30.0"}',
+    "total_messages_cached",
 ]
