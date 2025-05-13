@@ -3,7 +3,8 @@ name: Nim -> Nim Waku Interop Tests
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
-
+env:
+  NWAKU_TAG: "1ec9b8d9"
 on:
   schedule:
     - cron:  '0 4 * * *'
@@ -14,7 +15,7 @@ jobs:
     uses: ./.github/workflows/test_common.yml
     secrets: inherit
     with:
-      node1: "wakuorg/nwaku:latest"
-      node2: "wakuorg/nwaku:latest"
-      additional_nodes: "wakuorg/nwaku:latest,wakuorg/nwaku:latest,wakuorg/nwaku:latest"
+      node1: "wakuorg/nwaku:${{ env.NWAKU_TAG }}"
+      node2: "wakuorg/nwaku:${{ env.NWAKU_TAG }}"
+      additional_nodes: "wakuorg/nwaku:${{ env.NWAKU_TAG }},wakuorg/nwaku:${{ env.NWAKU_TAG }},wakuorg/nwaku:${{ env.NWAKU_TAG }}"
       caller: "nim"
