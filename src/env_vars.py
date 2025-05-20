@@ -15,11 +15,10 @@ def get_env_var(var_name, default=None):
 
 # Configuration constants. Need to be upercase to appear in reports
 DEFAULT_NWAKU = "wakuorg/nwaku:latest"
-DEFAULT_GOWAKU = "wakuorg/go-waku:latest"
 STRESS_ENABLED = False
 NODE_1 = get_env_var("NODE_1", DEFAULT_NWAKU)
 NODE_2 = get_env_var("NODE_2", DEFAULT_NWAKU)
-ADDITIONAL_NODES = get_env_var("ADDITIONAL_NODES", f"{DEFAULT_NWAKU},{DEFAULT_GOWAKU},{DEFAULT_NWAKU}")
+ADDITIONAL_NODES = get_env_var("ADDITIONAL_NODES", f"{DEFAULT_NWAKU},{DEFAULT_NWAKU},{DEFAULT_NWAKU}")
 # more nodes need to follow the NODE_X pattern
 DOCKER_LOG_DIR = get_env_var("DOCKER_LOG_DIR", "./log/docker")
 NETWORK_NAME = get_env_var("NETWORK_NAME", "waku")
