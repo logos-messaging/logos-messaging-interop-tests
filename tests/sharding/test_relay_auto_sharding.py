@@ -67,6 +67,7 @@ class TestRelayAutosharding(StepsSharding):
             self.subscribe_main_relay_nodes(content_topics=[content_topic])
             self.check_published_message_reaches_relay_peer(content_topic=content_topic)
 
+    @pytest.mark.smoke
     @pytest.mark.parametrize("content_topic_list", [CONTENT_TOPICS_SHARD_0, CONTENT_TOPICS_DIFFERENT_SHARDS])
     def test_unsubscribe_from_some_content_topics(self, content_topic_list):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, content_topic=self.test_content_topic)
@@ -79,6 +80,7 @@ class TestRelayAutosharding(StepsSharding):
         for content_topic in content_topic_list[3:]:
             self.check_published_message_reaches_relay_peer(content_topic=content_topic)
 
+    @pytest.mark.smoke
     def test_unsubscribe_from_all_content_topics(self):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, content_topic=self.test_content_topic)
         self.subscribe_main_relay_nodes(content_topics=CONTENT_TOPICS_DIFFERENT_SHARDS)
@@ -98,6 +100,7 @@ class TestRelayAutosharding(StepsSharding):
         for content_topic in CONTENT_TOPICS_DIFFERENT_SHARDS:
             self.check_published_message_doesnt_reach_relay_peer(content_topic=content_topic)
 
+    @pytest.mark.smoke
     def test_resubscribe_to_unsubscribed_content_topics(self):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, content_topic=self.test_content_topic)
         self.subscribe_main_relay_nodes(content_topics=CONTENT_TOPICS_DIFFERENT_SHARDS)
