@@ -50,6 +50,7 @@ class TestRelayStaticSharding(StepsSharding):
             self.subscribe_main_relay_nodes(pubsub_topics=[pubsub_topic])
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
 
+    @pytest.mark.smoke
     def test_unsubscribe_from_some_pubsub_topics(self):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, pubsub_topic=PUBSUB_TOPICS_SAME_CLUSTER)
         self.subscribe_main_relay_nodes(pubsub_topics=PUBSUB_TOPICS_SAME_CLUSTER)
@@ -61,6 +62,7 @@ class TestRelayStaticSharding(StepsSharding):
         for pubsub_topic in PUBSUB_TOPICS_SAME_CLUSTER[3:]:
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
 
+    @pytest.mark.smoke
     @pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1034")
     def test_unsubscribe_from_all_pubsub_topics(self):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, pubsub_topic=PUBSUB_TOPICS_SAME_CLUSTER)
