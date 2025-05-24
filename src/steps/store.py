@@ -137,6 +137,9 @@ class StepsStore(StepsCommon):
         delay(message_propagation_delay)
         return self.message
 
+    def trigger_sync(self, sender=None):
+        sender.request_sync(self)
+
     @retry(stop=stop_after_delay(30), wait=wait_fixed(1), reraise=True)
     @allure.step
     def get_messages_from_store_with_retry(self, node):
