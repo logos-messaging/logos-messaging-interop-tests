@@ -204,4 +204,4 @@ class StepsSharding(StepsRelay):
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
             raise AssertionError("Publishing messages on unsubscribed shard worked!!!")
         except Exception as ex:
-            assert f"Failed to publish: Node not subscribed to topic: {pubsub_topic}" in str(ex)
+            assert "Not Found" in str(ex), "Expected 404 Not Found because the node is not subscribed"
