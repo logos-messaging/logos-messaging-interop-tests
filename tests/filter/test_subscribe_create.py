@@ -27,12 +27,10 @@ class TestFilterSubscribeCreate(StepsFilter):
                 failed_pubsub_topics.append(pubsub_topic)
         assert not failed_pubsub_topics, f"PubsubTopics failed: {failed_pubsub_topics}"
 
-    @pytest.mark.xfail("nwaku" in NODE_1 and "go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1054")
     def test_filter_subscribe_to_pubsub_topic_from_another_cluster_id(self):
         self.wait_for_subscriptions_on_main_nodes([self.test_content_topic], pubsub_topic=self.another_cluster_pubsub_topic)
         self.check_published_message_reaches_filter_peer(pubsub_topic=self.another_cluster_pubsub_topic)
 
-    @pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1054")
     def test_filter_subscribe_to_pubsub_topics_from_multiple_clusters(self):
         pubsub_topic_list = [self.test_pubsub_topic, self.another_cluster_pubsub_topic, self.second_pubsub_topic]
         failed_pubsub_topics = []
@@ -120,8 +118,6 @@ class TestFilterSubscribeCreate(StepsFilter):
             self.create_filter_subscription({"requestId": "1", "pubsubTopic": self.test_pubsub_topic})
             if self.node2.is_nwaku():
                 raise AssertionError("Subscribe with extra field worked!!!")
-            elif self.node2.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:
@@ -159,8 +155,6 @@ class TestFilterSubscribeCreate(StepsFilter):
             )
             if self.node2.is_nwaku():
                 raise AssertionError("Subscribe with extra field worked!!!")
-            elif self.node2.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:

@@ -77,7 +77,6 @@ class TestPeerStore(StepsRelay, StepsStore):
         assert len(node1_peers) == 2 and len(node2_peers) == 2, f"Some nodes and/or their services are missing"
 
     @pytest.mark.skip(reason="pending on https://github.com/waku-org/nwaku/issues/2792")
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_use_persistent_storage_survive_restart(self):
         self.setup_first_relay_node(peer_persistence="true")
         self.setup_second_relay_node()
@@ -99,7 +98,6 @@ class TestPeerStore(StepsRelay, StepsStore):
         assert node2_id == peer_info2id(node3_peers[0], self.node3.is_nwaku())
 
     @pytest.mark.skip(reason="waiting for https://github.com/waku-org/nwaku/issues/2592 resolution")
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_peer_store_content_after_node2_restarts(self):
         self.setup_first_relay_node()
         self.setup_second_relay_node()

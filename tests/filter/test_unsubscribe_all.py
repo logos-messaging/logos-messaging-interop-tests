@@ -47,8 +47,6 @@ class TestFilterUnSubscribeAll(StepsFilter):
         except Exception as ex:
             if self.node2.is_nwaku():
                 assert "Not Found" in str(ex) and "peer has no subscriptions" in str(ex)
-            elif self.node2.is_gowaku():
-                assert "subscription not found" in str(ex)
             else:
                 raise NotImplementedError("Not implemented for this node type")
 

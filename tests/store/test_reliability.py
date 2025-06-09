@@ -15,10 +15,7 @@ class TestReliability(StepsStore):
             store_response = self.get_messages_from_store(self.store_node1, page_size=5)
             assert len(store_response.messages) == 1
         except Exception as ex:
-            if self.store_node1.is_gowaku():
-                assert "failed to dial" in str(ex) or "connection failed" in str(ex)
-            else:
-                raise AssertionError(f"Nwaku failed with {ex}")
+            raise AssertionError(f"Nwaku failed with {ex}")
 
     def test_publishing_node_restarts(self, node_setup):
         self.publish_message()

@@ -43,13 +43,11 @@ class TestRunningNodesStaticSharding(StepsSharding):
             assert "Not Found" in str(ex)
 
     @pytest.mark.parametrize("content_topic", ["/toychat/2/huilong/proto", "/aaaaa/3/bbbbb/proto"])
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Test doesn't work on go-waku")
     def test_content_topic_also_in_docker_flags(self, content_topic):
         self.setup_main_relay_nodes(pubsub_topic=self.test_pubsub_topic, content_topic=content_topic)
         self.subscribe_main_relay_nodes(pubsub_topics=[self.test_pubsub_topic])
         self.check_published_message_reaches_relay_peer(pubsub_topic=self.test_pubsub_topic)
 
-    # Bug reported: https://github.com/waku-org/go-waku/issues/1034#issuecomment-2011350765
     def test_pubsub_topic_not_in_docker_flags(self):
         self.setup_main_relay_nodes(cluster_id=2)
         self.subscribe_main_relay_nodes(pubsub_topics=[self.test_pubsub_topic])

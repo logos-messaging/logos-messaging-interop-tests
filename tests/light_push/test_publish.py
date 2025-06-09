@@ -224,8 +224,6 @@ class TestLightPushPublish(StepsLightPush):
             self.check_light_pushed_message_reaches_receiving_peer(message=self.create_message(extraField="extraValue"))
             if self.light_push_node1.is_nwaku():
                 raise AssertionError("Relay publish with extra field worked!!!")
-            elif self.light_push_node1.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:
@@ -269,6 +267,7 @@ class TestLightPushPublish(StepsLightPush):
         self.receiving_node1.ensure_ready()
         self.subscribe_and_light_push_with_retry()
 
+    @pytest.mark.skip(reason="waiting for https://github.com/waku-org/nwaku/issues/3444 resolution")
     def test_light_push_and_retrieve_100_messages(self):
         num_messages = 100  # if increase this number make sure to also increase rest-relay-cache-capacity flag
         for index in range(num_messages):

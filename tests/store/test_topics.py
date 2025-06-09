@@ -8,16 +8,14 @@ from src.test_data import PUBSUB_TOPICS_STORE
 logger = get_custom_logger(__name__)
 
 
-@pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1108")
 class TestTopics(StepsStore):
     @pytest.fixture(scope="function", autouse=True)
     def topics_setup(self, node_setup):
-        self.message_hash_list = {"nwaku": [], "gowaku": []}
+        self.message_hash_list = {"nwaku": []}
         for content_topic in CONTENT_TOPICS_DIFFERENT_SHARDS:
             message = self.create_message(contentTopic=content_topic)
             self.publish_message(message=message)
             self.message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            self.message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
 
     def test_store_with_one_content_topic(self):
         for node in self.store_nodes:

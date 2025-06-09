@@ -5,7 +5,6 @@ from src.node.store_response import StoreResponse
 from src.steps.store import StepsStore
 
 
-@pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1109")
 @pytest.mark.usefixtures("node_setup")
 class TestCursorManyMessages(StepsStore):
     # we implicitly test the reusabilty of the cursor for multiple nodes
@@ -13,12 +12,11 @@ class TestCursorManyMessages(StepsStore):
     @pytest.mark.timeout(540)
     @pytest.mark.store2000
     def test_get_multiple_2000_store_messages(self):
-        expected_message_hash_list = {"nwaku": [], "gowaku": []}
+        expected_message_hash_list = {"nwaku": []}
         for i in range(2000):
             message = self.create_message(payload=to_base64(f"Message_{i}"))
             self.publish_message(message=message)
             expected_message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            expected_message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         store_response = StoreResponse({"paginationCursor": "", "pagination_cursor": ""}, self.store_node1)
         response_message_hash_list = []
         while store_response.pagination_cursor is not None:

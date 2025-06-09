@@ -45,7 +45,6 @@ class TestPageSize(StepsStore):
             store_response = self.get_messages_from_store(node, page_size=1000000)
             assert len(store_response.messages) == 100, "Message count mismatch"
 
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_negative_number_page_size(self):
         page_size = -1
         for i in range(10):

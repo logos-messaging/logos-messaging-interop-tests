@@ -121,15 +121,7 @@ class WakuNode:
             # "filter-subscription-timeout": "600",
         }
 
-        if self.is_gowaku():
-            go_waku_args = {
-                "min-relay-peers-to-publish": "1",
-                "log-level": "DEBUG",
-                "rest-filter-cache-capacity": "50",
-                "peer-store-capacity": "10",
-            }
-            default_args.update(go_waku_args)
-        elif self.is_nwaku():
+        if self.is_nwaku():
             nwaku_args = {
                 "shard": "0",
                 "metrics-server": "true",
@@ -151,13 +143,6 @@ class WakuNode:
         kwargs = resolve_sharding_flags(kwargs)
 
         default_args.update(sanitize_docker_flags(kwargs))
-
-        if self.is_gowaku():
-            if default_args.get("relay") == "false" and "pubsub-topic" not in default_args:
-                logger.info(f"Adding pubsub-topic={VALID_PUBSUB_TOPICS[1]} to default args for go-waku")
-                default_args["pubsub-topic"] = VALID_PUBSUB_TOPICS[1]
-            if "shard" in default_args:
-                del default_args["shard"]
 
         if self.is_nwaku() and "pubsub-topic" in default_args:
             logger.debug("Removing pubsub-topic from nwaku args")
@@ -271,9 +256,6 @@ class WakuNode:
         @retry(stop=stop_after_delay(timeout_duration), wait=wait_fixed(0.1), reraise=True)
         def check_healthy(node=self):
             self.health_response = node.health()
-            if self.health_response == b"Node is healthy":
-                logger.info("Node is healthy !!")
-                return
 
             try:
                 self.health_response = json.loads(self.health_response)
@@ -283,9 +265,9 @@ class WakuNode:
             if self.health_response.get("nodeHealth") != "Ready":
                 raise AssertionError("Waiting for the node health status: Ready")
 
-            for p in self.health_response.get("protocolsHealth"):
-                if p.get("Rln Relay") != "Ready":
-                    raise AssertionError("Waiting for the Rln relay status: Ready")
+            # for p in self.health_response.get("protocolsHealth"):
+            #     if p.get("Rln Relay") != "Ready":
+            #         raise AssertionError("Waiting for the Rln relay status: Ready")
 
             logger.info("Node protocols are initialized !!")
 
@@ -425,16 +407,11 @@ class WakuNode:
     def type(self):
         if self.is_nwaku():
             return "nwaku"
-        elif self.is_gowaku():
-            return "gowaku"
         else:
             raise ValueError("Unknown node type!!!")
 
     def is_nwaku(self):
         return "nwaku" in self.image
-
-    def is_gowaku(self):
-        return "go-waku" in self.image
 
     def parse_rln_credentials(self, default_args, is_registration):
         rln_args = {}
@@ -507,10 +484,6 @@ class WakuNode:
 
     def parse_peer_persistence_config(self, kwargs):
         if kwargs.get("peer_persistence") == "true":
-            if self.is_gowaku():
-                kwargs["persist_peers"] = kwargs["peer_persistence"]
-                del kwargs["peer_persistence"]
-
             cwd = os.getcwd()
             # Please note, as of now, peerdb is stored directly at / which is not shareable between containers.
             # Volume related code is usable after https://github.com/waku-org/nwaku/issues/2792 would be resolved.

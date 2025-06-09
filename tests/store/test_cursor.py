@@ -5,21 +5,19 @@ from src.node.store_response import StoreResponse
 from src.steps.store import StepsStore
 
 
-@pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1109")
 @pytest.mark.usefixtures("node_setup")
 class TestCursor(StepsStore):
     # we implicitly test the reusabilty of the cursor for multiple nodes
 
     @pytest.mark.parametrize("cursor_index, message_count", [[2, 4], [3, 20], [10, 40], [19, 20], [19, 50], [110, 120]])
     def test_different_cursor_and_indexes(self, cursor_index, message_count):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         cursor = ""
         cursor_index = cursor_index if cursor_index < 100 else 100
         for i in range(message_count):
             message = self.create_message(payload=to_base64(f"Message_{i}"))
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(node, page_size=cursor_index)
             assert len(store_response.messages) == cursor_index
@@ -63,7 +61,6 @@ class TestCursor(StepsStore):
         wrong_message = self.create_message(payload=to_base64("test"))
         cursor = {}
         cursor["nwaku"] = self.compute_message_hash(self.test_pubsub_topic, wrong_message, hash_type="hex")
-        cursor["gowaku"] = self.compute_message_hash(self.test_pubsub_topic, wrong_message, hash_type="base64")
         for node in self.store_nodes:
             try:
                 self.get_messages_from_store(node, page_size=100, cursor=cursor[node.type()])
@@ -126,7 +123,6 @@ class TestCursor(StepsStore):
         deleted_message = self.create_message(payload=to_base64("Deleted_Message"))
         cursor = {}
         cursor["nwaku"] = self.compute_message_hash(self.test_pubsub_topic, deleted_message, hash_type="hex")
-        cursor["gowaku"] = self.compute_message_hash(self.test_pubsub_topic, deleted_message, hash_type="base64")
 
         # Test the store response
         for node in self.store_nodes:
@@ -139,12 +135,11 @@ class TestCursor(StepsStore):
 
     # Test if the API returns the expected messages when the cursor points to the first message in the store.
     def test_cursor_equal_to_first_message(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         for i in range(10):
             message = self.create_message(payload=to_base64(f"Message_{i}"))
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
 
         for node in self.store_nodes:
             cursor = message_hash_list[node.type()][0]  # Cursor points to the first message

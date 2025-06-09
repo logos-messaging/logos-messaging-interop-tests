@@ -161,13 +161,6 @@ class StepsStore(StepsCommon):
     ):
         if pubsub_topic is None:
             pubsub_topic = self.test_pubsub_topic
-        if node.is_gowaku():
-            if content_topics is None:
-                content_topics = self.test_content_topic
-            if hashes is not None:
-                content_topics = None
-                pubsub_topic = None
-                peer_addr = self.multiaddr_list[0]
         store_response = node.get_store_messages(
             peer_addr=peer_addr,
             include_data=include_data,

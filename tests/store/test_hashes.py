@@ -8,16 +8,14 @@ from src.test_data import SAMPLE_INPUTS
 logger = get_custom_logger(__name__)
 
 
-@pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1109")
 @pytest.mark.usefixtures("node_setup")
 class TestHashes(StepsStore):
     def test_store_with_hashes(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         for payload in SAMPLE_INPUTS:
             message = self.create_message(payload=to_base64(payload["value"]))
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             for message_hash in message_hash_list[node.type()]:
                 store_response = self.get_messages_from_store(node, hashes=message_hash, page_size=50)
@@ -25,12 +23,11 @@ class TestHashes(StepsStore):
                 assert store_response.message_hash(0) == message_hash
 
     def test_store_with_multiple_hashes(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         for payload in SAMPLE_INPUTS:
             message = self.create_message(payload=to_base64(payload["value"]))
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(
                 node, hashes=f"{message_hash_list[node.type()][0]},{message_hash_list[node.type()][4]}", page_size=50
@@ -44,7 +41,6 @@ class TestHashes(StepsStore):
             self.publish_message(message=self.create_message(payload=to_base64(f"Message_{i}")))
         wrong_hash = {}
         wrong_hash["nwaku"] = self.compute_message_hash(self.test_pubsub_topic, self.create_message(payload=to_base64("test")), hash_type="hex")
-        wrong_hash["gowaku"] = self.compute_message_hash(self.test_pubsub_topic, self.create_message(payload=to_base64("test")), hash_type="base64")
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(node, hashes=wrong_hash[node.type()], page_size=50)
             assert not store_response.messages, "Messages found"
@@ -97,13 +93,12 @@ class TestHashes(StepsStore):
 
     # Test the behavior when you supply an empty hash alongside valid hashes.
     def test_store_with_empty_and_valid_hash(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         for i in range(4):
             message = self.create_message(payload=to_base64(f"Message_{i}"))
             self.publish_message(message=message)
 
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
 
         empty_hash = ""
         for node in self.store_nodes:
@@ -129,12 +124,11 @@ class TestHashes(StepsStore):
 
     # Test when duplicate valid hashes are provided.
     def test_store_with_duplicate_hashes(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         for i in range(4):
             message = self.create_message(payload=to_base64(f"Message_{i}"))
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
 
         for node in self.store_nodes:
             # Use the same hash twice
