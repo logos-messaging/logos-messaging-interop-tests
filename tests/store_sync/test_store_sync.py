@@ -444,7 +444,6 @@ class TestStoreSync(StepsStore):
             store_sync_interval=1,
             store_sync_range=10,
             store_sync_relay_jitter=1,
-            store_sync_max_payload_size=1000,
             relay="true",
         )
         self.node2.start(
@@ -453,7 +452,6 @@ class TestStoreSync(StepsStore):
             store_sync_interval=1,
             store_sync_range=10,
             store_sync_relay_jitter=1,
-            store_sync_max_payload_size=1000,
             relay="true",
             discv5_bootstrap_node=self.node1.get_enr_uri(),
         )
@@ -463,7 +461,6 @@ class TestStoreSync(StepsStore):
             store_sync_interval=1,
             store_sync_range=10,
             store_sync_relay_jitter=1,
-            store_sync_max_payload_size=1000,
             relay="true",
             discv5_bootstrap_node=self.node2.get_enr_uri(),
         )

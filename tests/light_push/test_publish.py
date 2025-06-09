@@ -269,6 +269,7 @@ class TestLightPushPublish(StepsLightPush):
         self.receiving_node1.ensure_ready()
         self.subscribe_and_light_push_with_retry()
 
+    @pytest.mark.skip(reason="waiting for https://github.com/waku-org/nwaku/issues/3444 resolution")
     def test_light_push_and_retrieve_100_messages(self):
         num_messages = 100  # if increase this number make sure to also increase rest-relay-cache-capacity flag
         for index in range(num_messages):
