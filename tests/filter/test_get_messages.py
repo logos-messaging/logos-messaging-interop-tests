@@ -59,8 +59,6 @@ class TestFilterGetMessages(StepsFilter):
             self.check_published_message_reaches_filter_peer(self.create_message(extraField="extraValue"))
             if self.node1.is_nwaku():
                 raise AssertionError("Relay publish with extra field worked!!!")
-            elif self.node1.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:

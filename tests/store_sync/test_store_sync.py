@@ -13,7 +13,6 @@ In those tests we aim to combine multiple protocols/node types and create a more
 """
 
 
-@pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
 class TestStoreSync(StepsStore):
     @pytest.fixture(scope="function", autouse=True)
     def nodes(self):
@@ -365,7 +364,7 @@ class TestStoreSync(StepsStore):
         self.node2.set_relay_subscriptions([self.test_pubsub_topic])
         self.node3.set_relay_subscriptions([self.test_pubsub_topic])
 
-        expected_message_hash_list = {"nwaku": [], "gowaku": []}
+        expected_message_hash_list = {"nwaku": []}
 
         for _ in range(500):  # total 1500 messages
             messages = [self.create_message() for _ in range(3)]
@@ -374,9 +373,6 @@ class TestStoreSync(StepsStore):
                 self.publish_message(sender=node, via="relay", message=messages[i], message_propagation_delay=0.01)
 
             expected_message_hash_list["nwaku"].extend([self.compute_message_hash(self.test_pubsub_topic, msg, hash_type="hex") for msg in messages])
-            expected_message_hash_list["gowaku"].extend(
-                [self.compute_message_hash(self.test_pubsub_topic, msg, hash_type="base64") for msg in messages]
-            )
 
         delay(5)  # wait for the sync to finish
 

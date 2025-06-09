@@ -22,8 +22,6 @@ class TestFilterPing(StepsFilter):
             self.ping_filter_subscriptions("")
             if self.node2.is_nwaku():
                 pass
-            elif self.node2.is_gowaku():
-                raise Exception("Ping without request id worked!!")
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:

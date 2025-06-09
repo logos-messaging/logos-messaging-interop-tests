@@ -39,13 +39,12 @@ class TestTimeFilter(StepsStore):
         assert not success_timestamps, f"Timestamps succeeded: {success_timestamps}"
 
     def test_time_filter_matches_one_message(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         ts_pass = self.get_time_list_pass()
         for timestamp in ts_pass:
             message = self.create_message(timestamp=timestamp["value"])
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(
                 node,
@@ -57,13 +56,12 @@ class TestTimeFilter(StepsStore):
             assert store_response.message_hash(0) == message_hash_list[node.type()][0], "Incorrect messaged filtered based on time"
 
     def test_time_filter_matches_multiple_messages(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         ts_pass = self.get_time_list_pass()
         for timestamp in ts_pass:
             message = self.create_message(timestamp=timestamp["value"])
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(
                 node,
@@ -90,13 +88,12 @@ class TestTimeFilter(StepsStore):
             assert not store_response.messages, "Message count mismatch"
 
     def test_time_filter_start_time_equals_end_time(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         ts_pass = self.get_time_list_pass()
         for timestamp in ts_pass:
             message = self.create_message(timestamp=timestamp["value"])
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(
                 node,
@@ -107,7 +104,6 @@ class TestTimeFilter(StepsStore):
             assert len(store_response.messages) == 1, "Message count mismatch"
             assert store_response.message_hash(0) == message_hash_list[node.type()][0], "Incorrect messaged filtered based on time"
 
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_time_filter_start_time_after_end_time(self):
         ts_pass = self.get_time_list_pass()
         start_time = ts_pass[4]["value"]  # 2 sec Future
@@ -150,7 +146,6 @@ class TestTimeFilter(StepsStore):
             logger.debug(f"number of messages stored for  " f"start time = {start_time} is  {len(store_response.messages)}")
             assert len(store_response.messages) == 6, "number of messages retrieved doesn't match time filter "
 
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_time_filter_zero_start_end_time(self):
         ts_pass = self.get_time_list_pass()
         for timestamp in ts_pass:
@@ -221,7 +216,6 @@ class TestTimeFilter(StepsStore):
 
             assert len(store_response.messages) == 6, "number of messages retrieved doesn't match time filter "
 
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_time_filter_negative_end_time(self):
         ts_pass = self.get_time_list_pass()
         for timestamp in ts_pass:
@@ -235,7 +229,6 @@ class TestTimeFilter(StepsStore):
 
             assert len(store_response.messages) == 6, "number of messages retrieved doesn't match time filter "
 
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_time_filter_zero_end_time(self):
         ts_pass = self.get_time_list_pass()
         for timestamp in ts_pass:

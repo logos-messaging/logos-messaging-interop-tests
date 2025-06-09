@@ -165,9 +165,7 @@ class StepsSharding(StepsRelay):
     def get_filter_messages(self, content_topic, pubsub_topic=None, node=None):
         if node is None:
             node = self.node2
-        if node.is_gowaku():
-            return node.get_filter_messages(content_topic, pubsub_topic)
-        elif node.is_nwaku():
+        if node.is_nwaku():
             return node.get_filter_messages(content_topic)
         else:
             raise NotImplementedError("Not implemented for this node type")

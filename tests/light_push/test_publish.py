@@ -224,8 +224,6 @@ class TestLightPushPublish(StepsLightPush):
             self.check_light_pushed_message_reaches_receiving_peer(message=self.create_message(extraField="extraValue"))
             if self.light_push_node1.is_nwaku():
                 raise AssertionError("Relay publish with extra field worked!!!")
-            elif self.light_push_node1.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:

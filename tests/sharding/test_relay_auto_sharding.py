@@ -10,10 +10,6 @@ from src.test_data import CONTENT_TOPICS_DIFFERENT_SHARDS, CONTENT_TOPICS_SHARD_
 logger = get_custom_logger(__name__)
 
 
-@pytest.mark.skipif(
-    "go-waku" in NODE_1 or "go-waku" in NODE_2,
-    reason="Autosharding tests work only on nwaku because of https://github.com/waku-org/go-waku/issues/1061",
-)
 class TestRelayAutosharding(StepsSharding):
     def test_publish_without_subscribing_via_api_works(self):
         self.setup_main_relay_nodes(cluster_id=self.auto_cluster, content_topic=self.test_content_topic)

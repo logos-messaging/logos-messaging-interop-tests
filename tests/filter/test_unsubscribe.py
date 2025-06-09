@@ -41,7 +41,7 @@ class TestFilterUnSubscribe(StepsFilter):
         try:
             self.delete_filter_subscription(
                 {"requestId": "1", "contentFilters": [self.second_content_topic], "pubsubTopic": self.test_pubsub_topic},
-                status="can't unsubscribe" if self.node2.is_gowaku() else "",
+                "",
             )
         except Exception as ex:
             assert "Not Found" in str(ex) and "peer has no subscriptions" in str(ex)
@@ -54,8 +54,6 @@ class TestFilterUnSubscribe(StepsFilter):
             )
             if self.node2.is_nwaku():
                 raise AssertionError("Unsubscribe with non existing pubsub topic worked!!!")
-            elif self.node2.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:
@@ -70,8 +68,6 @@ class TestFilterUnSubscribe(StepsFilter):
         except Exception as ex:
             if self.node2.is_nwaku():
                 assert "exceeds maximum content topics: 100" in str(ex)
-            elif self.node2.is_gowaku():
-                assert "Bad Request" in str(ex)
             else:
                 raise NotImplementedError("Not implemented for this node type")
 
@@ -121,8 +117,6 @@ class TestFilterUnSubscribe(StepsFilter):
             )
             if self.node2.is_nwaku():
                 raise AssertionError("Unsubscribe with no request id worked!!!")
-            elif self.node2.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:
@@ -142,8 +136,6 @@ class TestFilterUnSubscribe(StepsFilter):
             )
             if self.node2.is_nwaku():
                 raise AssertionError("Unsubscribe with extra field worked!!!")
-            elif self.node2.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:

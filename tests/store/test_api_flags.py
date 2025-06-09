@@ -17,7 +17,6 @@ class TestApiFlags(StepsStore):
         self.publish_message()
         self.check_published_message_is_stored(store_node=self.store_node1, peer_addr=self.multiaddr_list[0])
 
-    @pytest.mark.skipif("go-waku" in (NODE_1 + NODE_2), reason="Test works only with nwaku")
     def test_store_with_wrongPeerAddr(self):
         self.publish_message()
         wrong_peer_addr = self.multiaddr_list[0][1:]
