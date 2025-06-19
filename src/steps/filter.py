@@ -61,8 +61,6 @@ class StepsFilter(StepsCommon):
     def relay_node_start(self, node):
         self.node1 = WakuNode(node, f"node1_{self.test_id}")
         start_args = {"relay": "true", "filter": "true"}
-        if self.node1.is_gowaku():
-            start_args["min_relay_peers_to_publish"] = "0"
         self.node1.start(**start_args)
         self.enr_uri = self.node1.get_enr_uri()
         self.multiaddr_with_id = self.node1.get_multiaddr_with_id()
@@ -147,8 +145,6 @@ class StepsFilter(StepsCommon):
     def update_filter_subscription(self, subscription, node=None):
         if node is None:
             node = self.node2
-        if node.is_gowaku():
-            pytest.skip(f"This method doesn't exist for node {node.type()}")
         return node.update_filter_subscriptions(subscription)
 
     @allure.step
@@ -156,10 +152,7 @@ class StepsFilter(StepsCommon):
         if node is None:
             node = self.node2
         delete_sub_response = node.delete_filter_subscriptions(subscription)
-        if node.is_gowaku() and "requestId" not in subscription:
-            assert delete_sub_response["requestId"] == ""
-        else:
-            assert delete_sub_response["requestId"] == subscription["requestId"]
+        assert delete_sub_response["requestId"] == subscription["requestId"]
         if status is None:
             assert delete_sub_response["statusDesc"] in ["OK"]
         else:
@@ -198,9 +191,7 @@ class StepsFilter(StepsCommon):
     def get_filter_messages(self, content_topic, pubsub_topic=None, node=None):
         if node is None:
             node = self.node2
-        if node.is_gowaku():
-            return node.get_filter_messages(content_topic, pubsub_topic)
-        elif node.is_nwaku():
+        if node.is_nwaku():
             return node.get_filter_messages(content_topic)
         else:
             raise NotImplementedError("Not implemented for this node type")

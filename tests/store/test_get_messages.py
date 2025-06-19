@@ -11,7 +11,6 @@ logger = get_custom_logger(__name__)
 @pytest.mark.usefixtures("node_setup")
 class TestGetMessages(StepsStore):
     # only one test for store v1, all other tests are using the new store v3
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Test works only with nwaku")
     def test_legacy_store_v1(self):
         self.publish_message()
         for node in self.store_nodes:
@@ -77,12 +76,11 @@ class TestGetMessages(StepsStore):
         assert len(self.store_response.messages) == 1
 
     def test_get_multiple_store_messages(self):
-        message_hash_list = {"nwaku": [], "gowaku": []}
+        message_hash_list = {"nwaku": []}
         for payload in SAMPLE_INPUTS:
             message = self.create_message(payload=to_base64(payload["value"]))
             self.publish_message(message=message)
             message_hash_list["nwaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="hex"))
-            message_hash_list["gowaku"].append(self.compute_message_hash(self.test_pubsub_topic, message, hash_type="base64"))
         for node in self.store_nodes:
             store_response = self.get_messages_from_store(node, page_size=50)
             assert len(store_response.messages) == len(SAMPLE_INPUTS)

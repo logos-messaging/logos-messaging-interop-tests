@@ -50,7 +50,6 @@ class TestRelaySubscribe(StepsRelay):
         self.delete_relay_subscriptions_on_nodes(self.main_nodes, [self.test_pubsub_topic])
         self.check_publish_without_relay_subscription(self.test_pubsub_topic)
 
-    @pytest.mark.xfail("go-waku" in NODE_2, reason="Bug reported: https://github.com/waku-org/go-waku/issues/1034")
     def test_relay_unsubscribe_from_all_pubsub_topics(self):
         self.ensure_relay_subscriptions_on_nodes(self.main_nodes, VALID_PUBSUB_TOPICS)
         for pubsub_topic in VALID_PUBSUB_TOPICS:
@@ -76,8 +75,6 @@ class TestRelaySubscribe(StepsRelay):
             self.delete_relay_subscriptions_on_nodes(self.main_nodes, VALID_PUBSUB_TOPICS[4:5])
             if self.node1.is_nwaku():
                 pass  # nwaku doesn't fail in this case
-            elif self.node1.is_gowaku():
-                raise AssertionError("Unsubscribe from non-subscribed pubsub_topic worked!!!")
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:

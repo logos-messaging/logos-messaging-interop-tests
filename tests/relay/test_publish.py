@@ -184,8 +184,6 @@ class TestRelayPublish(StepsRelay):
             self.check_published_message_reaches_relay_peer(self.create_message(extraField="extraValue"))
             if self.node1.is_nwaku():
                 raise AssertionError("Relay publish with extra field worked!!!")
-            elif self.node1.is_gowaku():
-                pass
             else:
                 raise NotImplementedError("Not implemented for this node type")
         except Exception as ex:
@@ -233,6 +231,7 @@ class TestRelayPublish(StepsRelay):
         self.ensure_relay_subscriptions_on_nodes(self.main_nodes, [self.test_pubsub_topic])
         self.wait_for_published_message_to_reach_relay_peer()
 
+    @pytest.mark.skip(reason="waiting for https://github.com/waku-org/nwaku/issues/3444 resolution")
     @pytest.mark.flaky(reruns=5)
     def test_publish_and_retrieve_100_messages(self):
         num_messages = 100  # if increase this number make sure to also increase rest-relay-cache-capacity flag

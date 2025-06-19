@@ -181,8 +181,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
     @pytest.mark.timeout(60 * 7)
     def test_filter_20_senders_1_receiver(self):
         total_senders = 20
-        if "go-waku" in NODE_2:
-            total_senders = 10
         node_list = []
 
         logger.debug(f"Start {total_senders} nodes to publish messages ")
@@ -303,7 +301,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
 
         assert len(response_list) == max_subscribed_nodes, "Received message count doesn't match sent "
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Test works only with nwaku")
     @pytest.mark.smoke
     def test_store_filter_interaction_with_six_nodes(self):
         logger.debug("Create  6 nodes")
@@ -409,7 +406,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
             assert e.args[0].find("'messages': []"), "response for store shouldn't contain messages"
             logger.debug("Message isn't stored as ephemeral = True")
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Test works only with nwaku")
     def test_msg_stored_when_ephemeral_false(self):
         logger.debug("Start 3 nodes")
         self.node1.start(relay="true", store="true")
@@ -428,7 +424,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         logger.debug("Check if message is stored ")
         self.check_published_message_is_stored(page_size=50, ascending="true", store_node=self.node3, messages_to_check=[message])
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Test works only with nwaku")
     def test_multiple_edge_service_nodes_communication(self):
         self.edge_node1 = WakuNode(NODE_1, f"node4_{self.test_id}")
         self.edge_node2 = WakuNode(NODE_1, f"node5_{self.test_id}")
@@ -477,7 +472,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         messages_response = self.get_filter_messages(self.test_content_topic, pubsub_topic=self.test_pubsub_topic, node=self.edge_node2)
         assert len(messages_response) == 1, "message counter isn't as expected "
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Error protocol not supported")
     def test_store_no_peer_selected(self):
         store_version = "v3"
         logger.debug("Start 5 nodes")

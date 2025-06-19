@@ -9,10 +9,6 @@ from src.test_data import CONTENT_TOPICS_DIFFERENT_SHARDS, CONTENT_TOPICS_SHARD_
 logger = get_custom_logger(__name__)
 
 
-@pytest.mark.skipif(
-    "go-waku" in NODE_1 or "go-waku" in NODE_2,
-    reason="Autosharding tests work only on nwaku because of https://github.com/waku-org/go-waku/issues/1061",
-)
 class TestRunningNodesAutosharding(StepsSharding):
     @pytest.mark.parametrize("content_topic", CONTENT_TOPICS_DIFFERENT_SHARDS)
     def test_single_content_topic(self, content_topic):

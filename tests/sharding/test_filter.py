@@ -27,10 +27,6 @@ class TestFilterStaticSharding(StepsSharding):
             self.check_published_message_reaches_filter_peer(content_topic=content_topic, pubsub_topic=pubsub_topic)
 
 
-@pytest.mark.skipif(
-    "go-waku" in NODE_1 or "go-waku" in NODE_2,
-    reason="Autosharding tests work only on nwaku because of https://github.com/waku-org/go-waku/issues/1061",
-)
 class TestFilterAutoSharding(StepsSharding):
     def test_filter_works_with_auto_sharding(self):
         self.setup_first_relay_node_with_filter(

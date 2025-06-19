@@ -148,24 +148,24 @@ PUBSUB_TOPICS_WRONG_FORMAT = [
 ]
 
 SAMPLE_TIMESTAMPS = [
-    {"description": "Now", "value": int(time() * 1e9), "valid_for": ["nwaku", "gowaku"]},
+    {"description": "Now", "value": int(time() * 1e9), "valid_for": ["nwaku"]},
     {
         "description": "Far future",
         "value": int((NOW + timedelta(days=365 * 10)).timestamp() * 1e9),
-        "valid_for": ["nwaku", "gowaku"],
+        "valid_for": ["nwaku"],
     },  # 10 years from now
-    {"description": "Recent past", "value": int((NOW - timedelta(hours=1)).timestamp() * 1e9), "valid_for": ["nwaku", "gowaku"]},  # 1 hour ago
-    {"description": "Near future", "value": int((NOW + timedelta(hours=1)).timestamp() * 1e9), "valid_for": ["nwaku", "gowaku"]},  # 1 hour ahead
-    {"description": "Positive number", "value": 1, "valid_for": ["nwaku", "gowaku"]},
-    {"description": "Negative number", "value": -1, "valid_for": ["nwaku", "gowaku"]},
-    {"description": "DST change", "value": int(datetime(2020, 3, 8, 2, 0, 0).timestamp() * 1e9), "valid_for": ["nwaku", "gowaku"]},  # DST starts
+    {"description": "Recent past", "value": int((NOW - timedelta(hours=1)).timestamp() * 1e9), "valid_for": ["nwaku"]},  # 1 hour ago
+    {"description": "Near future", "value": int((NOW + timedelta(hours=1)).timestamp() * 1e9), "valid_for": ["nwaku"]},  # 1 hour ahead
+    {"description": "Positive number", "value": 1, "valid_for": ["nwaku"]},
+    {"description": "Negative number", "value": -1, "valid_for": ["nwaku"]},
+    {"description": "DST change", "value": int(datetime(2020, 3, 8, 2, 0, 0).timestamp() * 1e9), "valid_for": ["nwaku"]},  # DST starts
     {"description": "Timestamp as string number", "value": str(int(time() * 1e9)), "valid_for": []},
     {"description": "Invalid large number", "value": 2**63, "valid_for": []},
     {"description": "Float number", "value": float(time() * 1e9), "valid_for": []},
     {"description": "Array instead of timestamp", "value": [int(time() * 1e9)], "valid_for": []},
     {"description": "Object instead of timestamp", "value": {"time": int(time() * 1e9)}, "valid_for": []},
     {"description": "ISO 8601 timestamp", "value": "2023-12-26T10:58:51", "valid_for": []},
-    {"description": "Missing", "value": None, "valid_for": ["gowaku"]},
+    {"description": "Missing", "value": None, "valid_for": []},
 ]
 
 PUBSUB_TOPICS_RLN = ["/waku/2/rs/1/0"]
@@ -205,11 +205,11 @@ METRICS_WITH_INITIAL_VALUE_ZERO = [
     "waku_rln_spam_messages_total_total",
     "waku_rln_valid_messages_total_sum",
     "waku_rln_valid_messages_total_count",
-    'waku_rln_valid_messages_total_bucket{le="1.0"}',
-    'waku_rln_valid_messages_total_bucket{le="2.0"}',
-    'waku_rln_valid_messages_total_bucket{le="3.0"}',
-    'waku_rln_valid_messages_total_bucket{le="4.0"}',
-    'waku_rln_valid_messages_total_bucket{le="5.0"}',
+    'waku_rln_valid_messages_total_bucket{le="10.0"}',
+    'waku_rln_valid_messages_total_bucket{le="20.0"}',
+    'waku_rln_valid_messages_total_bucket{le="30.0"}',
+    'waku_rln_valid_messages_total_bucket{le="40.0"}',
+    'waku_rln_valid_messages_total_bucket{le="50.0"}',
     'waku_rln_valid_messages_total_bucket{le="+Inf"}',
     "waku_rln_proof_verification_total_total",
     "waku_rln_number_registered_memberships",

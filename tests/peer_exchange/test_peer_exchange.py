@@ -6,7 +6,6 @@ from src.steps.peer_exchange import StepsPeerExchange
 from src.test_data import VALID_PUBSUB_TOPICS
 
 
-@pytest.mark.skipif("go-waku" not in NODE_2, reason="Test works only with go-waku as responder - https://github.com/waku-org/nwaku/issues/2875")
 class TestPeerExchange(StepsPeerExchange):
     def test_get_peers_for_blank_node(self):
         self.setup_first_relay_node(relay_peer_exchange="true")

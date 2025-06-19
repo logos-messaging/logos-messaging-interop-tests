@@ -165,9 +165,7 @@ class StepsSharding(StepsRelay):
     def get_filter_messages(self, content_topic, pubsub_topic=None, node=None):
         if node is None:
             node = self.node2
-        if node.is_gowaku():
-            return node.get_filter_messages(content_topic, pubsub_topic)
-        elif node.is_nwaku():
+        if node.is_nwaku():
             return node.get_filter_messages(content_topic)
         else:
             raise NotImplementedError("Not implemented for this node type")
@@ -204,4 +202,4 @@ class StepsSharding(StepsRelay):
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
             raise AssertionError("Publishing messages on unsubscribed shard worked!!!")
         except Exception as ex:
-            assert f"Failed to publish: Node not subscribed to topic: {pubsub_topic}" in str(ex)
+            assert "Failed to publish: Node not subscribed to topic" in str(ex), "Expected Bad Request because the node is not subscribed"

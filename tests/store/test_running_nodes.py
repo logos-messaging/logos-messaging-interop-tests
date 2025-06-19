@@ -32,7 +32,6 @@ class TestRunningNodes(StepsStore):
         self.publish_message()
         self.check_published_message_is_stored(page_size=5, ascending="true")
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Not supported. See: https://github.com/waku-org/go-waku/issues/1106")
     def test_main_node_only_relay__peer_relay_and_store(self):
         self.setup_first_publishing_node(store="false", relay="true")
         self.setup_first_store_node(store="true", relay="true")
@@ -40,7 +39,6 @@ class TestRunningNodes(StepsStore):
         self.publish_message()
         self.check_published_message_is_stored(page_size=5, ascending="true")
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Not supported. See: https://github.com/waku-org/go-waku/issues/1106")
     def test_main_node_only_relay__peer_only_store(self):
         self.setup_first_publishing_node(store="false", relay="true")
         self.setup_first_store_node(store="true", relay="false")
@@ -48,7 +46,6 @@ class TestRunningNodes(StepsStore):
         self.publish_message()
         self.check_store_returns_empty_response()
 
-    @pytest.mark.skipif("go-waku" in NODE_2, reason="Not supported. See: https://github.com/waku-org/go-waku/issues/1106")
     def test_main_node_only_relay__peer_only_relay(self):
         self.setup_first_publishing_node(store="false", relay="true")
         self.setup_first_store_node(store="false", relay="true")
