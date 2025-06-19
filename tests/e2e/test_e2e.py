@@ -512,3 +512,10 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         logger.debug("Check if node3 can inquiry stored message without stor peer specified")
         store_response = self.node3.get_store_messages(pubsub_topic=self.test_pubsub_topic, page_size=5, ascending="true", store_v=store_version)
         assert len(store_response["messages"]) == 2, "Can't find stored message!!"
+
+    def test_sync_trail(self):
+        self.node1.start(store="true", relay="true", sync="true")
+        self.node2.start(store="true", relay="false", discv5_bootstrap_node=self.node1.get_enr_uri())
+        # ogger.debug(f"publish mesage via store { self.publish_message(sender=self.node1,via ="sync")} ")
+
+        # logger.debug(f"return of sync request {self.node2.request_sync(self)}")

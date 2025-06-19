@@ -50,6 +50,12 @@ class REST(BaseClient):
     def send_relay_message(self, message, pubsub_topic):
         return self.rest_call("post", f"relay/v1/messages/{quote(pubsub_topic, safe='')}", json.dumps(message))
 
+    def send_sync_message(self, message):
+        return self.rest_call("post", "store/v1/messages", json.dumps(message))
+
+    def send_sync_request(self):
+        return self.rest_call("post", "store/v1/sync")
+
     def send_relay_auto_message(self, message):
         return self.rest_call("post", "relay/v1/auto/messages", json.dumps(message))
 
