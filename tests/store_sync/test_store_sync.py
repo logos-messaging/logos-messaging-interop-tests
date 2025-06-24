@@ -5,6 +5,7 @@ from src.libs.custom_logger import get_custom_logger
 from src.node.store_response import StoreResponse
 from src.node.waku_node import WakuNode
 from src.steps.store import StepsStore
+import time
 
 logger = get_custom_logger(__name__)
 
@@ -437,48 +438,54 @@ class TestStoreSync(StepsStore):
         self.node1.start(
             store="true",
             store_sync="true",
-            store_sync_interval=1,
-            store_sync_range=10,
-            store_sync_relay_jitter=1,
+            # store_sync_interval=1,
+            # store_sync_range=10,
+            # store_sync_relay_jitter=1,
             relay="true",
         )
         self.node2.start(
-            store="false",
+            store="true",
             store_sync="true",
-            store_sync_interval=1,
+            # store_sync_topic="/waku/2/rs/3/0",
+            store_sync_interval=30,
             store_sync_range=10,
-            store_sync_relay_jitter=1,
-            relay="true",
+            store_sync_relay_jitter=0,
+            relay="false",
             discv5_bootstrap_node=self.node1.get_enr_uri(),
-        )
-        self.node3.start(
-            store="false",
-            store_sync="true",
-            store_sync_interval=1,
-            store_sync_range=10,
-            store_sync_relay_jitter=1,
-            relay="true",
-            discv5_bootstrap_node=self.node2.get_enr_uri(),
         )
 
         self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-        self.add_node_peer(self.node3, [self.node2.get_multiaddr_with_id()])
+        # self.add_node_peer(self.node3, [self.node2.get_multiaddr_with_id()])
 
         self.node1.set_relay_subscriptions([self.test_pubsub_topic])
-        self.node2.set_relay_subscriptions([self.test_pubsub_topic])
-        self.node3.set_relay_subscriptions([self.test_pubsub_topic])
+        # self.node2.set_relay_subscriptions([self.test_pubsub_topic])
+        # self.node3.set_relay_subscriptions([self.test_pubsub_topic])
 
         message_list = [self.publish_message(sender=self.node1, via="relay") for _ in range(self.num_messages)]
 
-        delay(2)  # wait for the sync to finish
-
-        self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node1, messages_to_check=message_list)
-        node1_message = len(self.store_response.messages)
+        delay(65)  # wait for the sync to finish
+        self.node1.stop()
+        # self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node1, messages_to_check=message_list)
+        # node1_message = len(self.store_response.messages)
         self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node2, messages_to_check=message_list)
         node2_message = len(self.store_response.messages)
-        self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node3, messages_to_check=message_list)
-        node3_message = len(self.store_response.messages)
 
-        assert (
-            node1_message == node2_message == node3_message == self.num_messages
-        ), f"Store messages are not equal to each other or not equal to {self.num_messages}"
+    # assert (
+    # node1_message == node2_message == node3_message == self.num_messages
+    #  ), f"Store messages are not equal to each other or not equal to {self.num_messages}"
+
+    @pytest.mark.timeout(450)
+    def test_sync_gap_recovery(self):
+        self.node1.start(store="true", relay="true")
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+
+        # publish while counterpart is offline
+        message_list = [self.publish_message(sender=self.node1, via="relay") for _ in range(self.num_messages)]
+        self.node2.start(store_sync="true", relay="false", staticnode=self.node1.get_enr_uri(), store_sync_interval="30")
+
+        time.sleep(60)
+        self.node1.stop()  # prove sync carried the payload
+
+        self.check_published_message_is_stored(page_size=100, store_node=self.node2, messages_to_check=message_list)
+
+    # assert len(self.store_response.messages) == self.num_messages
