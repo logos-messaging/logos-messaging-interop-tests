@@ -62,7 +62,7 @@ Use **interop\_tests.yml** when you need to test a PR or a historical image:
 ### Viewing the results
 
 * When the job finishes GitHub will display an **Allure Report** link in the run summary.
-* The bot also posts the same link in the **#waku/test‑reports** Discord / Slack channel.
+* The bot also posts the same link in the **Waku / test‑reports** Discord channel.
 
 ### Updating the CI job used from *nwaku*
 
