@@ -1,46 +1,90 @@
 # waku-interop-tests
 
-Waku e2e and interop framework used to test various implementation of the [Waku v2 protocol](https://rfc.vac.dev/spec/10/).
+Waku end‑to‑end (e2e) interoperability test framework for the [Waku v2 protocol](https://rfc.vac.dev/spec/10/). It exercises multiple clients (nwaku, js‑waku, go‑waku…) in realistic network topologies and reports results via Allure.
 
-## Setup and contribute
+## Setup & contribution
 
-```shell
+```bash
 git clone git@github.com:waku-org/waku-interop-tests.git
 cd waku-interop-tests
+
+# create and activate a virtual environment
 python -m venv .venv
 source .venv/bin/activate
+
+# install python dependencies + prepare git hooks
 pip install -r requirements.txt
 pre-commit install
-(optional) Overwrite default vars from src/env_vars.py via cli env vars or by adding a .env file
-pytest
 ```
 
-## CI 
+> **Tip** – You can override any default variable defined in `src/env_vars.py` either
+> • by exporting it before the `pytest` call, or
+> • by creating a `.env` file at the repository root.
 
-- Test runs via github actions
-- [Allure Test Reports](https://waku-org.github.io/waku-interop-tests/3/) are published via github pages
+## Running tests locally
 
+Run **one specific test**:
 
-## CI NWAKU job 
+```bash
+pytest -k test_unsubscribe_from_some_content_topics
+```
 
-To update tests in PRs at nwaku repo following steps shall be done 
+Run **an entire test class / suite**:
 
- - Make a tag at the desired commit on master with these 2 commands
-   - git tag tagname
-   - git push origin tagname
- - Navigate to test_PR_image.yml file and modify job "tests" to explicilty use the tag in ref section
-  
- ![Screenshot from 2024-12-24 16-24-51](https://github.com/user-attachments/assets/dd3f95bd-fe79-475b-92b7-891d82346382)
+```bash
+pytest -k TestRelaySubscribe
+```
 
+All usual [pytest](https://docs.pytest.org/) selectors (`-k`, `-m`, `-q`, etc.) work.
+
+Waku logs can be found in `log/docker` folder while test log can be seen either in the terminal or in the `log` folder.
+
+## Continuous Integration (CI)
+
+### Daily build on *nwaku\:latest*
+
+Every day the workflow **nim\_waku\_daily.yml** triggers against the image `wakuorg/nwaku:latest`.
+
+To launch it manually:
+
+1. Open [https://github.com/waku-org/waku-interop-tests/actions/workflows/nim\_waku\_daily.yml](https://github.com/waku-org/waku-interop-tests/actions/workflows/nim_waku_daily.yml).
+2. Click **► Run workflow**.
+3. Pick the branch you want to test (defaults to `master`) and press **Run workflow**.
+
+### On‑demand matrix against custom *nwaku* versions
+
+Use **interop\_tests.yml** when you need to test a PR or a historical image:
+
+1. Open [https://github.com/waku-org/waku-interop-tests/actions/workflows/interop\_tests.yml](https://github.com/waku-org/waku-interop-tests/actions/workflows/interop_tests.yml).
+2. Press **► Run workflow** and choose the branch.
+3. In the *workflow inputs* field set the `nwaku_image` you want, e.g. `wakuorg/nwaku:v0.32.0`.
+
+### Viewing the results
+
+* When the job finishes GitHub will display an **Allure Report** link in the run summary.
+* The bot also posts the same link in the **Waku / test‑reports** Discord channel.
+
+### Updating the CI job used from *nwaku*
+
+In the **nwaku** repository itself the file `.github/workflows/test_PR_image.yml` pins the interop test version.
+To update it:
+
+1. Tag the desired commit in `waku-interop-tests` and push the tag
+
+```bash
+git tag vX.Y.Z
+git push origin vX.Y.Z
+```
+
+2. Edit `test_PR_image.yml` in **nwaku** and set `ref: vX.Y.Z` for the `tests` job.
+
+![CI job location](https://github.com/user-attachments/assets/dd3f95bd-fe79-475b-92b7-891d82346382)
 
 ## License
 
-Licensed and distributed under either of
+Licensed under either of:
 
-- MIT license: [LICENSE-MIT](https://github.com/waku-org/js-waku/blob/master/LICENSE-MIT) or http://opensource.org/licenses/MIT
+* **MIT License** – see [LICENSE-MIT](https://github.com/waku-org/js-waku/blob/master/LICENSE-MIT) or [http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT)
+* **Apache License 2.0** – see [LICENSE-APACHE-v2](https://github.com/waku-org/js-waku/blob/master/LICENSE-APACHE-v2) or [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-or
-
-- Apache License, Version 2.0, ([LICENSE-APACHE-v2](https://github.com/waku-org/js-waku/blob/master/LICENSE-APACHE-v2) or http://www.apache.org/licenses/LICENSE-2.0)
-
-at your option. These files may not be copied, modified, or distributed except according to those terms.
+at your option.
