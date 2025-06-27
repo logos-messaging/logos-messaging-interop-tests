@@ -21,12 +21,6 @@ pre-commit install
 > • by exporting it before the `pytest` call, or
 > • by creating a `.env` file at the repository root.
 
-To run the full test‑suite locally:
-
-```bash
-pytest
-```
-
 ## Running tests locally
 
 Run **one specific test**:
