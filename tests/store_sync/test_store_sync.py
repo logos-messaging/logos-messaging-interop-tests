@@ -502,13 +502,11 @@ class TestStoreSync(StepsStore):
             store_sync_interval=10,
             store_sync_range=45,
             store_sync_relay_jitter=0,
-            relay="true",
+            relay="false",
             discv5_bootstrap_node=self.node1.get_enr_uri(),
         )
 
         self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-        warmup = self.create_message(payload=to_base64("warm-up"))
-        self.node2.send_relay_message(warmup, self.test_pubsub_topic)
         delay(1)
 
         message_list = [self.publish_message(sender=self.node1, via="relay") for _ in range(self.num_messages)]
