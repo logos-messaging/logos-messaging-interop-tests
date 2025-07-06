@@ -484,7 +484,7 @@ class TestStoreSync(StepsStore):
             node1_message == node2_message == node3_message == self.num_messages
         ), f"Store messages are not equal to each other or not equal to {self.num_messages}"
 
-    def test_sync_flags_no_relay(self):
+    def test_sync_flags_no_relay_2nodes(self):
         self.node1.start(
             store="true",
             store_sync="true",
@@ -498,7 +498,6 @@ class TestStoreSync(StepsStore):
         self.node2.start(
             store="true",
             store_sync="true",
-            # store_sync_topic="/waku/2/rs/3/0",
             store_sync_interval=10,
             store_sync_range=45,
             store_sync_relay_jitter=0,
@@ -514,18 +513,30 @@ class TestStoreSync(StepsStore):
         delay(65)  # wait for the sync to finish
         self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node2, messages_to_check=message_list)
 
-    @pytest.mark.timeout(450)
-    def test_sync_gap_recovery(self):
-        self.node1.start(store="true", relay="true")
+    def test_sync_flags_node2_start_later(self):
+        self.node1.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=10,
+            store_sync_range=45,
+            store_sync_relay_jitter=0,
+            relay="true",
+        )
         self.node1.set_relay_subscriptions([self.test_pubsub_topic])
 
-        # publish while counterpart is offline
         message_list = [self.publish_message(sender=self.node1, via="relay") for _ in range(self.num_messages)]
-        self.node2.start(store_sync="true", relay="false", staticnode=self.node1.get_enr_uri(), store_sync_interval="30")
+        delay(1)
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=10,
+            store_sync_range=45,
+            store_sync_relay_jitter=0,
+            relay="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
 
-        time.sleep(60)
-        self.node1.stop()  # prove sync carried the payload
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
 
-        self.check_published_message_is_stored(page_size=100, store_node=self.node2, messages_to_check=message_list)
-
-    # assert len(self.store_response.messages) == self.num_messages
+        delay(65)  # wait for the sync to finish
+        self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node2, messages_to_check=message_list)
