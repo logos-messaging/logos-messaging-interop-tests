@@ -538,5 +538,97 @@ class TestStoreSync(StepsStore):
 
         self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
 
-        delay(65)  # wait for the sync to finish
+        delay(65)
         self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node2, messages_to_check=message_list)
+
+    def test_store_sync_indirect_node(self):
+        self.node1.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=10,
+            store_sync_range=45,
+            store_sync_relay_jitter=0,
+            relay="true",
+        )
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=10,
+            store_sync_range=45,
+            store_sync_relay_jitter=0,
+            relay="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+
+        self.node3.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=10,
+            store_sync_range=45,
+            store_sync_relay_jitter=0,
+            relay="false",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node2.get_enr_uri(),
+        )
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+        message_list = [self.publish_message(sender=self.node1, via="relay") for _ in range(self.num_messages)]
+        delay(65)
+        self.check_published_message_is_stored(page_size=100, ascending="true", store_node=self.node3, messages_to_check=message_list)
+
+    def test_store_sync_long_chain(self):
+        sync_interval = 10
+        sync_range = 120
+        self.node1.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=0,
+            relay="true",
+            discv5="false",
+            dns_discovery="false",
+        )
+
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+        self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
+        self.node5 = WakuNode(NODE_2, f"node5_{self.test_id}")
+        self.node6 = WakuNode(NODE_2, f"node6_{self.test_id}")
+        self.node7 = WakuNode(NODE_2, f"node7_{self.test_id}")
+        self.node8 = WakuNode(NODE_2, f"node8_{self.test_id}")
+
+        extra_nodes = [
+            self.node2,
+            self.node3,
+            self.node4,
+            self.node5,
+            self.node6,
+            self.node7,
+            self.node8,
+        ]
+        prev = self.node1
+        for node in extra_nodes:
+            node.start(
+                store="true",
+                store_sync="true",
+                store_sync_interval=sync_interval,
+                store_sync_range=sync_range,
+                store_sync_relay_jitter=0,
+                relay="false",
+                discv5_bootstrap_node=prev.get_enr_uri(),
+                dns_discovery="false",
+                discv5="false",
+            )
+
+            self.add_node_peer(node, [prev.get_multiaddr_with_id()])
+            prev = node
+
+        published = [self.publish_message(sender=self.node1, via="relay") for _ in range(self.num_messages)]
+        delay(sync_interval * 7 + 20)
+        self.check_published_message_is_stored(
+            page_size=100,
+            ascending="true",
+            store_node=self.node8,
+            messages_to_check=published,
+        )
