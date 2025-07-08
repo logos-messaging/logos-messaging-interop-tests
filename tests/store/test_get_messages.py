@@ -10,13 +10,6 @@ logger = get_custom_logger(__name__)
 
 @pytest.mark.usefixtures("node_setup")
 class TestGetMessages(StepsStore):
-    # only one test for store v1, all other tests are using the new store v3
-    def test_legacy_store_v1(self):
-        self.publish_message()
-        for node in self.store_nodes:
-            store_response = node.get_store_messages(pubsub_topic=self.test_pubsub_topic, page_size=5, ascending="true", store_v="v1")
-            assert len(store_response["messages"]) == 1
-
     def test_get_store_messages_with_different_payloads(self):
         failed_payloads = []
         for payload in SAMPLE_INPUTS:

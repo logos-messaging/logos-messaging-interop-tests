@@ -37,22 +37,14 @@ class TestRunningNodesAutosharding(StepsSharding):
         self.setup_second_relay_node(cluster_id=self.auto_cluster, content_topic="/newsService/1.0/alerts/xml")
         self.subscribe_first_relay_node(content_topics=["/newsService/1.0/weekly/protobuf"])
         self.subscribe_second_relay_node(content_topics=["/newsService/1.0/alerts/xml"])
-        try:
-            self.check_published_message_reaches_relay_peer(content_topic="/newsService/1.0/weekly/protobuf")
-            raise AssertionError("Publish on different content topic worked!!!")
-        except Exception as ex:
-            assert "Not Found" in str(ex)
+        self.check_published_message_reaches_relay_peer(content_topic="/newsService/1.0/weekly/protobuf")
 
     def test_2_nodes_different_content_topic_different_shard(self):
         self.setup_first_relay_node_with_filter(cluster_id=self.auto_cluster, content_topic="/myapp/1/latest/proto")
         self.setup_second_relay_node(cluster_id=self.auto_cluster, content_topic="/waku/2/content/test.js")
         self.subscribe_first_relay_node(content_topics=["/myapp/1/latest/proto"])
         self.subscribe_second_relay_node(content_topics=["/waku/2/content/test.js"])
-        try:
-            self.check_published_message_reaches_relay_peer(content_topic="/myapp/1/latest/proto")
-            raise AssertionError("Publish on different content topic worked!!!")
-        except Exception as ex:
-            assert "Not Found" in str(ex)
+        self.check_published_message_reaches_relay_peer(content_topic="/myapp/1/latest/proto")
 
     def test_content_topic_not_in_docker_flags(self):
         self.setup_main_relay_nodes(cluster_id=2, pubsub_topic=self.test_pubsub_topic)
