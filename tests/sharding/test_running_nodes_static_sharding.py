@@ -10,7 +10,7 @@ logger = get_custom_logger(__name__)
 class TestRunningNodesStaticSharding(StepsSharding):
     @pytest.mark.parametrize("pubsub_topic", PUBSUB_TOPICS_DIFFERENT_CLUSTERS)
     def test_single_pubsub_topic(self, pubsub_topic):
-        self.setup_main_relay_nodes(pubsub_topic=pubsub_topic, shard=["0", "1", "999"])
+        self.setup_main_relay_nodes(pubsub_topic=pubsub_topic)
         self.subscribe_main_relay_nodes(pubsub_topics=[pubsub_topic])
         self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic)
 

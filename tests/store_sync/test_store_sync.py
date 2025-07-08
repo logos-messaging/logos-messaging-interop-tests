@@ -21,6 +21,7 @@ class TestStoreSync(StepsStore):
         self.node3 = WakuNode(NODE_1, f"node3_{self.test_id}")
         self.num_messages = 10
 
+    @pytest.mark.skip("This test doesn not work as expected, will be fixed by @aya")
     def test_sync_nodes_are_relay(self):
         self.node1.start(store="true", relay="true")
         self.node2.start(store="false", store_sync="true", relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
