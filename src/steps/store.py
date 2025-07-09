@@ -225,6 +225,7 @@ class StepsStore(StepsCommon):
                 **kwargs,
             )
 
+            logger.debug(f"messages length is {len(self.store_response.messages)}")
             assert self.store_response.messages, f"Peer {node.image} couldn't find any messages. Actual response: {self.store_response.resp_json}"
             assert len(self.store_response.messages) >= len(
                 messages_to_check
