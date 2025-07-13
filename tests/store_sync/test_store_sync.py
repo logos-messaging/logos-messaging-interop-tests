@@ -20,7 +20,7 @@ class TestStoreSync(StepsStore):
         self.node1 = WakuNode(NODE_1, f"node1_{self.test_id}")
         self.node2 = WakuNode(NODE_1, f"node2_{self.test_id}")
         self.node3 = WakuNode(NODE_1, f"node3_{self.test_id}")
-        self.num_messages = 1
+        self.num_messages = 10
 
     def test_sync_nodes_are_relay(self):
         self.node1.start(store="true", relay="true")
