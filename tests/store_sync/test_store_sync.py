@@ -631,200 +631,12 @@ class TestStoreSync(StepsStore):
             messages_to_check=published,
         )
 
-    def test_store_sync_range_boundary(self):
-        sync_range = 30
-        sync_interval = 5
-        publish_secs = 90
-        wait_time = sync_interval + 5
-
-        self.node1.start(
-            relay="true",
-            store="true",
-            store_sync="true",
-            dns_discovery="false",
-        )
-
-        self.node2.start(
-            relay="false",
-            store="false",
-            store_sync="true",
-            store_sync_interval=sync_interval,
-            store_sync_range=sync_range,
-            store_sync_relay_jitter=0,
-            dns_discovery="false",
-            discv5_bootstrap_node=self.node1.get_enr_uri(),
-        )
-
-        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-
-        published = []
-        for _ in range(publish_secs):
-            published.append(self.publish_message(sender=self.node1, via="relay"))
-            delay(0.8)
-
-        delay(wait_time)
-
-        expected_msgs = published[60:]
-        self.check_published_message_is_stored(
-            page_size=100,
-            ascending="true",
-            store_node=self.node2,
-            messages_to_check=expected_msgs,
-        )
-        stored_payloads = {m.payload for m in self.node2.store_query(page_size=100, ascending="true")}
-        # self.assertEqual(len(stored_payloads), 30)
-
-    def test_store_sync_duplicate_suppression(self):
-        sync_range = 45
+    def test_store_sync_overlap_sync_window(self):
         sync_interval = 15
+        sync_range = 45
         intervals = 6
         publish_secs = sync_interval * intervals
 
-        self.node1.start(
-            relay="true",
-            store="true",
-            store_sync="true",
-            dns_discovery="false",
-        )
-
-        self.node2.start(
-            relay="false",
-            store="true",
-            store_sync="true",
-            store_sync_interval=sync_interval,
-            store_sync_range=sync_range,
-            store_sync_relay_jitter=0,
-            dns_discovery="false",
-            discv5_bootstrap_node=self.node1.get_enr_uri(),
-        )
-
-        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-
-        published = []
-        for _ in range(publish_secs):
-            published.append(self.publish_message(sender=self.node1, via="relay"))
-            delay(0.8)
-
-        delay(sync_interval * 2 + 2)
-
-    def test_store_sync_backfill_after_downtime(self):
-        sync_range = 120
-        sync_interval = 30
-        publish_secs = 900
-
-        self.node1.start(
-            relay="true",
-            store="true",
-            store_sync="true",
-            dns_discovery="false",
-        )
-
-        published = []
-        for _ in range(publish_secs):
-            published.append(self.publish_message(sender=self.node1, via="relay"))
-            delay(0.8)
-
-        self.node2.start(
-            relay="false",
-            store="true",
-            store_sync="true",
-            store_sync_interval=sync_interval,
-            store_sync_range=sync_range,
-            store_sync_relay_jitter=0,
-            dns_discovery="false",
-            discv5_bootstrap_node=self.node1.get_enr_uri(),
-        )
-
-        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-        delay(sync_interval * 2 + 2)
-
-        resp = self.node2.store_query(page_size=1000, ascending="true")
-        payloads = [m.payload for m in resp]
-
-    def test_store_sync_pagination_stress(self):
-        total_msgs = 10_000
-        page_size = 50
-        sync_interval = 30
-        sync_range = 300
-
-        self.node1.start(
-            relay="true",
-            store="true",
-            store_sync="true",
-            dns_discovery="false",
-        )
-
-        for i in range(total_msgs):
-            self.publish_message(sender=self.node1, via="relay")
-
-        self.node2.start(
-            relay="false",
-            store="true",
-            store_sync="true",
-            store_sync_interval=sync_interval,
-            store_sync_range=sync_range,
-            store_sync_relay_jitter=0,
-            dns_discovery="false",
-            discv5_bootstrap_node=self.node1.get_enr_uri(),
-        )
-
-        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-        delay(sync_interval * 2 + 2)
-
-        all_msgs = []
-        cursor = None
-        while True:
-            resp = self.get_messages_from_store(self.node2, page_size=page_size, ascending="true", cursor=cursor)
-            all_msgs.extend(resp.messages)
-            if len(resp.messages) < page_size:
-                break
-            cursor = resp.next_cursor
-
-        assert len(all_msgs) == total_msgs
-
-    def test_store_sync_network_partition(self):
-        initial_secs = 30
-        downtime_secs = 120
-        sync_interval = 30
-        sync_range = 120
-        total_msgs = initial_secs + downtime_secs
-
-        self.node1.start(relay="true", store="true", store_sync="true", dns_discovery="false")
-        self.node2.start(
-            relay="false",
-            store="true",
-            store_sync="true",
-            store_sync_interval=sync_interval,
-            store_sync_range=sync_range,
-            store_sync_relay_jitter=0,
-            dns_discovery="false",
-            discv5_bootstrap_node=self.node1.get_enr_uri(),
-        )
-        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
-
-        for _ in range(initial_secs):
-            self.publish_message(sender=self.node1, via="relay")
-            delay(0.8)
-
-        self.node2.block_traffic(self.node1)
-
-        for _ in range(downtime_secs):
-            self.publish_message(sender=self.node1, via="relay")
-            delay(0.8)
-
-        self.node2.unblock_traffic(self.node1)
-        delay(sync_interval + 5)
-
-        resp = self.node2.store_query(page_size=2000, ascending="true")
-        stored_payloads = [m.payload for m in resp]
-        self.assertEqual(len(stored_payloads), total_msgs)
-
-    def test_store_sync_restart_mid_sync(self):
-        sync_interval = 30
-        sync_range = 60
-        total_msgs = 80
-        pause_after = 20
-
         self.node1.start(relay="true", store="true", store_sync="true", dns_discovery="false")
 
         self.node2.start(
@@ -840,15 +652,172 @@ class TestStoreSync(StepsStore):
 
         self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
 
-        for i in range(total_msgs):
-            if i == pause_after:
-                self.node2.pause()
-            self.publish_message(sender=self.node1, via="relay")
+        logger.debug(f"Publishing {publish_secs} messages at 1 msg/s")
+        published_hashes = []
+        for i in range(publish_secs):
+            msg = self.publish_message(sender=self.node1, via="relay")
+            published_hashes.append(self.compute_message_hash(self.test_pubsub_topic, msg, hash_type="hex"))
             delay(0.8)
+
+        logger.debug(f"Waiting {sync_interval * 2} seconds to allow at least two sync rounds")
+        delay(sync_interval * 2)
+
+        logger.debug("Querying node2 store for all messages")
+        resp = self.get_messages_from_store(self.node2, page_size=2000, ascending="true")
+        store_hashes = [resp.message_hash(i) for i in range(len(resp.messages))]
+
+        logger.debug(f"Store returned {len(store_hashes)} messages, published publish_secs" f" messages")
+
+        assert len(set(store_hashes)) == publish_secs
+        assert set(store_hashes) == set(published_hashes)
+
+    @pytest.mark.timeout(60 * 20)
+    def test_query_after_long_time(self):
+        sync_range = 120
+        backlog_secs = 10 * 60
+        publish_delay = 0.8
+        sync_interval = 10
+
+        self.node1.start(store="true", relay="true", store_sync="true", dns_discovery="false")
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+
+        logger.debug(f"Publishing {backlog_secs} messages at 1 msg/s to build backlog")
+        published_hashes = []
+        for _ in range(backlog_secs):
+            msg = self.publish_message(sender=self.node1, via="relay")
+            published_hashes.append(self.compute_message_hash(self.test_pubsub_topic, msg, hash_type="hex"))
+            delay(publish_delay)
+
+        expected_hashes = published_hashes[-sync_range:]
+
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=0,
+            relay="false",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+
+        logger.debug(f"Waiting {sync_interval * 2} s to let Node B finish its first sync")
+        delay(sync_interval * 4)
+
+        store_response = StoreResponse({"paginationCursor": "", "pagination_cursor": ""}, self.node2)
+        store_hashes = []
+        while store_response.pagination_cursor is not None:
+            cursor = store_response.pagination_cursor
+            store_response = self.get_messages_from_store(self.node2, page_size=100, cursor=cursor, ascending="true")
+            for idx in range(len(store_response.messages)):
+                store_hashes.append(store_response.message_hash(idx))
+
+        logger.debug(f"Store returned {len(store_hashes)} messages; expected {len(expected_hashes)}")
+        assert len(store_hashes) == len(expected_hashes), "Incorrect number of messages synced"
+        assert set(store_hashes) == set(expected_hashes), "Node B synced wrong message set"
+
+    @pytest.mark.timeout(60 * 3)
+    def test_store_sync_after_partition_under_100_msgs(self):
+        sync_interval = 10
+        sync_range = 180
+        node2up_secs = 20
+        node2down_secs = 60
+        publish_delay = 0.8
+        total_expected = node2up_secs + node2down_secs
+
+        self.node1.start(store="true", relay="true", store_sync="true", dns_discovery="false")
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=0,
+            relay="false",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+
+        published_hashes = []
+        for _ in range(node2up_secs):
+            m = self.publish_message(sender=self.node1, via="relay")
+            published_hashes.append(self.compute_message_hash(self.test_pubsub_topic, m, hash_type="hex"))
+            delay(publish_delay)
+
+        logger.debug("Pausing Node2 container ")
+        self.node2.pause()
+
+        logger.debug("Publishing while node2 paused ")
+        for _ in range(node2down_secs):
+            m = self.publish_message(sender=self.node1, via="relay")
+            published_hashes.append(self.compute_message_hash(self.test_pubsub_topic, m, hash_type="hex"))
+            delay(publish_delay)
+
+        logger.debug("Unpausing Node2")
         self.node2.unpause()
+        delay(sync_interval * 2)
 
-        delay(sync_interval + 5)
+        resp = self.get_messages_from_store(self.node2, ascending="true", page_size=100)
+        store_hashes = [resp.message_hash(i) for i in range(len(resp.messages))]
 
-        resp = self.node2.store_query(page_size=1000, ascending="true")
-        stored_payloads = [m.payload for m in resp]
-        assert len(stored_payloads) == total_msgs
+        logger.debug(f"Node2 store has {len(store_hashes)} messages; expected {total_expected}")
+        assert len(store_hashes) == total_expected, "Message count mismatch after partition"
+        assert set(store_hashes) == set(published_hashes), "Missing or extra messages after sync"
+
+    @pytest.mark.timeout(240)
+    def test_store_sync_resume_after_restart(self):
+        total_msgs = 400
+        publish_delay = 0.01
+        sync_interval = 6
+        sync_range = 1200
+        kill_delay = 0.3
+
+        self.node1.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=0,
+            relay="true",
+            dns_discovery="false",
+        )
+
+        published = []
+        for _ in range(total_msgs):
+            msg = self.publish_message(sender=self.node1, via="relay")
+            published.append(self.compute_message_hash(self.test_pubsub_topic, msg, hash_type="hex"))
+            delay(publish_delay)
+        logger.debug(f"Node A published {total_msgs} messages")
+
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=0,
+            relay="false",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+
+        delay(kill_delay)
+        self.node2.stop()
+        logger.debug("Node B stopped mid-sync ")
+
+        self.node2.start()
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+        delay(sync_interval * 2)
+
+        resp = StoreResponse({"paginationCursor": "", "pagination_cursor": ""}, self.node2)
+        store_hashes = []
+        while resp.pagination_cursor is not None:
+            cursor = resp.pagination_cursor
+            resp = self.get_messages_from_store(self.node2, page_size=100, cursor=cursor, ascending="true")
+            store_hashes.extend(resp.message_hash(i) for i in range(len(resp.messages)))
+
+        logger.debug(f"Node B store has {len(store_hashes)} msgs; expected {total_msgs}")
+        assert len(store_hashes) == total_msgs, "Message count mismatch after resume"
+        assert set(store_hashes) == set(published), "Missing or extra messages after resume"
+        assert len(store_hashes) == len(set(store_hashes)), "Duplicates detected after resume"
