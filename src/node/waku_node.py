@@ -83,7 +83,6 @@ class WakuNode:
         self._docker_manager = DockerManager(self._image_name)
         self._container = None
         logger.debug(f"WakuNode instance initialized with log path {self._log_path}")
-        print("LOG FILE:", self._log_path)
 
     @retry(stop=stop_after_delay(60), wait=wait_fixed(0.1), reraise=True)
     def start(self, wait_for_node_sec=20, **kwargs):

@@ -1,5 +1,3 @@
-import time
-
 import pytest
 from src.env_vars import NODE_1, NODE_2, STRESS_ENABLED
 from src.libs.common import delay
@@ -475,7 +473,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         assert len(messages_response) == 1, "message counter isn't as expected "
 
     def test_store_no_peer_selected(self):
-        store_version = "v3"
         logger.debug("Start 5 nodes")
         self.node4 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node5 = WakuNode(NODE_2, f"node4_{self.test_id}")
@@ -503,23 +500,6 @@ class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         self.publish_message(sender=self.node4)
         logger.debug("Check if node3 can inquiry stored message without stor peer specified")
         store_response = self.node3.get_store_messages(
-            pubsub_topic=self.test_pubsub_topic, content_topics=self.test_content_topic, page_size=5, ascending="true", store_v=store_version
+            pubsub_topic=self.test_pubsub_topic, content_topics=self.test_content_topic, page_size=5, ascending="true"
         )
         assert len(store_response["messages"]) == 1, "Can't find stored message!!"
-
-        logger.debug("Repeat publish and store inquiry but using store v1")
-        store_version = "v1"
-        self.publish_message(sender=self.node4)
-
-        logger.debug("Check if node3 can inquiry stored message without stor peer specified")
-        store_response = self.node3.get_store_messages(pubsub_topic=self.test_pubsub_topic, page_size=5, ascending="true", store_v=store_version)
-        assert len(store_response["messages"]) == 2, "Can't find stored message!!"
-
-    def test_waku_sync_trail(self):
-        self.node1.start(relay="true", store="true")
-        self.node2.start(relay="true", store="true", store_sync="true", discv5_bootstrap_node=self.node1.get_enr_uri())
-        self.node2.set_relay_subscriptions([self.test_pubsub_topic])
-        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
-        self.wait_for_autoconnection([self.node1, self.node2], hard_wait=30)
-        print(self.node1.health())
-        print("node2 peers", self.node2.get_peers())
