@@ -766,7 +766,7 @@ class TestStoreSync(StepsStore):
         assert len(store_hashes) == total_expected, "Message count mismatch after partition"
         assert set(store_hashes) == set(published_hashes), "Missing or extra messages after sync"
 
-    def test_store_sync_range_excludes_old_messages(self):
+    def test_store_sync_small_sync_range(self):
         sync_interval = 10
         sync_range = 20
         jitter = 0
@@ -800,10 +800,75 @@ class TestStoreSync(StepsStore):
 
         time.sleep(sync_interval * 2)
 
-        # self.node1.stop()
         resp = self.get_messages_from_store(
             self.node2,
             page_size=100,
             cursor="",
             ascending="true",
         )
+        logger.debug("Node-2 local store returned %d messages; expected 0", len(resp.messages))
+        assert len(resp.messages) == 0, "Store-Sync unexpectedly fetched messages older than the configured window"
+
+    def test_store_sync_range_with_jitter_catches_old_messages(self):
+        sync_interval = 5
+        sync_range = 20
+        jitter = 25
+        backlog_wait = 25
+        publish_count = 3
+
+        self.node1.start(store="true", store_sync="true", relay="true", dns_discovery="false")
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+
+        for _ in range(publish_count):
+            self.publish_message(sender=self.node1, via="relay")
+
+        time.sleep(backlog_wait)
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=jitter,
+            relay="false",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+
+        time.sleep(sync_interval * 2)
+
+        resp = self.get_messages_from_store(self.node2, page_size=100, cursor="", ascending="true")
+
+        assert len(resp.messages) == publish_count
+
+    def test_store_sync_range_with_zero_jitter(self):
+        sync_interval = 5
+        sync_range = 20
+        jitter = 0
+        backlog_wait = 25
+        publish_count = 3
+
+        self.node1.start(store="true", store_sync="true", relay="true", dns_discovery="false")
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+
+        for _ in range(publish_count):
+            self.publish_message(sender=self.node1, via="relay")
+
+        time.sleep(backlog_wait)
+        self.node2.start(
+            store="true",
+            store_sync="true",
+            store_sync_interval=sync_interval,
+            store_sync_range=sync_range,
+            store_sync_relay_jitter=jitter,
+            relay="false",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
+
+        time.sleep(sync_interval * 2)
+
+        resp = self.get_messages_from_store(self.node2, page_size=100, cursor="", ascending="true")
+
+        assert len(resp.messages) == 0
