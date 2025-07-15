@@ -121,6 +121,20 @@ class WakuNode:
             # "filter-subscription-timeout": "600",
         }
 
+        store_sync = kwargs.pop("store_sync", "false").lower() == "true"
+        store_sync_range = kwargs.pop("store_sync_range", None)
+        store_sync_interval = kwargs.pop("store_sync_interval", None)
+
+        if store_sync:
+            default_args["store-sync"] = "true"
+            default_args.setdefault("store", "true")
+
+        if store_sync_range:
+            default_args["store-sync-range"] = store_sync_range
+
+        if store_sync_interval:
+            default_args["store-sync-interval"] = store_sync_interval
+
         if self.is_nwaku():
             nwaku_args = {
                 "shard": "0",
