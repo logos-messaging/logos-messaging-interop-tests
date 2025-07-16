@@ -2,6 +2,7 @@ import base64
 import hashlib
 import inspect
 from time import time
+from time import time_ns
 import allure
 import pytest
 from datetime import timedelta, datetime
@@ -39,7 +40,9 @@ class StepsCommon:
 
     @allure.step
     def create_message(self, **kwargs):
-        message = {"payload": to_base64(self.test_payload), "contentTopic": self.test_content_topic, "timestamp": int(time() * 1e9)}
+        ts_ns = time_ns()
+        ts_ns = int(f"{ts_ns:019d}")
+        message = {"payload": to_base64(self.test_payload), "contentTopic": self.test_content_topic, "timestamp": ts_ns}
         message.update(kwargs)
         return message
 
