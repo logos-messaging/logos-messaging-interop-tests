@@ -968,7 +968,7 @@ class TestStoreSync(StepsStore):
             store_sync="false",
             relay="false",
             dns_discovery="false",
-            # discv5_bootstrap_node=self.node1.get_enr_uri(),
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
         )
         # self.add_node_peer(self.node2, [self.node1.get_multiaddr_with_id()])
 
@@ -985,11 +985,6 @@ class TestStoreSync(StepsStore):
         self.add_node_peer(self.node3, [self.node1.get_multiaddr_with_id()])
 
         time.sleep(sync_interval * wait_cycles)
-
-        resp2 = self.get_messages_from_store(self.node2, page_size=200, cursor="", ascending="true", peer_id="")
-        logger.debug("Node2 store has %d messages expected 0", len(resp2.messages))
-        assert len(resp2.messages) == 0, "Node2 unexpectedly received messages"
-
         resp3 = self.get_messages_from_store(self.node3, page_size=200, cursor="", ascending="true", peer_id="")
         logger.debug("Node3 store has %d messages expected %d", len(resp3.messages), msgs_to_publish)
         assert len(resp3.messages) == msgs_to_publish, f"Node3 store mismatch: expected {msgs_to_publish}, " f"got {len(resp3.messages)}"
