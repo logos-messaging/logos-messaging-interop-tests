@@ -1084,3 +1084,61 @@ class TestStoreSync(StepsStore):
             retrieved_hashes = [store_resp.message_hash(i) for i in range(len(store_resp.messages))]
             assert len(retrieved_hashes) == len(expected_hashes), " message count mismatch"
             assert retrieved_hashes == expected_hashes, "{ message hash mismatch"
+
+    def test_store_sync_five_node_mesh_burst(self):
+        sync_interval = 3
+        sync_range = 900
+        msgs_per_node = 100
+        message_delay = 0.0
+        page_size = 100
+
+        self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
+        self.node5 = WakuNode(NODE_2, f"node5_{self.test_id}")
+        nodes = [self.node1, self.node2, self.node3, self.node4, self.node5]
+
+        for n in nodes:
+            n.start(
+                store="true",
+                store_sync="true",
+                store_sync_interval=sync_interval,
+                store_sync_range=sync_range,
+                store_sync_relay_jitter=0,
+                relay="true",
+                dns_discovery="false",
+            )
+            n.set_relay_subscriptions([self.test_pubsub_topic])
+
+        for i, a in enumerate(nodes):
+            for b in nodes[i + 1 :]:
+                self.add_node_peer(a, [b.get_multiaddr_with_id()])
+                self.add_node_peer(b, [a.get_multiaddr_with_id()])
+
+        expected_hashes = []
+        for _ in range(msgs_per_node):
+            msgs = [self.create_message() for _ in nodes]
+            for node, msg in zip(nodes, msgs):
+                self.publish_message(
+                    sender=node,
+                    via="relay",
+                    message=msg,
+                    message_propagation_delay=message_delay,
+                )
+                expected_hashes.append(self.compute_message_hash(self.test_pubsub_topic, msg, hash_type="hex"))
+
+        delay(sync_interval * 4 + 20)
+
+        for node in nodes:
+            store_resp = StoreResponse({"paginationCursor": "", "pagination_cursor": ""}, node)
+            retrieved_hashes = []
+            while store_resp.pagination_cursor is not None:
+                cursor = store_resp.pagination_cursor
+                store_resp = self.get_messages_from_store(
+                    node,
+                    page_size=page_size,
+                    cursor=cursor,
+                    ascending="true",
+                )
+                for i in range(len(store_resp.messages)):
+                    retrieved_hashes.append(store_resp.message_hash(i))
+            assert len(retrieved_hashes) == len(expected_hashes), f"{node.name}: message count mismatch"
+            assert retrieved_hashes == expected_hashes, f"{node.name}: message hash mismatch"
