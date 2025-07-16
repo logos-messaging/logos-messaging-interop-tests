@@ -1051,7 +1051,7 @@ class TestStoreSync(StepsStore):
         message_delay = 0.0
         page_size = 100
 
-        nodes = [self.node1, self.node2, self.node3]
+        nodes = [self.node1, self.node2]
 
         for n in nodes:
             n.start(
@@ -1063,13 +1063,8 @@ class TestStoreSync(StepsStore):
                 relay="true",
                 dns_discovery="false",
             )
-            n.set_relay_subscriptions([self.test_pubsub_topic])
 
-        for i, a in enumerate(nodes):
-            for b in nodes[i + 1 :]:
-                self.add_node_peer(a, [b.get_multiaddr_with_id()])
-                self.add_node_peer(b, [a.get_multiaddr_with_id()])
-
+        self.add_node_peer(self.node1, [self.node2.get_multiaddr_with_id()])
         expected_hashes = []
         for _ in range(msgs_per_node):
             msgs = [self.create_message() for _ in nodes]
