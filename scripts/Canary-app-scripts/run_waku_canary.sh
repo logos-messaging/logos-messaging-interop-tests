@@ -3,7 +3,7 @@
 #this script build the canary app and make basic run to connect to well-known peer via TCP . 
 set -e
 
-PEER_ADDRESS="/dns4/node-01.gc-us-central1-a.status.prod.status.im/tcp/30303/p2p/16Uiu2HAp6VjGxNdFZKYYCtP8Yf93JGFHvZXsx2X2u9DS3WTiQEsL6"
+PEER_ADDRESS=" /dns4/store-01.do-ams3.status.staging.status.im/tcp/30303/p2p/16Uiu2HAm3xVDaz6SRJ6kErwC21zBJEZjavVXg7VSkoWzaV1aMA3F"
 PROTOCOL="relay"
 LOG_DIR="logs"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
