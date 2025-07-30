@@ -3,9 +3,11 @@
 #this script build the canary app and make basic run to connect to well-known peer via TCP . 
 set -e
 
-PEER_ADDRESS=" /dns4/store-01.do-ams3.status.staging.status.im/tcp/30303/p2p/16Uiu2HAm3xVDaz6SRJ6kErwC21zBJEZjavVXg7VSkoWzaV1aMA3F"
+PEER_ADDRESS="/dns4/store-01.do-ams3.status.staging.status.im/tcp/30303/p2p/16Uiu2HAm3xVDaz6SRJ6kErwC21zBJEZjavVXg7VSkoWzaV1aMA3F"
 PROTOCOL="relay"
 LOG_DIR="logs"
+CLUSTER="16"
+SHARD="64"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 LOG_FILE="$LOG_DIR/canary_run_$TIMESTAMP.log"
 
@@ -30,6 +32,8 @@ echo "-----------------------------------"
   ./build/wakucanary \
     --address="$PEER_ADDRESS" \
     --protocol="$PROTOCOL" \
+	--cluster-id="$CLUSTER"\
+	--shard="$SHARD"\
     --log-level=DEBUG
   echo "-----------------------------------"
   echo "Exit code: $?"
