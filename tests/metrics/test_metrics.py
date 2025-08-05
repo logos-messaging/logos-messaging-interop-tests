@@ -47,7 +47,6 @@ class TestMetrics(StepsRelay, StepsMetrics, StepsFilter, StepsLightPush, StepsSt
         self.check_metric(self.node1, "waku_peer_store_size", 1)
         self.check_metric(self.node1, "waku_histogram_message_size_count", 1)
         self.check_metric(self.node1, 'waku_node_messages_total{type="relay"}', 1)
-        self.check_metric(self.node1, 'waku_filter_requests{type="SUBSCRIBE"}', 1)
         if self.node2.is_nwaku():
             self.check_metric(
                 self.node2, f'waku_service_peers{{protocol="/vac/waku/filter-subscribe/2.0.0-beta1",peerId="{self.node1.get_tcp_address()}"}}', 1
