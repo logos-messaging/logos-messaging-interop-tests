@@ -534,3 +534,33 @@ class WakuNode:
 
         matches = self._docker_manager.search_log_for_keywords(self._log_path, keywords, False)
         assert not matches, f"Found errors {matches}"
+
+    def set_log_level(self, log_level):
+        return self._api.set_log_level(log_level)
+
+    def get_service_peers(self):
+        return self._api.get_service_peers()
+
+    def get_connected_peers(self):
+        return self._api.get_connected_peers()
+
+    def get_connected_peers_on_shard(self, shard_id):
+        return self._api.get_connected_peers_on_shard(shard_id)
+
+    def get_relay_peers(self):
+        return self._api.get_relay_peers()
+
+    def get_relay_peers_on_shard(self, shard_id):
+        return self._api.get_relay_peers_on_shard(shard_id)
+
+    def get_mesh_peers(self):
+        return self._api.get_mesh_peers()
+
+    def get_mesh_peers_on_shard(self, shard_id):
+        return self._api.get_mesh_peers_on_shard(shard_id)
+
+    def get_peer_stats(self):
+        return self._api.get_peer_stats()
+
+    def get_filter_subscriptions(self):
+        return self._api.get_filter_subscriptions()
