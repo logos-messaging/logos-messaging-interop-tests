@@ -175,3 +175,12 @@ class REST(BaseClient):
 
     def get_filter_subscriptions(self):
         return self.rest_call("get", "admin/v1/filter/subscriptions").json()
+
+    def get_info(self):
+        return self.rest_call("get", "info").json()
+
+    def get_version(self):
+        return self.rest_call("get", "version").text.strip()
+
+    def get_debug_version(self):
+        return self.rest_call("get", "debug/v1/version").text.strip()

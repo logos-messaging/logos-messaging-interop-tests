@@ -564,3 +564,12 @@ class WakuNode:
 
     def get_filter_subscriptions(self):
         return self._api.get_filter_subscriptions()
+
+    def get_info(self):
+        return self._api.get_info()
+
+    def get_version(self):
+        return self._api.get_version()
+
+    def get_debug_version(self):
+        return self._api.get_debug_version()
