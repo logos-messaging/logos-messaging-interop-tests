@@ -82,6 +82,7 @@ class WakuNode:
         self._log_path = os.path.join(DOCKER_LOG_DIR, f"{docker_log_prefix}__{self._image_name.replace('/', '_')}.log")
         self._docker_manager = DockerManager(self._image_name)
         self._container = None
+        self.start_args = {}
         logger.debug(f"WakuNode instance initialized with log path {self._log_path}")
 
     @retry(stop=stop_after_delay(60), wait=wait_fixed(0.1), reraise=True)
@@ -175,7 +176,7 @@ class WakuNode:
             logger.info(f"RLN credentials not set or credential store not available, starting without RLN")
 
         logger.debug(f"Using volumes {self._volumes}")
-
+        self.start_args = dict(default_args)
         self._container = self._docker_manager.start_container(
             self._docker_manager.image,
             ports=self._ports,
