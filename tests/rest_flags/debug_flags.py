@@ -16,7 +16,7 @@ These tests make sure thst REST flags related to debug acting as expected
 """
 
 
-class TestE2E(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
+class TestDebugFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
     @pytest.fixture(scope="function", autouse=True)
     def nodes(self):
         self.node1 = WakuNode(NODE_2, f"node1_{self.test_id}")
