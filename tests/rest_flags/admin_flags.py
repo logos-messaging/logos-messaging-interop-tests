@@ -76,3 +76,28 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
             assert isinstance(p["agent"], str), "agent not str"
             assert isinstance(p["origin"], str), "origin not str"
             assert isinstance(p.get("score", 0.0), (int, float)), "score not number"
+
+
+def test_admin_peer_by_id(self):
+    self.node1.start(relay="true")
+    self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+    peer_id = self.node2.get_multiaddr_with_id().rpartition("/p2p/")[2]
+    info = self.node1.get_peer_info(peer_id)
+    logger.debug(f"Node-1 /admin/v1/peer/{peer_id}: {info} \n")
+    logger.debug("Validate response schema")
+    for k in ("multiaddr", "protocols", "shards", "connected", "agent", "origin"):
+        assert k in info, f"missing field: {k}"
+    assert info["multiaddr"] == self.node2.get_multiaddr_with_id(), "multiaddr mismatch"
+
+
+def test_admin_set_all_log_levels(self):
+    self.node1.start(relay="true")
+    levels = ["TRACE", "DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL"]
+    for lvl in levels:
+        resp = self.node1.set_log_level(lvl)
+        logger.debug(f"Set log level ({lvl})")
+        assert resp.status_code == 200, f"failed to set log level {lvl} {resp.text}"
+
+    resp = self.node1.set_log_level("TRACE")
+    logger.debug(f"Restore default log level (TRACE) -> status={resp.status_code}")
+    assert resp.status_code == 200, f"failed to revert log level: {resp.text}"

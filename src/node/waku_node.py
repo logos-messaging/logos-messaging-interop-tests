@@ -574,3 +574,6 @@ class WakuNode:
 
     def get_debug_version(self):
         return self._api.get_debug_version()
+
+    def get_peer_info(self, peer_id: str):
+        return self._api.get_peer(peer_id)
