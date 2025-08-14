@@ -82,6 +82,7 @@ class WakuNode:
         self._log_path = os.path.join(DOCKER_LOG_DIR, f"{docker_log_prefix}__{self._image_name.replace('/', '_')}.log")
         self._docker_manager = DockerManager(self._image_name)
         self._container = None
+        self.start_args = {}
         logger.debug(f"WakuNode instance initialized with log path {self._log_path}")
 
     @retry(stop=stop_after_delay(60), wait=wait_fixed(0.1), reraise=True)
@@ -175,7 +176,7 @@ class WakuNode:
             logger.info(f"RLN credentials not set or credential store not available, starting without RLN")
 
         logger.debug(f"Using volumes {self._volumes}")
-
+        self.start_args = dict(default_args)
         self._container = self._docker_manager.start_container(
             self._docker_manager.image,
             ports=self._ports,
@@ -534,3 +535,42 @@ class WakuNode:
 
         matches = self._docker_manager.search_log_for_keywords(self._log_path, keywords, False)
         assert not matches, f"Found errors {matches}"
+
+    def set_log_level(self, log_level):
+        return self._api.set_log_level(log_level)
+
+    def get_service_peers(self):
+        return self._api.get_service_peers()
+
+    def get_connected_peers(self):
+        return self._api.get_connected_peers()
+
+    def get_connected_peers_on_shard(self, shard_id):
+        return self._api.get_connected_peers_on_shard(shard_id)
+
+    def get_relay_peers(self):
+        return self._api.get_relay_peers()
+
+    def get_relay_peers_on_shard(self, shard_id):
+        return self._api.get_relay_peers_on_shard(shard_id)
+
+    def get_mesh_peers(self):
+        return self._api.get_mesh_peers()
+
+    def get_mesh_peers_on_shard(self, shard_id):
+        return self._api.get_mesh_peers_on_shard(shard_id)
+
+    def get_peer_stats(self):
+        return self._api.get_peer_stats()
+
+    def get_filter_subscriptions(self):
+        return self._api.get_filter_subscriptions()
+
+    def get_info(self):
+        return self._api.get_info()
+
+    def get_version(self):
+        return self._api.get_version()
+
+    def get_debug_version(self):
+        return self._api.get_debug_version()
