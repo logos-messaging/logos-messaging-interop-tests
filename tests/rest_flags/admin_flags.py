@@ -1,4 +1,4 @@
-import pytest
+import pytest, time, re, os
 from src.env_vars import NODE_1, NODE_2, STRESS_ENABLED
 from src.libs.common import delay
 from src.libs.custom_logger import get_custom_logger
@@ -17,12 +17,38 @@ These tests make sure thst REST flags related to admin flags acting as expected
 
 
 class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
+    TAGS = ["TRC", "DBG", "INF", "NTC", "WRN", "ERR", "FTL"]
+
+    LEVEL_RE = re.compile(r'"lvl"\s*:\s*"(TRC|DBG|INF|NTC|WRN|ERR|FTL)"|\b(TRC|DBG|INF|NTC|WRN|ERR|FTL)\b')
+
+    def _read_tail_counts(self, path: str, start_size: int) -> dict:
+        with open(path, "rb") as f:
+            f.seek(start_size)
+            text = f.read().decode(errors="ignore")
+        counts = {t: 0 for t in self.TAGS}
+        for a, b in self.LEVEL_RE.findall(text):
+            counts[(a or b)] += 1
+        return counts
+
+    def _trigger(self):
+        self.node1.info()
+        self.node1.get_version()
+        self.node1.get_debug_version()
+
     @pytest.fixture(scope="function", autouse=True)
     def nodes(self):
         self.node1 = WakuNode(NODE_2, f"node1_{self.test_id}")
         self.node2 = WakuNode(NODE_2, f"node2_{self.test_id}")
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node3_{self.test_id}")
+
+    def _tail(self, path, start_size):
+        with open(path, "rb") as f:
+            f.seek(start_size)
+            return f.read().decode(errors="ignore")
+
+    def _count_levels(self, text, levels):
+        return {lvl: len(re.findall(getattr(self, f"{lvl}_RE"), text)) for lvl in levels}
 
     def test_admin_filter_subscriptions_shape(self):
         self.node1.start(filter="true", relay="true")
@@ -77,27 +103,78 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
             assert isinstance(p["origin"], str), "origin not str"
             assert isinstance(p.get("score", 0.0), (int, float)), "score not number"
 
+    def test_admin_peer_by_id(self):
+        self.node1.start(relay="true")
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        peer_id = self.node2.get_multiaddr_with_id().rpartition("/p2p/")[2]
+        info = self.node1.get_peer_info(peer_id)
+        logger.debug(f"Node-1 /admin/v1/peer/{peer_id}: {info} \n")
+        logger.debug("Validate response schema")
+        for k in ("multiaddr", "protocols", "shards", "connected", "agent", "origin"):
+            assert k in info, f"missing field: {k}"
+        assert info["multiaddr"] == self.node2.get_multiaddr_with_id(), "multiaddr mismatch"
 
-def test_admin_peer_by_id(self):
-    self.node1.start(relay="true")
-    self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
-    peer_id = self.node2.get_multiaddr_with_id().rpartition("/p2p/")[2]
-    info = self.node1.get_peer_info(peer_id)
-    logger.debug(f"Node-1 /admin/v1/peer/{peer_id}: {info} \n")
-    logger.debug("Validate response schema")
-    for k in ("multiaddr", "protocols", "shards", "connected", "agent", "origin"):
-        assert k in info, f"missing field: {k}"
-    assert info["multiaddr"] == self.node2.get_multiaddr_with_id(), "multiaddr mismatch"
+    def test_admin_set_all_log_levels(self):
+        self.node1.start(relay="true")
+        self.node1.container()
+        levels = ["TRACE", "DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL"]
+        _levels = ["INFO"]
+        for lvl in _levels:
+            resp = self.node1.set_log_level(lvl)
+            logger.debug(f"Set log level ({lvl})")
+            self.node2.start(relay="true")
+            assert resp.status_code == 200, f"failed to set log level {lvl} {resp.text}"
+            self.node2.info()
+            self.node2.get_debug_version()
 
+        resp = self.node1.set_log_level("TRACE")
+        logger.debug(f"Restore default log level (TRACE) -> status={resp.status_code}")
+        assert resp.status_code == 200, f"failed to revert log level: {resp.text}"
 
-def test_admin_set_all_log_levels(self):
-    self.node1.start(relay="true")
-    levels = ["TRACE", "DEBUG", "INFO", "NOTICE", "WARN", "ERROR", "FATAL"]
-    for lvl in levels:
-        resp = self.node1.set_log_level(lvl)
-        logger.debug(f"Set log level ({lvl})")
-        assert resp.status_code == 200, f"failed to set log level {lvl} {resp.text}"
+    @pytest.mark.timeout(120)
+    def test_log_level_DEBUG_from_TRACE(self):
+        self.node1.start(relay="true")
+        path = self.node1._log_path
+        for _ in range(50):
+            if os.path.exists(path):
+                break
+            time.sleep(0.05)
 
-    resp = self.node1.set_log_level("TRACE")
-    logger.debug(f"Restore default log level (TRACE) -> status={resp.status_code}")
-    assert resp.status_code == 200, f"failed to revert log level: {resp.text}"
+        assert self.node1.set_log_level("TRACE").status_code == 200
+        assert self.node1.set_log_level("DEBUG").status_code == 200
+
+        start = os.path.getsize(path)
+        self._trigger()
+        time.sleep(2)
+
+        counts = self._read_tail_counts(path, start)
+        logger.debug(f"counts at DEBUG: {counts}")
+
+        assert counts["DBG"] > 0, "expected DEBUG logs at DEBUG level"
+        assert counts["TRC"] == 0, "TRACE must be filtered at DEBUG"
+
+        assert self.node1.set_log_level("TRACE").status_code == 200
+
+    @pytest.mark.timeout(120)
+    def test_log_level_INFO_from_DEBUG(self):
+        self.node1.start(relay="true")
+        path = self.node1._log_path
+        for _ in range(50):
+            if os.path.exists(path):
+                break
+            time.sleep(0.05)
+
+        assert self.node1.set_log_level("DEBUG").status_code == 200
+        assert self.node1.set_log_level("INFO").status_code == 200
+
+        start = os.path.getsize(path)
+        self._trigger()
+        time.sleep(2)
+
+        counts = self._read_tail_counts(path, start)
+        logger.debug(f"counts at INFO: {counts}")
+
+        assert counts["INF"] > 0, "expected INFO logs at INFO level"
+        assert counts["DBG"] == 0 and counts["TRC"] == 0, "lower than INFO (DBG/TRC) must be filtered"
+
+        assert self.node1.set_log_level("TRACE").status_code == 200
