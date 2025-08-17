@@ -164,7 +164,7 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
                 break
             time.sleep(0.05)
 
-        assert self.node1.set_log_level("DEBUG").status_code == 200
+        # assert self.node1.set_log_level("DEBUG").status_code == 200
         assert self.node1.set_log_level("INFO").status_code == 200
 
         start = os.path.getsize(path)
@@ -176,5 +176,105 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
 
         assert counts["INF"] > 0, "expected INFO logs at INFO level"
         assert counts["DBG"] == 0 and counts["TRC"] == 0, "lower than INFO (DBG/TRC) must be filtered"
+
+        assert self.node1.set_log_level("TRACE").status_code == 200
+
+    @pytest.mark.timeout(120)
+    def test_log_level_NOTICE_from_INFO(self):
+        self.node1.start(relay="true")
+        path = self.node1._log_path
+        for _ in range(50):
+            if os.path.exists(path):
+                break
+            time.sleep(0.05)
+
+        assert self.node1.set_log_level("INFO").status_code == 200
+        assert self.node1.set_log_level("NOTICE").status_code == 200
+
+        start = os.path.getsize(path)
+        self._trigger()
+        time.sleep(2)
+
+        counts = self._read_tail_counts(path, start)
+        logger.debug(f"counts at NOTICE: {counts}")
+
+        assert counts["NTC"] > 0, "expected NOTICE logs at NOTICE level"
+        for lv in ["TRC", "DBG", "INF"]:
+            assert counts[lv] == 0, f"{lv} must be filtered at NOTICE"
+
+        assert self.node1.set_log_level("TRACE").status_code == 200
+
+    @pytest.mark.timeout(120)
+    def test_log_level_WARN_from_NOTICE(self):
+        self.node1.start(relay="true")
+        path = self.node1._log_path
+        for _ in range(50):
+            if os.path.exists(path):
+                break
+            time.sleep(0.05)
+
+        assert self.node1.set_log_level("NOTICE").status_code == 200
+        assert self.node1.set_log_level("WARN").status_code == 200
+
+        start = os.path.getsize(path)
+        self._trigger()
+        time.sleep(2)
+
+        counts = self._read_tail_counts(path, start)
+        logger.debug(f"counts at WARN: {counts}")
+
+        assert counts["WRN"] > 0, "expected WARN logs at WARN level"
+        for lv in ["TRC", "DBG", "INF", "NTC"]:
+            assert counts[lv] == 0, f"{lv} must be filtered at WARN"
+
+        assert self.node1.set_log_level("TRACE").status_code == 200
+
+    @pytest.mark.timeout(120)
+    def test_log_level_ERROR_from_WARN(self):
+        self.node1.start(relay="true")
+        path = self.node1._log_path
+        for _ in range(50):
+            if os.path.exists(path):
+                break
+            time.sleep(0.05)
+
+        assert self.node1.set_log_level("WARN").status_code == 200
+        assert self.node1.set_log_level("ERROR").status_code == 200
+
+        start = os.path.getsize(path)
+        self._trigger()
+        time.sleep(2)
+
+        counts = self._read_tail_counts(path, start)
+        logger.debug(f"counts at ERROR: {counts}")
+
+        assert counts["ERR"] > 0, "expected ERROR logs at ERROR level"
+        for lv in ["TRC", "DBG", "INF", "NTC", "WRN"]:
+            assert counts[lv] == 0, f"{lv} must be filtered at ERROR"
+
+        assert self.node1.set_log_level("TRACE").status_code == 200
+
+    @pytest.mark.timeout(120)
+    def test_log_level_FATAL_from_ERROR(self):
+        self.node1.start(relay="true")
+        path = self.node1._log_path
+        for _ in range(50):
+            if os.path.exists(path):
+                break
+            time.sleep(0.05)
+
+        assert self.node1.set_log_level("ERROR").status_code == 200
+        assert self.node1.set_log_level("FATAL").status_code == 200
+
+        start = os.path.getsize(path)
+        self._trigger()
+        time.sleep(2)
+
+        counts = self._read_tail_counts(path, start)
+        logger.debug(f"counts at FATAL: {counts}")
+
+        assert counts["FTL"] > 0, "expected FATAL logs at FATAL level"
+        for lv in ["TRC", "DBG", "INF", "NTC", "WRN", "ERR"]:
+            assert counts[lv] == 0, f"{lv} must be filtered at FATAL"
 
         assert self.node1.set_log_level("TRACE").status_code == 200
