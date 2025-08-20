@@ -342,23 +342,22 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         groups = resp if isinstance(resp, list) else [resp]
         for grp in groups:
             peers_list = grp.get("peers")
-            assert isinstance(peers_list, list), "'peers' must be a list"
             for peer in peers_list:
                 ma = peer.get("multiaddr")
                 assert isinstance(ma, str) and ma.strip(), "multiaddr must be a non-empty string"
-                if "protocols" in peer:
-                    protos = peer["protocols"]
-                    assert isinstance(protos, list) and all(isinstance(x, str) for x in protos), "protocols must be list[str]"
-                if "score" in peer:
-                    assert isinstance(peer["score"], (int, float)), "score must be a number"
 
-    def test_admin_relay_peers_contains_all_three(self):
+                protos = peer["protocols"]
+                all(isinstance(x, str) for x in protos), "protocols must be list[str]"
+
+                assert isinstance(peer["score"], (int, float)), "score must be a number"
+
+    def test_admin_relay_peers_contains_all_relay_peers(self):
         self.node1.start(relay="true")
 
         self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
-        self.node3.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node3.start(relay="false", discv5_bootstrap_node=self.node1.get_enr_uri())
         self.node4.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
 
         n2_addr = self.node2.get_multiaddr_with_id()
@@ -367,9 +366,117 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         time.sleep(1)
 
         resp = self.node1.get_relay_peers()
-        logger.debug(f"/admin/v1/peers/relay (contains 3 peers): {resp!r}")
+        logger.debug(f"/admin/v1/peers/relay {resp!r}")
 
         peer_addrs = {peer["multiaddr"] for group in resp for peer in group["peers"]}
         assert n2_addr in peer_addrs, f"Missing Node-2 address {n2_addr}"
+        assert n3_addr not in peer_addrs, f"Missing Node-3 address {n3_addr}"
+        assert n4_addr in peer_addrs, f"Missing Node-4 address {n4_addr}"
+
+    def test_admin_connected_peers_on_shard_contains_all_three(self):
+        shard = "0"
+        self.node1.start(relay="true", shard=shard)
+        self.node2.start(relay="true", shard=shard, discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
+        self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
+        self.node3.start(relay="true", shard=shard, discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node4.start(relay="true", shard=shard, discv5_bootstrap_node=self.node1.get_enr_uri())
+
+        n2_addr = self.node2.get_multiaddr_with_id()
+        n3_addr = self.node3.get_multiaddr_with_id()
+        n4_addr = self.node4.get_multiaddr_with_id()
+        time.sleep(1)
+
+        resp = self.node1.get_connected_peers(shard)
+        logger.debug(f"/admin/v1/peers/connected/on/{shard} (contains 3): {resp!r}")
+
+        peer_addrs = {p["multiaddr"] for p in resp["peers"]}
+        assert n2_addr in peer_addrs, f"Missing Node-2 address {n2_addr}"
         assert n3_addr in peer_addrs, f"Missing Node-3 address {n3_addr}"
         assert n4_addr in peer_addrs, f"Missing Node-4 address {n4_addr}"
+
+    def test_admin_connected_peers_scalar_types(self):
+        self.node1.start(relay="true")
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        resp = self.node1.get_connected_peers()
+        logger.debug(f"Response for get connected peers  {resp!r}")
+
+        for p in resp:
+            assert isinstance(p["multiaddr"], str) and p["multiaddr"].strip(), "multiaddr must be a non-empty string"
+            assert isinstance(p["agent"], str), "agent must be a string"
+            assert isinstance(p["connected"], str), "connected must be a string"
+            assert isinstance(p["origin"], str), "origin must be a string"
+            assert isinstance(p["score"], (int, float)), "score must be a number"
+            assert isinstance(p["latency"], (int, float)), "latency must be a number"
+
+    def test_admin_connected_peers_contains_peers_only(self):
+        self.node1.start(relay="true")
+
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
+        self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
+        self.node3.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node4.start(relay="true")
+
+        n2_addr = self.node2.get_multiaddr_with_id()
+        n3_addr = self.node3.get_multiaddr_with_id()
+        n4_addr = self.node4.get_multiaddr_with_id()
+        resp = self.node1.get_connected_peers()
+        logger.debug(f"/admin/v1/peers/connected contains : {resp!r}")
+
+        peer_addrs = {p["multiaddr"] for p in resp}
+        assert n2_addr in peer_addrs, f"Missing Node-2 address {n2_addr}"
+        assert n3_addr in peer_addrs, f"Missing Node-3 address {n3_addr}"
+        assert n4_addr not in peer_addrs, f"Missing Node-4 address {n4_addr}"
+
+    def test_admin_service_peers_scalar_required_types(self):
+        self.node1.start(relay="true")
+
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        resp = self.node1.get_service_peers()
+        logger.debug(f"/admin/v1/peers/service {resp!r}")
+
+        for service, peers in resp.items():
+            assert isinstance(service, str) and service.strip(), "service must be a non-empty string"
+            for p in peers:
+                assert isinstance(p.get("multiaddr"), str) and p["multiaddr"].strip(), "multiaddr must be a non-empty string"
+                assert isinstance(p.get("agent"), str), "agent must be a string"
+                assert isinstance(p.get("connected"), str), "connected must be a string"
+                assert isinstance(p.get("origin"), str), "origin must be a string"
+                assert isinstance(p.get("score"), (int, float)), "score must be a number"
+                assert isinstance(p.get("latency"), (int, float)), "latency must be a number"
+
+    def test_admin_service_peers_schema(self):
+        n1 = WakuNode(NODE_1, "n1_service_schema")
+        n2 = WakuNode(NODE_2, "n2_service_schema")
+        n1.start(relay="true")
+        n2.start(relay="true", discv5_bootstrap_node=n1.get_enr_uri())
+        peers = n1.get_service_peers()
+        logger.debug("Validate schema of get service peers")
+        for p in peers:
+            assert "multiaddr" in p, "missing 'multiaddr'"
+            assert "protocols" in p, "missing 'protocols'"
+            assert "shards" in p, "missing 'shards'"
+            assert "connected" in p, "missing 'connected'"
+            assert "agent" in p, "missing 'agent'"
+            assert "origin" in p, "missing 'origin'"
+
+    def test_admin_service_peers_contains_expected_addrs_and_protocols(self):
+        n1 = WakuNode(NODE_1, "n1_service_lookup")
+        n2 = WakuNode(NODE_2, "n2_service_relay")
+        n3 = WakuNode(NODE_2, "n3_service_store")
+
+        n1.start(relay="true")
+        n2.start(relay="true", discv5_bootstrap_node=n1.get_enr_uri())
+        n3.start(store="true", discv5_bootstrap_node=n1.get_enr_uri())
+        n1.add_peers([n3.get_multiaddr_with_id()])
+        resp = n1.get_service_peers()
+        logger.debug("/admin/v1/peers/service %s", resp)
+        by_addr = {p["multiaddr"]: p["protocols"] for p in resp}
+
+        m2 = n2.get_multiaddr_with_id()
+        m3 = n3.get_multiaddr_with_id()
+        assert m2 in by_addr, f"node2 not found"
+        assert any("/waku/relay/" in s for s in by_addr[m2]), "node2 should advertise a relay protocol"
+        assert m3 in by_addr, f"node3 not found. got: {list(by_addr.keys())}"
+        assert any("/waku/store-query/" in s for s in by_addr[m3]), "node3 should advertise a store-query protocol"
