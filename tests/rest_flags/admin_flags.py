@@ -64,12 +64,19 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         assert subs[0]["filterCriteria"][0]["pubsubTopic"] == self.test_pubsub_topic, "pubsub topic doesn't match"
         assert subs[0]["filterCriteria"][0]["contentTopic"] == self.test_content_topic, "content topic doesn't match"
 
-    def test_admin_peers_stats_shape(self):
-        self.node1.start(relay="true")
+    def test_admin_peers_stats_schema(self):
+        self.node1.start(filter="true", relay="true")
         self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
-
         stats = self.node1.get_peer_stats()
-        logger.debug(f"Node admin peers stats {stats}")
+        logger.debug(f"Peer stats schema check: {stats}")
+        assert isinstance(stats, dict), "stats must be a dict"
+        for k in ("Sum", "Relay peers"):
+            assert k in stats, f"missing section: {k}"
+            assert isinstance(stats[k], dict), f"{k} must be a dict"
+        assert isinstance(stats["Sum"].get("Total peers", 0), int) and stats["Sum"]["Total peers"] >= 0, "Sum.Total peers must be a non-negative int"
+        assert (
+            isinstance(stats["Relay peers"].get("Total relay peers", 0), int) and stats["Relay peers"]["Total relay peers"] >= 0
+        ), "Relay peers.Total relay peers must be a non-negative int"
 
     def test_admin_peers_stats_counts(self):
         self.node1.start(filter="true", relay="true")
@@ -278,3 +285,91 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
             assert counts[lv] == 0, f"{lv} must be filtered at FATAL"
 
         assert self.node1.set_log_level("TRACE").status_code == 200
+
+    def test_relay_peers_on_shard_schema(self):
+        node_shard = "0"
+        self.node1.start(relay="true", shard=node_shard, dns_discovery="false")
+        self.node2.start(
+            relay="true",
+            shard=node_shard,
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        time.sleep(1)
+        resp = self.node1.get_relay_peers_on_shard(node_shard)
+        logger.debug(f"relay peers on shard=0 (schema): {resp!r}")
+        assert str(resp["shard"]) == node_shard, "Returned 'shard' must match requested shardId"
+        for p in resp["peers"]:
+            assert isinstance(p.get("multiaddr"), str) and p["multiaddr"].strip(), "peer.multiaddr must be a non-empty string"
+            if "protocols" in p:
+                assert isinstance(p["protocols"], list) and all(isinstance(x, str) for x in p["protocols"]), "peer.protocols must be list[str]"
+            if "shards" in p:
+                assert isinstance(p["shards"], list), "peer.shards must be a list"
+            if "connected" in p:
+                assert isinstance(p["connected"], str), "peer.connected must be a string"
+            if "agent" in p:
+                assert isinstance(p["agent"], str), "peer.agent must be a string"
+            if "origin" in p:
+                assert isinstance(p["origin"], str), "peer.origin must be a string"
+            if "score" in p:
+                assert isinstance(p["score"], (int, float)), "peer.score must be a number"
+
+    def test_relay_peers_on_shard_contains_connected_peer(self):
+        self.node1.start(relay="true", shard="0", dns_discovery="false")
+        self.node2.start(
+            relay="true",
+            shard="0",
+            dns_discovery="false",
+            discv5_bootstrap_node=self.node1.get_enr_uri(),
+        )
+        n2_addr = self.node2.get_multiaddr_with_id()
+        resp = self.node1.get_relay_peers_on_shard("0")
+        logger.debug(f"checking shard=0 list: {resp!r}")
+        assert any(
+            p.get("multiaddr") == n2_addr for p in resp["peers"]
+        ), f"Expected Node-2 address {n2_addr} in Node-1's /admin/v1/peers/relay/on/0 list"
+
+    def test_admin_relay_peers_schema(self):
+        self.node1.start(relay="true")
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node1.add_peers([self.node2.get_multiaddr_with_id()])
+        self.node2.add_peers([self.node1.get_multiaddr_with_id()])
+        time.sleep(1)
+
+        resp = self.node1.get_relay_peers()
+        logger.debug(f"/admin/v1/peers/relay (schema): {resp!r} / type={type(resp).__name__}")
+
+        groups = resp if isinstance(resp, list) else [resp]
+        for grp in groups:
+            peers_list = grp.get("peers")
+            assert isinstance(peers_list, list), "'peers' must be a list"
+            for peer in peers_list:
+                ma = peer.get("multiaddr")
+                assert isinstance(ma, str) and ma.strip(), "multiaddr must be a non-empty string"
+                if "protocols" in peer:
+                    protos = peer["protocols"]
+                    assert isinstance(protos, list) and all(isinstance(x, str) for x in protos), "protocols must be list[str]"
+                if "score" in peer:
+                    assert isinstance(peer["score"], (int, float)), "score must be a number"
+
+    def test_admin_relay_peers_contains_all_three(self):
+        self.node1.start(relay="true")
+
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
+        self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
+        self.node3.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node4.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+
+        n2_addr = self.node2.get_multiaddr_with_id()
+        n3_addr = self.node3.get_multiaddr_with_id()
+        n4_addr = self.node4.get_multiaddr_with_id()
+        time.sleep(1)
+
+        resp = self.node1.get_relay_peers()
+        logger.debug(f"/admin/v1/peers/relay (contains 3 peers): {resp!r}")
+
+        peer_addrs = {peer["multiaddr"] for group in resp for peer in group["peers"]}
+        assert n2_addr in peer_addrs, f"Missing Node-2 address {n2_addr}"
+        assert n3_addr in peer_addrs, f"Missing Node-3 address {n3_addr}"
+        assert n4_addr in peer_addrs, f"Missing Node-4 address {n4_addr}"
