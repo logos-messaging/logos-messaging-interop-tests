@@ -3,7 +3,7 @@
 #this script build the canary app and make basic run to connect to well-known peer via TCP . 
 set -e
 
-PEER_ADDRESS="/ip4/127.0.0.1/tcp/7777/ws/p2p/16Uiu2HAm4ng2DaLPniRoZtMQbLdjYYWnXjrrJkGoXWCoBWAdn1tu"
+PEER_ADDRESS="/dns4/node-01.do-ams3.waku.sandbox.status.im/tcp/8000/wss/p2p/16Uiu2HAmNaeL4p3WEYzC9mgXBmBWSgWjPHRvatZTXnp8Jgv3iKsb"
 PROTOCOL="relay"
 LOG_DIR="logs"
 CLUSTER="16"
