@@ -184,3 +184,7 @@ class REST(BaseClient):
 
     def get_debug_version(self):
         return self.rest_call("get", "debug/v1/version").text.strip()
+
+    def get_peer(self, peer_id: str):
+        resp = self.rest_call("get", f"admin/v1/peer/{peer_id}")
+        return resp.json()

@@ -33,3 +33,9 @@ class TestDebugFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         logger.debug(f"node info: {info}")
         assert info["enrUri"] == self.node1.get_enr_uri(), "node enruri doesn't match"
         assert self.node1.get_multiaddr_with_id() in info["listenAddresses"], "node address doesn't match"
+
+    def test_get_debug_version_is_string(self):
+        self.node1.start(relay="true")
+        dbg_version = self.node1.get_debug_version()
+        logger.debug(f"debug version returned: {dbg_version}")
+        assert isinstance(dbg_version, str) and dbg_version.strip() != "", "Expected /debug/v1/version to return a non-empty string"
