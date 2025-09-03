@@ -391,7 +391,6 @@ METRICS_WITH_INITIAL_VALUE_ZERO = [
     'waku_filter_handle_message_duration_seconds_bucket{le="20.0"}',
     'waku_filter_handle_message_duration_seconds_bucket{le="30.0"}',
     "total_messages_cached",
-    'waku_connected_peers_per_shard{shard="0"}',
     "waku_legacy_store_queries_total",
     "waku_store_queries_total",
 ]
