@@ -20,6 +20,8 @@ cd ./waku-simulator
 export NUM_NWAKU_NODES=15
 export TRAFFIC_DELAY_SECONDS=15
 export MSG_SIZE_KBYTES=10
+export SERVICENODE_CPU_CORES="0-3"
+export POSTGRES_CPU_CORES="0-3"
 
 docker compose up -d
 cd ..
