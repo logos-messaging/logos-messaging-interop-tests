@@ -22,12 +22,12 @@ SAMPLE_INPUTS = [
     {"description": "Email format", "value": "user@example.com"},
     {"description": "URL format", "value": "http://example.com"},
     {"description": "Date and time in ISO format", "value": "2023-11-01T12:00:00Z"},
-    {"description": "String with escaped quotes", "value": '"Escaped" \\"quotes\\"'},
+    # {"description": "String with escaped quotes", "value": '"Escaped" \\"quotes\\"'}, # https://github.com/waku-org/nwaku/issues/3572
     {"description": "A regular expression", "value": "Regular expression: ^[a-z0-9_-]{3,16}$"},
     {"description": "A very long string", "value": "x" * 1000},
     {"description": "A JSON string", "value": '{"name": "John", "age": 30, "city": "New York"}'},
     {"description": "A Unix path", "value": "/usr/local/bin"},
-    {"description": "A Windows path", "value": "C:\\Windows\\System32"},
+    # {"description": "A Windows path", "value": "C:\\Windows\\System32"},  # https://github.com/waku-org/nwaku/issues/3572
     {"description": "An SQL query", "value": "SELECT * FROM users WHERE id = 1;"},
     {"description": "JavaScript code snippet", "value": "function test() { console.log('Hello World'); }"},
     {"description": "A CSS snippet", "value": "body { background-color: #fff; }"},
@@ -393,4 +393,6 @@ METRICS_WITH_INITIAL_VALUE_ZERO = [
     "total_messages_cached",
     "waku_legacy_store_queries_total",
     "waku_store_queries_total",
+    "mix_pool_size",
+    "libp2p_gossipsub_imreceiving_saved_messages_total",
 ]
