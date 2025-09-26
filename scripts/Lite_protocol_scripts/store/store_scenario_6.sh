@@ -9,10 +9,10 @@ echo "[${TEST_NAME}] start"
 # Images (pin for comparability)
 export NWAKU_IMAGE="wakuorg/nwaku:stable"
 export LPT_IMAGE="wakuorg/liteprotocoltester:latest"
-export SONDA_IMAGE="wakuorg/sonda:latest"   # change if you host it elsewhere
+export SONDA_IMAGE="wakuorg/sonda:latest"   
 
 # Service/DB resources (CPU bottleneck on service)
-export SERVICENODE_CPU_CORES=0         # single core to amplify CPU load
+export SERVICENODE_CPU_CORES=0       
 export POSTGRES_CPU_CORES=1-3
 export SERVICE_MEM_LIMIT="2g"
 export POSTGRES_MEM_LIMIT="2g"
@@ -43,12 +43,12 @@ sleep 30
 # ---------- Phase 1: CPU write hammer (small msgs, high rate) ----------
 # Small payloads + high publisher count => per-message CPU (encode/verify/route) dominates.
 export NUM_PUBLISHER_NODES=24
-export NUM_RECEIVER_NODES=8           # keep some receivers to drive end-to-end
-export MESSAGE_INTERVAL_MILLIS=8      # ~125 msg/s per publisher (adjust if too hot)
-export MIN_MESSAGE_SIZE=256           # bytes
-export MAX_MESSAGE_SIZE=1024          # bytes
+export NUM_RECEIVER_NODES=8           
+export MESSAGE_INTERVAL_MILLIS=8      
+export MIN_MESSAGE_SIZE=256           
+export MAX_MESSAGE_SIZE=1024         
 export START_PUBLISHING_AFTER=10
-export NUM_MESSAGES=0                 # unlimited
+export NUM_MESSAGES=0                 
 
 echo "[${TEST_NAME}] phase1 writers: ${NUM_PUBLISHER_NODES} pubs @ ${MESSAGE_INTERVAL_MILLIS}ms, 256-1024B"
 docker run -d --rm --name lpt_cpu \
