@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
-
+if ! typeset -f wn >/dev/null 2>&1; then
+  wn() { docker compose "$@"; }
+fi
 # - waku-simulator: 15-node network, 1 service, 1 edge
 # - Service node limited by env below (CPU cores 0-3; memory 512 MiB)
 # - Phases driven by LPT; Sonda runs throughout to exercise Store
 # - This variant stresses CPU more and uses 120s observe windows
 
-echo "Running test..."
+echo " Running test..."
 
 # -------------------- Bring up simulator ------------------------
 cd ./waku-simulator
@@ -35,7 +37,7 @@ done
 
 cd ../lpt
 
-# -------------------- LPT common knobs  -------------------------
+# -------------------- LPT common knobs (same exports) -------------------------
 export LPT_IMAGE=harbor.status.im/wakuorg/liteprotocoltester:latest
 export START_PUBLISHING_AFTER=15
 export NUM_MESSAGES=0
@@ -54,7 +56,6 @@ export CLUSTER_ID=66
 # wait time  before starting traffic
 sleep 60
 
-# Start LPT for Phase 1 will happen after Sonda is up
 
 # -------------------- Sonda (Store monitor) -----------------------------------
 cd ../sonda
@@ -85,7 +86,7 @@ docker compose down -v >/dev/null 2>&1 || true
 docker compose up -d
 
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo "LPT is running with 6 publishers and 6 receivers + sonda from now: $current_time"
+echo "[test] LPT is running with 6 publishers and 6 receivers + sonda from now: $current_time"
 
 sleep 120
 
@@ -96,7 +97,7 @@ export NUM_RECEIVER_NODES=12
 docker compose up -d
 
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo "LPT is running with 3 publishers and 12 receivers from now: $current_time"
+echo "[test] LPT is running with 3 publishers and 12 receivers from now: $current_time"
 
 sleep 120
 
@@ -107,7 +108,7 @@ export NUM_RECEIVER_NODES=3
 docker compose up -d
 
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo "LPT is running with 12 publishers and 3 receivers from now: $current_time"
+echo "[test] LPT is running with 12 publishers and 3 receivers from now: $current_time"
 
 sleep 120
 
@@ -118,7 +119,7 @@ export NUM_RECEIVER_NODES=0
 docker compose up -d
 
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo "LPT receivers are down; sonda and lightpush publisher running from now: $current_time"
+echo "[test] LPT receivers are down; sonda and lightpush publisher running from now: $current_time"
 
 sleep 120
 
@@ -126,15 +127,25 @@ sleep 120
 docker compose down -v
 
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo "LPT down; only sonda is working from now: $current_time"
+echo "[test] LPT down; only sonda is working from now: $current_time"
+
+sleep 120
+
+# -------------------- Phase 6: final high-load burst  -----------------
+
+export NUM_PUBLISHER_NODES=12
+export NUM_RECEIVER_NODES=12
+docker compose up -d
+
+current_time=$(date +"%Y-%m-%d %H:%M:%S")
+echo "[test] Final burst: LPT running with 12 publishers and 12 receivers from now: $current_time"
 
 sleep 120
 
 cd ..
 
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
-echo "Test finished at $current_time"
+echo "[test] Test finished at $current_time"
 
 # finish
 # exec ./stop_test.sh
-s

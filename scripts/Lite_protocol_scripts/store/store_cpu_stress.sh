@@ -88,8 +88,8 @@ EOF
 docker run --env-file perf-test.env -l sonda -d --network host local-perf-sonda
 cd ..
 
-echo "[${TEST_NAME}] hold 12m"
-sleep 720
+echo "[${TEST_NAME}] hold 240s"
+sleep 240
 
 # =========================
 # Phase 3 — recovery
