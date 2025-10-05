@@ -26,10 +26,14 @@ class TestE2E(StepsRelay):
 
     def test_basic_rendezvous_register_and_discover(self):
         self.node1.start(rendezvous="true", relay="true")
-        self.node2.start(rendezvous="true", relay="true")
-        self.node3.start(rendezvous="true")
-        self.node2.add_peers([self.node1.get_multiaddr_with_id(), self.node3.get_multiaddr_with_id()])
         delay(5)
+        self.node2.start(rendezvous="true", relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+        self.node2.set_relay_subscriptions([self.test_pubsub_topic])
+        self.wait_for_autoconnection([self.node1, self.node2], hard_wait=30)
+        self.node3.start(rendezvous="true", relay="true")
+        self.node2.add_peers([self.node3.get_multiaddr_with_id()])
+        delay(60)
         discovered = self.node3.get_peers()
-        logger.debug(f"Node3 peers count is : {discovered}")
+        logger.debug(f"Node3 peers count is : {len(discovered)}")
         assert len(discovered) > 0, "No peers discovered via Rendezvous"
