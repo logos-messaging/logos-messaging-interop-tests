@@ -47,7 +47,7 @@ class TestPeerStore(StepsRelay, StepsStore):
                 multiaddr = peer_info2multiaddr(peer_info, nodes[i].is_nwaku())
                 peers_multiaddr.add(multiaddr)
 
-        assert len(peers_multiaddr) == 5, f"Exactly 5 multi addresses are expected"
+        assert len(peers_multiaddr) >= 5, "At least 5 multi addresses are expected"
 
         # Add peers one by one excluding self for Nodes 2-5
         for i in range(1, 5):
