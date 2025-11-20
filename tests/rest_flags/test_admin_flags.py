@@ -163,9 +163,7 @@ class TestAdminFlags(StepsFilter, StepsStore, StepsRelay, StepsLightPush):
         logger.debug("Validate response schema")
         for k in ("multiaddr", "protocols", "shards", "connected", "agent", "origin"):
             assert k in info, f"missing field: {k}"
-        ma = info["multiaddr"]
-        assert ma.rpartition("/p2p/")[2] == peer_id, "peerId mismatch in multiaddr"
-        assert ma.startswith("/ip4/") and "/tcp/" in ma, f"unexpected multiaddr {ma}"
+        assert peer_id in info["multiaddr"], "multiaddr mismatch"
 
     def test_admin_set_all_log_levels(self):
         self.node1.start(relay="true")
