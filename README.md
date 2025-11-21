@@ -5,7 +5,8 @@ Waku end‑to‑end (e2e) interoperability test framework for the [Waku v2 proto
 ## Setup & contribution
 
 ```bash
-git clone git@github.com:waku-org/waku-interop-tests.git
+# Use sparse checkout since the repo has large history
+git clone --depth=1 git@github.com:waku-org/waku-interop-tests.git
 cd waku-interop-tests
 
 # create and activate a virtual environment
