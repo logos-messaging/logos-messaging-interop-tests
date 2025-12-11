@@ -387,4 +387,5 @@ METRICS_WITH_INITIAL_VALUE_ZERO = [
     "waku_store_queries_total",
     "mix_pool_size",
     "libp2p_gossipsub_imreceiving_saved_messages_total",
+    "postgres_payload_size_bytes",
 ]
