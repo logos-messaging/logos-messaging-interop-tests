@@ -6,7 +6,7 @@ Waku end‑to‑end (e2e) interoperability test framework for the [Waku v2 proto
 
 ```bash
 # Use sparse checkout since the repo has large history
-git clone --depth=1 git@github.com:waku-org/waku-interop-tests.git
+git clone --depth=1 git@github.com:logos-messaging/logos-messaging-interop-tests.git
 cd waku-interop-tests
 
 # create and activate a virtual environment
@@ -48,7 +48,7 @@ Every day the workflow **nim\_waku\_daily.yml** triggers against the image `waku
 
 To launch it manually:
 
-1. Open [https://github.com/waku-org/waku-interop-tests/actions/workflows/nim\_waku\_daily.yml](https://github.com/waku-org/waku-interop-tests/actions/workflows/nim_waku_daily.yml).
+1. Open [https://github.com/logos-messaging/logos-messaging-interop-tests/actions/workflows/nim\_waku\_daily.yml](https://github.com/logos-messaging/logos-messaging-interop-tests/actions/workflows/nim_waku_daily.yml).
 2. Click **► Run workflow**.
 3. Pick the branch you want to test (defaults to `master`) and press **Run workflow**.
 
@@ -56,7 +56,7 @@ To launch it manually:
 
 Use **interop\_tests.yml** when you need to test a PR or a historical image:
 
-1. Open [https://github.com/waku-org/waku-interop-tests/actions/workflows/interop\_tests.yml](https://github.com/waku-org/waku-interop-tests/actions/workflows/interop_tests.yml).
+1. Open [https://github.com/logos-messaging/logos-messaging-interop-tests/actions/workflows/interop\_tests.yml](https://github.com/logos-messaging/logos-messaging-interop-tests/actions/workflows/interop_tests.yml).
 2. Press **► Run workflow** and choose the branch.
 3. In the *workflow inputs* field set the `nwaku_image` you want, e.g. `wakuorg/nwaku:v0.32.0`.
 
