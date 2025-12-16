@@ -1,6 +1,6 @@
-# waku-interop-tests
+# logos-messaging-interop-tests
 
-Waku end‑to‑end (e2e) interoperability test framework for the [Waku v2 protocol](https://rfc.vac.dev/spec/10/). It exercises multiple clients (nwaku, js‑waku, go‑waku…) in realistic network topologies and reports results via Allure.
+Logos Messaging end‑to‑end (e2e) interoperability test framework for the [Waku v2 protocol](https://rfc.vac.dev/spec/10/). It exercises multiple clients (logos-messaging-nim, js‑waku, go‑waku…) in realistic network topologies and reports results via Allure.
 
 ## Setup & contribution
 
@@ -38,7 +38,7 @@ pytest -k TestRelaySubscribe
 
 All usual [pytest](https://docs.pytest.org/) selectors (`-k`, `-m`, `-q`, etc.) work.
 
-Waku logs can be found in `log/docker` folder while test log can be seen either in the terminal or in the `log` folder.
+Logos Messaging logs can be found in `log/docker` folder while test log can be seen either in the terminal or in the `log` folder.
 
 ## Continuous Integration (CI)
 
@@ -52,7 +52,7 @@ To launch it manually:
 2. Click **► Run workflow**.
 3. Pick the branch you want to test (defaults to `master`) and press **Run workflow**.
 
-### On‑demand matrix against custom *nwaku* versions
+### On‑demand matrix against custom *logos-messaging-nim* versions
 
 Use **interop\_tests.yml** when you need to test a PR or a historical image:
 
@@ -65,21 +65,11 @@ Use **interop\_tests.yml** when you need to test a PR or a historical image:
 * When the job finishes GitHub will display an **Allure Report** link in the run summary.
 * The bot also posts the same link in the **Waku / test‑reports** Discord channel.
 
-### Updating the CI job used from *nwaku*
+### Use of `master` by *logos-messaging-nim*
 
-In the **nwaku** repository itself the file `.github/workflows/test_PR_image.yml` pins the interop test version.
-To update it:
+There is no need to update the Github workflow files for new versions of the interop tests from either side (*logos-messaging-nim* or *logos-messaging-interop-tests* files).
 
-1. Tag the desired commit in `waku-interop-tests` and push the tag
-
-```bash
-git tag vX.Y.Z
-git push origin vX.Y.Z
-```
-
-2. Edit `test_PR_image.yml` in **nwaku** and set `ref: vX.Y.Z` for the `tests` job.
-
-![CI job location](https://github.com/user-attachments/assets/dd3f95bd-fe79-475b-92b7-891d82346382)
+To update what the *logos-messaging-nim* CI sees in real-time, just push to `master` in this repository.
 
 ## License
 
