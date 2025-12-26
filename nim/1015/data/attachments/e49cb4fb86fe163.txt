@@ -1,0 +1,836 @@
+[35mDEBUG   [0m tests.conftest:conftest.py:51 Running fixture setup: test_id
+[35mDEBUG   [0m tests.conftest:conftest.py:57 Running test: test_lightpush_with_a_single_receiving_node with id: 2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77
+[35mDEBUG   [0m src.steps.common:common.py:19 Running fixture setup: common_setup
+[35mDEBUG   [0m src.steps.light_push:light_push.py:28 Running fixture setup: light_push_setup
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:19 Docker client initialized with image wakuorg/nwaku:latest
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:86 WakuNode instance initialized with log path ./log/docker/receiving_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:90 Starting Node...
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:22 Attempting to create or retrieve network waku
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:25 Network waku already exists
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:108 Generated random external IP 172.18.123.61
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:101 Generated ports ['53761', '53762', '53763', '53764', '53765']
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:439 RLN credentials were not set
+[32mINFO    [0m src.node.waku_node:waku_node.py:176 RLN credentials not set or credential store not available, starting without RLN
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:178 Using volumes []
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:49 docker run -i -t -p 53761:53761 -p 53762:53762 -p 53763:53763 -p 53764:53764 -p 53765:53765 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=53763 --rest-port=53761 --tcp-port=53762 --discv5-udp-port=53764 --rest-address=0.0.0.0 --nat=extip:172.18.123.61 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=73b65bde61e74fc3dbef94d1eceed24bd09ebf3cab8cbfe9dcde3faba27de3ad --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=53765 --metrics-logging=true --lightpush=true --relay=true
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:55 docker network connect --ip 172.18.123.61 waku 85935be998c81a6cf0996f691a48a09fb0a142fb07970d4c848363c23bb66994
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:58 Container started with ID 85935be998c8. Setting up logs at ./log/docker/receiving_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:190 Started container from image wakuorg/nwaku:latest. REST: 53761
+[35mDEBUG   [0m src.libs.common:common.py:47 Sleeping for 1 seconds
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:53761/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:22 Response status code: 200. Response content: b'{"nodeHealth":"READY","protocolsHealth":[{"Relay":"NOT_READY","desc":"No connected peers"},{"Rln Relay":"NOT_MOUNTED"},{"Lightpush":"NOT_READY","desc":"Node has no relay peers to fullfill push requests"},{"Legacy Lightpush":"NOT_READY","desc":"Node has no relay peers to fullfill push requests"},{"Filter":"NOT_MOUNTED"},{"Store":"NOT_MOUNTED"},{"Legacy Store":"NOT_MOUNTED"},{"Peer Exchange":"READY"},{"Rendezvous":"NOT_READY","desc":"No Rendezvous peers are available yet"},{"Mix":"NOT_MOUNTED"},{"Lightpush Client":"NOT_READY","desc":"No Lightpush service peer available yet"},{"Legacy Lightpush Client":"NOT_READY","desc":"No Lightpush service peer available yet"},{"Store Client":"NOT_READY","desc":"No Store service peer available yet, neither Store service set up for the node"},{"Legacy Store Client":"NOT_READY","desc":"No Legacy Store service peers are available yet, neither Store service set up for the node"},{"Filter Client":"NOT_READY","desc":"No Filter service peer available yet"}]}'
+[32mINFO    [0m src.node.waku_node:waku_node.py:287 Node protocols are initialized !!
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:53761/debug/v1/info" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:22 Response status code: 200. Response content: b'{"listenAddresses":["/ip4/172.18.123.61/tcp/53762/p2p/16Uiu2HAkxQ2AF8UJcFhriM1NSda4jbyvgmuhTDdXBr814eDuvapX","/ip4/172.18.123.61/tcp/53763/ws/p2p/16Uiu2HAkxQ2AF8UJcFhriM1NSda4jbyvgmuhTDdXBr814eDuvapX"],"enrUri":"enr:-L24QP-8xUu5nTxX99mUx2jDNqR_wj39L-8xTySZ7CCLVbmLLXjnNEna8OaD4-BWRK5WOxa_ZqGBuCtOuGABfQujGVACgmlkgnY0gmlwhKwSez2KbXVsdGlhZGRyc5YACASsEns9BtICAAoErBJ7PQbSA90DgnJzhQADAQAAiXNlY3AyNTZrMaECLCa3i3xfR0HQxusp5Ak_V_rryRgzFJNuLuBWqUJuYjCDdGNwgtICg3VkcILSBIV3YWt1Mgk"}'
+[32mINFO    [0m src.node.waku_node:waku_node.py:292 REST service is ready !!
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:19 Docker client initialized with image wakuorg/nwaku:latest
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:86 WakuNode instance initialized with log path ./log/docker/lightpush_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:90 Starting Node...
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:22 Attempting to create or retrieve network waku
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:25 Network waku already exists
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:108 Generated random external IP 172.18.198.227
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:101 Generated ports ['12155', '12156', '12157', '12158', '12159']
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:439 RLN credentials were not set
+[32mINFO    [0m src.node.waku_node:waku_node.py:176 RLN credentials not set or credential store not available, starting without RLN
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:178 Using volumes []
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:49 docker run -i -t -p 12155:12155 -p 12156:12156 -p 12157:12157 -p 12158:12158 -p 12159:12159 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=12157 --rest-port=12155 --tcp-port=12156 --discv5-udp-port=12158 --rest-address=0.0.0.0 --nat=extip:172.18.198.227 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=241f3f46ceff2bea693b05ee88d0ea9670bdef8fc60ddad63d6edbd93906035f --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=12159 --metrics-logging=true --discv5-bootstrap-node=enr:-L24QP-8xUu5nTxX99mUx2jDNqR_wj39L-8xTySZ7CCLVbmLLXjnNEna8OaD4-BWRK5WOxa_ZqGBuCtOuGABfQujGVACgmlkgnY0gmlwhKwSez2KbXVsdGlhZGRyc5YACASsEns9BtICAAoErBJ7PQbSA90DgnJzhQADAQAAiXNlY3AyNTZrMaECLCa3i3xfR0HQxusp5Ak_V_rryRgzFJNuLuBWqUJuYjCDdGNwgtICg3VkcILSBIV3YWt1Mgk --lightpushnode=/ip4/172.18.123.61/tcp/53762/p2p/16Uiu2HAkxQ2AF8UJcFhriM1NSda4jbyvgmuhTDdXBr814eDuvapX --lightpush=true --relay=false
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:55 docker network connect --ip 172.18.198.227 waku fd21638a1e4458138e9a6c0eeec6b839efb749c156157ae5101d60678b8e7c8d
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:58 Container started with ID fd21638a1e44. Setting up logs at ./log/docker/lightpush_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:190 Started container from image wakuorg/nwaku:latest. REST: 12155
+[35mDEBUG   [0m src.libs.common:common.py:47 Sleeping for 1 seconds
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[31m[1mERROR   [0m src.node.docker_mananger:docker_mananger.py:89 Max retries reached for container fd21638a1e44. Exiting log stream.
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:12155/health" -H "Content-Type: application/json" -d 'None'
+[31m[1mERROR   [0m src.node.waku_node:waku_node.py:196 REST service did not become ready in time: HTTPConnectionPool(host='127.0.0.1', port=12155): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fa38f1e6e10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:90 Starting Node...
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:22 Attempting to create or retrieve network waku
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:25 Network waku already exists
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:108 Generated random external IP 172.18.195.34
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:101 Generated ports ['61458', '61459', '61460', '61461', '61462']
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:439 RLN credentials were not set
+[32mINFO    [0m src.node.waku_node:waku_node.py:176 RLN credentials not set or credential store not available, starting without RLN
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:178 Using volumes []
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:49 docker run -i -t -p 61458:61458 -p 61459:61459 -p 61460:61460 -p 61461:61461 -p 61462:61462 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=61460 --rest-port=61458 --tcp-port=61459 --discv5-udp-port=61461 --rest-address=0.0.0.0 --nat=extip:172.18.195.34 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=1dd5bcadb6c7763ee57b5bf5bff99deaeede879e9f4bcf424ad3d7d409cd51cf --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=61462 --metrics-logging=true --discv5-bootstrap-node=enr:-L24QP-8xUu5nTxX99mUx2jDNqR_wj39L-8xTySZ7CCLVbmLLXjnNEna8OaD4-BWRK5WOxa_ZqGBuCtOuGABfQujGVACgmlkgnY0gmlwhKwSez2KbXVsdGlhZGRyc5YACASsEns9BtICAAoErBJ7PQbSA90DgnJzhQADAQAAiXNlY3AyNTZrMaECLCa3i3xfR0HQxusp5Ak_V_rryRgzFJNuLuBWqUJuYjCDdGNwgtICg3VkcILSBIV3YWt1Mgk --lightpushnode=/ip4/172.18.123.61/tcp/53762/p2p/16Uiu2HAkxQ2AF8UJcFhriM1NSda4jbyvgmuhTDdXBr814eDuvapX --lightpush=true --relay=false
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:55 docker network connect --ip 172.18.195.34 waku f4ed833ce7ba0e72003eecbba61040f6f4b1c273faea4fbf37bf26c63892cd94
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:58 Container started with ID f4ed833ce7ba. Setting up logs at ./log/docker/lightpush_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:190 Started container from image wakuorg/nwaku:latest. REST: 61458
+[35mDEBUG   [0m src.libs.common:common.py:47 Sleeping for 1 seconds
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[31m[1mERROR   [0m src.node.docker_mananger:docker_mananger.py:89 Max retries reached for container f4ed833ce7ba. Exiting log stream.
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:61458/health" -H "Content-Type: application/json" -d 'None'
+[31m[1mERROR   [0m src.node.waku_node:waku_node.py:196 REST service did not become ready in time: HTTPConnectionPool(host='127.0.0.1', port=61458): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fa38f226300>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:90 Starting Node...
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:22 Attempting to create or retrieve network waku
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:25 Network waku already exists
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:108 Generated random external IP 172.18.54.236
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:101 Generated ports ['8534', '8535', '8536', '8537', '8538']
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:439 RLN credentials were not set
+[32mINFO    [0m src.node.waku_node:waku_node.py:176 RLN credentials not set or credential store not available, starting without RLN
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:178 Using volumes []
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:49 docker run -i -t -p 8534:8534 -p 8535:8535 -p 8536:8536 -p 8537:8537 -p 8538:8538 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=8536 --rest-port=8534 --tcp-port=8535 --discv5-udp-port=8537 --rest-address=0.0.0.0 --nat=extip:172.18.54.236 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=4ba6dfbaca0e921cc2ef3ca2dbb2fafaa2c4206edb2bee335dcbd848e41f84fc --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=8538 --metrics-logging=true --discv5-bootstrap-node=enr:-L24QP-8xUu5nTxX99mUx2jDNqR_wj39L-8xTySZ7CCLVbmLLXjnNEna8OaD4-BWRK5WOxa_ZqGBuCtOuGABfQujGVACgmlkgnY0gmlwhKwSez2KbXVsdGlhZGRyc5YACASsEns9BtICAAoErBJ7PQbSA90DgnJzhQADAQAAiXNlY3AyNTZrMaECLCa3i3xfR0HQxusp5Ak_V_rryRgzFJNuLuBWqUJuYjCDdGNwgtICg3VkcILSBIV3YWt1Mgk --lightpushnode=/ip4/172.18.123.61/tcp/53762/p2p/16Uiu2HAkxQ2AF8UJcFhriM1NSda4jbyvgmuhTDdXBr814eDuvapX --lightpush=true --relay=false
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:55 docker network connect --ip 172.18.54.236 waku cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:58 Container started with ID cd79f26c1728. Setting up logs at ./log/docker/lightpush_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:190 Started container from image wakuorg/nwaku:latest. REST: 8534
+[35mDEBUG   [0m src.libs.common:common.py:47 Sleeping for 1 seconds
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[31m[1mERROR   [0m src.node.docker_mananger:docker_mananger.py:89 Max retries reached for container cd79f26c1728. Exiting log stream.
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[32mINFO    [0m src.node.api_clients.base_client:base_client.py:37 curl -v -X GET "http://127.0.0.1:8534/health" -H "Content-Type: application/json" -d 'None'
+[31m[1mERROR   [0m src.node.waku_node:waku_node.py:196 REST service did not become ready in time: HTTPConnectionPool(host='127.0.0.1', port=8534): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fa38f22dbe0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[35mDEBUG   [0m tests.conftest:conftest.py:59 Running fixture teardown: test_setup
+[35mDEBUG   [0m tests.conftest:conftest.py:83 Running fixture teardown: close_open_nodes
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id 85935be998c8
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:241 Container stopped.
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[31m[1mERROR   [0m src.node.docker_mananger:docker_mananger.py:89 Max retries reached for container 85935be998c8. Exiting log stream.
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[31m[1mERROR   [0m tests.conftest:conftest.py:91 Failed to stop container because of error 404 Client Error for http+docker://localhost/v1.48/containers/cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1/stop: Not Found ("No such container: cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1")
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[31m[1mERROR   [0m tests.conftest:conftest.py:91 Failed to stop container because of error 404 Client Error for http+docker://localhost/v1.48/containers/cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1/stop: Not Found ("No such container: cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1")
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[35mDEBUG   [0m src.node.waku_node:waku_node.py:234 Stopping container with id cd79f26c1728
+[31m[1mERROR   [0m tests.conftest:conftest.py:91 Failed to stop container because of error 404 Client Error for http+docker://localhost/v1.48/containers/cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1/stop: Not Found ("No such container: cd79f26c17281820398dff631827a7b45ae8fe1ad8bb329c37c9b584827fe2b1")
+[35mDEBUG   [0m tests.conftest:conftest.py:98 Running fixture teardown: check_waku_log_errors
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:144 No errors found in the waku logs.
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:144 No errors found in the waku logs.
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:144 No errors found in the waku logs.
+[35mDEBUG   [0m src.node.docker_mananger:docker_mananger.py:144 No errors found in the waku logs.
+[35mDEBUG   [0m tests.conftest:conftest.py:73 Running fixture teardown: attach_logs_on_fail
+[35mDEBUG   [0m tests.conftest:conftest.py:74 Test failed, attempting to attach logs to the allure reports
+[35mDEBUG   [0m src.libs.common:common.py:42 Attaching file ./log/docker/lightpush_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
+[35mDEBUG   [0m src.libs.common:common.py:42 Attaching file ./log/docker/receiving_node1_2025-12-26_04-26-53__03c03dbb-6161-4407-ade9-e213f9041b77__wakuorg_nwaku:latest.log
