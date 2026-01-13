@@ -49,3 +49,49 @@ class TrafficController:
             ["qdisc", "add", "dev", iface, "root", "tbf", "rate", rate, "burst", "32kbit", "limit", "12500"],
             iface=iface,
         )
+
+    def add_packet_loss_correlated(
+        self,
+        node,
+        percent: float,
+        correlation: float,
+        iface: str = "eth0",
+    ):
+        self.clear(node, iface=iface)
+        self._exec(
+            node,
+            [
+                "qdisc",
+                "add",
+                "dev",
+                iface,
+                "root",
+                "netem",
+                "loss",
+                f"{percent}%",
+                f"{correlation}%",
+            ],
+            iface=iface,
+        )
+
+    def add_packet_loss_egress(
+        self,
+        node,
+        percent: float,
+        iface: str = "eth0",
+    ):
+        self.clear(node, iface=iface)
+        self._exec(
+            node,
+            [
+                "qdisc",
+                "add",
+                "dev",
+                iface,
+                "root",
+                "netem",
+                "loss",
+                f"{percent}%",
+            ],
+            iface=iface,
+        )
