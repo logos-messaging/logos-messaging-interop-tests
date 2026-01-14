@@ -25,6 +25,23 @@ class TrafficController:
         if res.returncode != 0:
             raise RuntimeError(f"TC failed: {' '.join(cmd)}\n" f"stdout: {res.stdout}\n" f"stderr: {res.stderr}")
 
+        return res.stdout
+
+    def log_tc_stats(self, node, iface: str = "eth0"):
+        """
+        Log tc statistics for an interface (best-effort).
+        Useful to confirm netem loss/delay counters (sent/dropped/etc.).
+        """
+        try:
+            out = self._exec(node, ["-s", "qdisc", "show", "dev", iface], iface=iface)
+            out = (out or "").strip()
+            if out:
+                logger.debug(f"tc -s qdisc show dev {iface}:\n{out}")
+            else:
+                logger.debug(f"tc -s qdisc show dev {iface}: (no output)")
+        except Exception as e:
+            logger.debug(f"Failed to read tc stats for {iface}: {e}")
+
     def clear(self, node, iface: str = "eth0"):
         try:
             self._exec(node, ["qdisc", "del", "dev", iface, "root"], iface=iface)
@@ -40,7 +57,24 @@ class TrafficController:
 
     def add_packet_loss(self, node, percent: float, iface: str = "eth0"):
         self.clear(node, iface=iface)
-        self._exec(node, ["qdisc", "add", "dev", iface, "root", "netem", "loss", f"{percent}%"], iface=iface)
+
+        # Apply loss
+        self._exec(
+            node,
+            ["qdisc", "add", "dev", iface, "root", "netem", "loss", f"{percent}%"],
+            iface=iface,
+        )
+        try:
+            stats = self._exec(node, ["-s", "qdisc", "show", "dev", iface], iface=iface)
+            # _exec might return bytes/str/None depending on your implementation.
+            if stats is not None:
+                if isinstance(stats, (bytes, bytearray)):
+                    stats = stats.decode(errors="replace")
+                logger.debug(f"tc -s qdisc show dev {iface}:\n{stats}")
+            else:
+                logger.debug(f"Executed: tc -s qdisc show dev {iface} (no output returned by _exec)")
+        except Exception as e:
+            logger.debug(f"Failed to read tc stats for {iface}: {e}")
 
     def add_bandwidth(self, node, rate: str, iface: str = "eth0"):
         self.clear(node, iface=iface)
