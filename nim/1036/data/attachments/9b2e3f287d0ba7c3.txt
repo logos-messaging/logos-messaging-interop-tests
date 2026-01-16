@@ -1,0 +1,867 @@
+2026-01-16 04:17:20.985 DEBUG [tests.conftest] Running fixture setup: test_id
+2026-01-16 04:17:20.985 DEBUG [tests.conftest] Running test: test_2_receiving_nodes__relay_node1_forwards_lightpushed_message_to_filter_node2 with id: 2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970
+2026-01-16 04:17:20.985 DEBUG [src.steps.common] Running fixture setup: common_setup
+2026-01-16 04:17:20.986 DEBUG [src.steps.light_push] Running fixture setup: light_push_setup
+2026-01-16 04:17:20.993 DEBUG [src.node.docker_mananger] Docker client initialized with image wakuorg/nwaku:latest
+2026-01-16 04:17:20.993 DEBUG [src.node.waku_node] WakuNode instance initialized with log path ./log/docker/receiving_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:20.993 DEBUG [src.node.waku_node] Starting Node...
+2026-01-16 04:17:20.993 DEBUG [src.node.docker_mananger] Attempting to create or retrieve network waku
+2026-01-16 04:17:20.994 DEBUG [src.node.docker_mananger] Network waku already exists
+2026-01-16 04:17:20.994 DEBUG [src.node.docker_mananger] Generated random external IP 172.18.214.211
+2026-01-16 04:17:20.995 DEBUG [src.node.docker_mananger] Generated ports ['48872', '48873', '48874', '48875', '48876']
+2026-01-16 04:17:20.995 DEBUG [src.node.waku_node] RLN credentials were not set
+2026-01-16 04:17:20.995 INFO [src.node.waku_node] RLN credentials not set or credential store not available, starting without RLN
+2026-01-16 04:17:20.995 DEBUG [src.node.waku_node] Using volumes []
+2026-01-16 04:17:20.995 DEBUG [src.node.docker_mananger] docker run -i -t -p 48872:48872 -p 48873:48873 -p 48874:48874 -p 48875:48875 -p 48876:48876 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=48874 --rest-port=48872 --tcp-port=48873 --discv5-udp-port=48875 --rest-address=0.0.0.0 --nat=extip:172.18.214.211 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=bbe6cebf059abcacbb9885133fdface41eb26d1ad94e2ebaaed25531a1ac18dc --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=48876 --metrics-logging=true --lightpush=true --relay=true --filter=true
+2026-01-16 04:17:21.185 DEBUG [src.node.docker_mananger] docker network connect --ip 172.18.214.211 waku 52ffa104d57c9ec47e713ed1226a0826f519c7ce96f3e3263ab6a308efd48419
+2026-01-16 04:17:21.218 DEBUG [src.node.docker_mananger] Container started with ID 52ffa104d57c. Setting up logs at ./log/docker/receiving_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:21.218 DEBUG [src.node.waku_node] Started container from image wakuorg/nwaku:latest. REST: 48872
+2026-01-16 04:17:21.218 DEBUG [src.libs.common] Sleeping for 1 seconds
+2026-01-16 04:17:21.289 ERROR [src.node.docker_mananger] Max retries reached for container 1bde3dbda470. Exiting log stream.
+2026-01-16 04:17:21.786 ERROR [src.node.docker_mananger] Max retries reached for container e2407c9e0b20. Exiting log stream.
+2026-01-16 04:17:22.219 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:48872/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:22.222 INFO [src.node.api_clients.base_client] Response status code: 200. Response content: b'{"nodeHealth":"READY","protocolsHealth":[{"Relay":"NOT_READY","desc":"No connected peers"},{"Rln Relay":"NOT_MOUNTED"},{"Lightpush":"NOT_READY","desc":"Node has no relay peers to fullfill push requests"},{"Legacy Lightpush":"NOT_READY","desc":"Node has no relay peers to fullfill push requests"},{"Filter":"NOT_READY","desc":"Relay is not ready, filter will not be able to sort out messages"},{"Store":"NOT_MOUNTED"},{"Legacy Store":"NOT_MOUNTED"},{"Peer Exchange":"READY"},{"Rendezvous":"NOT_READY","desc":"No Rendezvous peers are available yet"},{"Mix":"NOT_MOUNTED"},{"Lightpush Client":"NOT_READY","desc":"No Lightpush service peer available yet"},{"Legacy Lightpush Client":"NOT_READY","desc":"No Lightpush service peer available yet"},{"Store Client":"NOT_READY","desc":"No Store service peer available yet, neither Store service set up for the node"},{"Legacy Store Client":"NOT_READY","desc":"No Legacy Store service peers are available yet, neither Store service set up for the node"},{"Filter Client":"NOT_READY","desc":"No Filter service peer available yet"}]}'
+2026-01-16 04:17:22.222 INFO [src.node.waku_node] Node protocols are initialized !!
+2026-01-16 04:17:22.222 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:48872/debug/v1/info" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:22.225 INFO [src.node.api_clients.base_client] Response status code: 200. Response content: b'{"listenAddresses":["/ip4/172.18.214.211/tcp/48873/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3","/ip4/172.18.214.211/tcp/48874/ws/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3"],"enrUri":"enr:-L24QCwIWZBmGcx9QnR4r5FsX-BNbmSOYgbdv-bf92J6ENIhFvZSTBmTdi-Kuz6MCzD6VLCuP0BI3_6lywSdCXMyBSACgmlkgnY0gmlwhKwS1tOKbXVsdGlhZGRyc5YACASsEtbTBr7pAAoErBLW0wa-6t0DgnJzhQADAQAAiXNlY3AyNTZrMaECGe3a9sv3zatOMmG4LlGgP4p5q4OspV4qwTUnwHGXGjiDdGNwgr7pg3VkcIK-64V3YWt1Mg0"}'
+2026-01-16 04:17:22.225 INFO [src.node.waku_node] REST service is ready !!
+2026-01-16 04:17:22.233 DEBUG [src.node.docker_mananger] Docker client initialized with image wakuorg/nwaku:latest
+2026-01-16 04:17:22.233 DEBUG [src.node.waku_node] WakuNode instance initialized with log path ./log/docker/receiving_node2_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:22.233 DEBUG [src.node.waku_node] Starting Node...
+2026-01-16 04:17:22.233 DEBUG [src.node.docker_mananger] Attempting to create or retrieve network waku
+2026-01-16 04:17:22.235 DEBUG [src.node.docker_mananger] Network waku already exists
+2026-01-16 04:17:22.235 DEBUG [src.node.docker_mananger] Generated random external IP 172.18.154.97
+2026-01-16 04:17:22.235 DEBUG [src.node.docker_mananger] Generated ports ['15372', '15373', '15374', '15375', '15376']
+2026-01-16 04:17:22.235 DEBUG [src.node.waku_node] RLN credentials were not set
+2026-01-16 04:17:22.235 INFO [src.node.waku_node] RLN credentials not set or credential store not available, starting without RLN
+2026-01-16 04:17:22.235 DEBUG [src.node.waku_node] Using volumes []
+2026-01-16 04:17:22.235 DEBUG [src.node.docker_mananger] docker run -i -t -p 15372:15372 -p 15373:15373 -p 15374:15374 -p 15375:15375 -p 15376:15376 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=15374 --rest-port=15372 --tcp-port=15373 --discv5-udp-port=15375 --rest-address=0.0.0.0 --nat=extip:172.18.154.97 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=1253a4c92a17be043b4c9e9f8f5a6c0c34f65f5bb70a1b5b7e20847f4cbbe05a --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=15376 --metrics-logging=true --lightpush=false --relay=false --filternode=/ip4/172.18.214.211/tcp/48873/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3
+2026-01-16 04:17:22.421 DEBUG [src.node.docker_mananger] docker network connect --ip 172.18.154.97 waku 0af9b2200bee5dd8a38b5683f07c5f1071f4a05f1610ada1285b944468024568
+2026-01-16 04:17:22.452 DEBUG [src.node.docker_mananger] Container started with ID 0af9b2200bee. Setting up logs at ./log/docker/receiving_node2_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:22.452 DEBUG [src.node.waku_node] Started container from image wakuorg/nwaku:latest. REST: 15372
+2026-01-16 04:17:22.452 DEBUG [src.libs.common] Sleeping for 1 seconds
+2026-01-16 04:17:23.453 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:15372/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:23.456 INFO [src.node.api_clients.base_client] Response status code: 200. Response content: b'{"nodeHealth":"READY","protocolsHealth":[{"Relay":"NOT_MOUNTED"},{"Rln Relay":"NOT_MOUNTED"},{"Lightpush":"NOT_MOUNTED"},{"Legacy Lightpush":"NOT_MOUNTED"},{"Filter":"NOT_MOUNTED"},{"Store":"NOT_MOUNTED"},{"Legacy Store":"NOT_MOUNTED"},{"Peer Exchange":"READY"},{"Rendezvous":"NOT_READY","desc":"No Rendezvous peers are available yet"},{"Mix":"NOT_MOUNTED"},{"Lightpush Client":"NOT_READY","desc":"No Lightpush service peer available yet"},{"Legacy Lightpush Client":"NOT_READY","desc":"No Lightpush service peer available yet"},{"Store Client":"NOT_READY","desc":"No Store service peer available yet, neither Store service set up for the node"},{"Legacy Store Client":"NOT_READY","desc":"No Legacy Store service peers are available yet, neither Store service set up for the node"},{"Filter Client":"READY"}]}'
+2026-01-16 04:17:23.456 INFO [src.node.waku_node] Node protocols are initialized !!
+2026-01-16 04:17:23.456 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:15372/debug/v1/info" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:23.459 INFO [src.node.api_clients.base_client] Response status code: 200. Response content: b'{"listenAddresses":["/ip4/172.18.154.97/tcp/15373/p2p/16Uiu2HAmLBBWBUsSuTSAycB9yPaCatwW6MtLSxbhxHKN4ZmnVr6R","/ip4/172.18.154.97/tcp/15374/ws/p2p/16Uiu2HAmLBBWBUsSuTSAycB9yPaCatwW6MtLSxbhxHKN4ZmnVr6R"],"enrUri":"enr:-L24QCQtYZcmaMlp8QJZ0VvC2Q6GJ7bJi4OAfzIZijCh5nsMVDCmdcV-KqPWeU9vFUEoUNm9aGrJ7pcfVc3m0YwGdq0CgmlkgnY0gmlwhKwSmmGKbXVsdGlhZGRyc5YACASsEpphBjwNAAoErBKaYQY8Dt0DgnJzhQADAQAAiXNlY3AyNTZrMaEDb73YBcKJamD2uUbzYdBbMXWkol-t6iU8zSn31SAs7U6DdGNwgjwNg3VkcII8D4V3YWt1MgA"}'
+2026-01-16 04:17:23.459 INFO [src.node.waku_node] REST service is ready !!
+2026-01-16 04:17:23.459 INFO [src.node.api_clients.base_client] curl -v -X POST "http://127.0.0.1:15372/admin/v1/peers" -H "Content-Type: application/json" -d '["/ip4/172.18.214.211/tcp/48873/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3"]'
+2026-01-16 04:17:23.490 INFO [src.node.api_clients.base_client] Response status code: 200. Response content: b'OK'
+2026-01-16 04:17:23.499 DEBUG [src.node.docker_mananger] Docker client initialized with image wakuorg/nwaku:latest
+2026-01-16 04:17:23.499 DEBUG [src.node.waku_node] WakuNode instance initialized with log path ./log/docker/lightpush_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:23.499 DEBUG [src.node.waku_node] Starting Node...
+2026-01-16 04:17:23.499 DEBUG [src.node.docker_mananger] Attempting to create or retrieve network waku
+2026-01-16 04:17:23.501 DEBUG [src.node.docker_mananger] Network waku already exists
+2026-01-16 04:17:23.501 DEBUG [src.node.docker_mananger] Generated random external IP 172.18.143.33
+2026-01-16 04:17:23.501 DEBUG [src.node.docker_mananger] Generated ports ['18481', '18482', '18483', '18484', '18485']
+2026-01-16 04:17:23.501 DEBUG [src.node.waku_node] RLN credentials were not set
+2026-01-16 04:17:23.501 INFO [src.node.waku_node] RLN credentials not set or credential store not available, starting without RLN
+2026-01-16 04:17:23.502 DEBUG [src.node.waku_node] Using volumes []
+2026-01-16 04:17:23.502 DEBUG [src.node.docker_mananger] docker run -i -t -p 18481:18481 -p 18482:18482 -p 18483:18483 -p 18484:18484 -p 18485:18485 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=18483 --rest-port=18481 --tcp-port=18482 --discv5-udp-port=18484 --rest-address=0.0.0.0 --nat=extip:172.18.143.33 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=c4cf9bfce7953eab16daf69ff45d4aa51293bb5c8779ef45cc6bbce9932abcdc --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=18485 --metrics-logging=true --discv5-bootstrap-node=enr:-L24QCwIWZBmGcx9QnR4r5FsX-BNbmSOYgbdv-bf92J6ENIhFvZSTBmTdi-Kuz6MCzD6VLCuP0BI3_6lywSdCXMyBSACgmlkgnY0gmlwhKwS1tOKbXVsdGlhZGRyc5YACASsEtbTBr7pAAoErBLW0wa-6t0DgnJzhQADAQAAiXNlY3AyNTZrMaECGe3a9sv3zatOMmG4LlGgP4p5q4OspV4qwTUnwHGXGjiDdGNwgr7pg3VkcIK-64V3YWt1Mg0 --lightpushnode=/ip4/172.18.214.211/tcp/48873/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3 --lightpush=true --relay=false
+2026-01-16 04:17:23.691 DEBUG [src.node.docker_mananger] docker network connect --ip 172.18.143.33 waku 01d36ae8b89008a480f4707ec5548ee4a23ff6bc66ca3e5330c01d2a4567b999
+2026-01-16 04:17:23.724 DEBUG [src.node.docker_mananger] Container started with ID 01d36ae8b890. Setting up logs at ./log/docker/lightpush_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:23.725 DEBUG [src.node.waku_node] Started container from image wakuorg/nwaku:latest. REST: 18481
+2026-01-16 04:17:23.725 DEBUG [src.libs.common] Sleeping for 1 seconds
+2026-01-16 04:17:24.725 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:24.827 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:24.928 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.030 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.061 ERROR [src.node.docker_mananger] Max retries reached for container 01d36ae8b890. Exiting log stream.
+2026-01-16 04:17:25.131 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.233 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.334 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.436 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.538 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.639 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.741 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.842 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:25.944 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.045 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.148 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.249 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.350 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.452 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.553 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.655 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.757 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.858 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:26.960 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.061 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.162 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.264 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.366 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.467 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.569 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.670 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.772 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.873 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:27.975 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.077 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.178 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.279 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.381 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.482 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.584 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.685 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.787 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.888 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:28.990 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.091 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.193 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.294 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.396 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.497 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.599 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.700 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.802 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:29.903 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.005 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.106 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.208 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.309 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.410 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.512 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.613 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.714 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.815 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:30.917 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.018 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.120 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.221 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.323 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.424 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.525 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.627 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.728 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.830 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:31.931 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.033 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.135 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.237 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.338 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.440 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.543 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.645 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.747 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.848 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:32.950 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.052 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.153 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.255 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.356 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.458 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.559 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.661 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.763 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.864 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:33.966 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.068 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.169 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.271 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.372 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.474 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.576 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.678 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.779 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.881 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:34.983 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.084 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.186 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.288 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.389 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.491 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.592 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.694 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.796 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.897 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:35.999 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.101 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.202 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.304 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.405 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.507 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.608 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.710 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.811 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:36.913 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.014 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.116 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.217 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.319 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.420 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.522 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.623 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.725 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.826 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:37.927 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.029 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.130 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.231 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.333 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.435 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.536 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.638 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.739 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.840 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:38.942 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.044 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.145 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.246 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.348 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.449 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.551 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.652 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.753 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.855 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:39.956 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.058 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.160 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.261 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.362 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.464 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.565 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.667 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.769 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.870 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:40.971 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.073 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.175 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.276 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.378 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.479 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.580 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.682 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.783 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.885 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:41.987 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.088 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.189 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.291 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.393 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.494 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.596 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.697 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.799 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:42.900 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.002 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.103 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.205 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.306 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.408 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.509 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.610 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.711 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.813 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:43.915 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.016 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.118 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.219 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.320 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.422 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.524 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.625 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.726 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:18481/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:44.728 ERROR [src.node.waku_node] REST service did not become ready in time: HTTPConnectionPool(host='127.0.0.1', port=18481): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f214c8aabd0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2026-01-16 04:17:44.828 DEBUG [src.node.waku_node] Starting Node...
+2026-01-16 04:17:44.829 DEBUG [src.node.docker_mananger] Attempting to create or retrieve network waku
+2026-01-16 04:17:44.830 DEBUG [src.node.docker_mananger] Network waku already exists
+2026-01-16 04:17:44.830 DEBUG [src.node.docker_mananger] Generated random external IP 172.18.133.188
+2026-01-16 04:17:44.831 DEBUG [src.node.docker_mananger] Generated ports ['24844', '24845', '24846', '24847', '24848']
+2026-01-16 04:17:44.831 DEBUG [src.node.waku_node] RLN credentials were not set
+2026-01-16 04:17:44.831 INFO [src.node.waku_node] RLN credentials not set or credential store not available, starting without RLN
+2026-01-16 04:17:44.831 DEBUG [src.node.waku_node] Using volumes []
+2026-01-16 04:17:44.831 DEBUG [src.node.docker_mananger] docker run -i -t -p 24844:24844 -p 24845:24845 -p 24846:24846 -p 24847:24847 -p 24848:24848 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=24846 --rest-port=24844 --tcp-port=24845 --discv5-udp-port=24847 --rest-address=0.0.0.0 --nat=extip:172.18.133.188 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=44dae8f828abdeacb38c6bdc5cf5542b5fe5ad14a1a49c64cced06e2c56ecdda --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=24848 --metrics-logging=true --discv5-bootstrap-node=enr:-L24QCwIWZBmGcx9QnR4r5FsX-BNbmSOYgbdv-bf92J6ENIhFvZSTBmTdi-Kuz6MCzD6VLCuP0BI3_6lywSdCXMyBSACgmlkgnY0gmlwhKwS1tOKbXVsdGlhZGRyc5YACASsEtbTBr7pAAoErBLW0wa-6t0DgnJzhQADAQAAiXNlY3AyNTZrMaECGe3a9sv3zatOMmG4LlGgP4p5q4OspV4qwTUnwHGXGjiDdGNwgr7pg3VkcIK-64V3YWt1Mg0 --lightpushnode=/ip4/172.18.214.211/tcp/48873/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3 --lightpush=true --relay=false
+2026-01-16 04:17:45.025 DEBUG [src.node.docker_mananger] docker network connect --ip 172.18.133.188 waku 28a6358a5040add4f3e2338cd33642903b8559fdc7419d0b13eb2330d3392236
+2026-01-16 04:17:45.056 DEBUG [src.node.docker_mananger] Container started with ID 28a6358a5040. Setting up logs at ./log/docker/lightpush_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:17:45.057 DEBUG [src.node.waku_node] Started container from image wakuorg/nwaku:latest. REST: 24844
+2026-01-16 04:17:45.058 DEBUG [src.libs.common] Sleeping for 1 seconds
+2026-01-16 04:17:46.058 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.160 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.261 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.363 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.416 ERROR [src.node.docker_mananger] Max retries reached for container 28a6358a5040. Exiting log stream.
+2026-01-16 04:17:46.465 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.566 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.667 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.769 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.870 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:46.971 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.073 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.174 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.276 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.377 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.479 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.580 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.682 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.784 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.885 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:47.987 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.088 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.190 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.291 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.393 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.494 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.595 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.696 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.798 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:48.899 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.001 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.102 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.203 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.305 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.406 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.508 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.610 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.711 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.813 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:49.914 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.016 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.117 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.219 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.320 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.422 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.523 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.624 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.726 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.827 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:50.929 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.030 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.132 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.233 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.335 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.436 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.537 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.638 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.740 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.841 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:51.943 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.044 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.145 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.247 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.348 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.450 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.556 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.658 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.759 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.860 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:52.961 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.063 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.164 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.265 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.367 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.468 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.569 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.670 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.772 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.874 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:53.975 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.077 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.178 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.280 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.382 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.483 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.585 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.686 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.788 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.889 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:54.991 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.093 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.194 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.296 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.397 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.499 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.601 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.702 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.804 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:55.905 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.007 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.108 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.210 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.311 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.413 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.514 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.616 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.717 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.837 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:56.939 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.040 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.142 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.244 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.345 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.447 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.548 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.650 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.751 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.853 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:57.955 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.056 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.158 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.259 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.361 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.463 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.564 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.666 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.767 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.869 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:58.970 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.071 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.173 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.274 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.375 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.477 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.578 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.680 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.781 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.882 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:17:59.983 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.085 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.187 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.289 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.390 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.492 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.593 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.695 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.796 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.898 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:00.999 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.101 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.202 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.303 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.405 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.507 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.608 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.709 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.811 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:01.912 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.014 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.116 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.217 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.318 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.420 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.521 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.623 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.724 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.826 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:02.927 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.029 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.130 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.231 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.333 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.435 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.536 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.637 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.739 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.840 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:03.942 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.043 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.145 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.246 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.347 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.449 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.551 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.652 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.753 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.855 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:04.956 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.058 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.160 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.261 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.363 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.464 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.565 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.667 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.769 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.870 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:05.971 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:06.073 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:24844/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:06.074 ERROR [src.node.waku_node] REST service did not become ready in time: HTTPConnectionPool(host='127.0.0.1', port=24844): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f214c886a80>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2026-01-16 04:18:06.175 DEBUG [src.node.waku_node] Starting Node...
+2026-01-16 04:18:06.175 DEBUG [src.node.docker_mananger] Attempting to create or retrieve network waku
+2026-01-16 04:18:06.177 DEBUG [src.node.docker_mananger] Network waku already exists
+2026-01-16 04:18:06.177 DEBUG [src.node.docker_mananger] Generated random external IP 172.18.32.236
+2026-01-16 04:18:06.177 DEBUG [src.node.docker_mananger] Generated ports ['42528', '42529', '42530', '42531', '42532']
+2026-01-16 04:18:06.177 DEBUG [src.node.waku_node] RLN credentials were not set
+2026-01-16 04:18:06.177 INFO [src.node.waku_node] RLN credentials not set or credential store not available, starting without RLN
+2026-01-16 04:18:06.178 DEBUG [src.node.waku_node] Using volumes []
+2026-01-16 04:18:06.178 DEBUG [src.node.docker_mananger] docker run -i -t -p 42528:42528 -p 42529:42529 -p 42530:42530 -p 42531:42531 -p 42532:42532 wakuorg/nwaku:latest --listen-address=0.0.0.0 --rest=true --rest-admin=true --websocket-support=true --log-level=TRACE --rest-relay-cache-capacity=100 --websocket-port=42530 --rest-port=42528 --tcp-port=42529 --discv5-udp-port=42531 --rest-address=0.0.0.0 --nat=extip:172.18.32.236 --peer-exchange=true --discv5-discovery=true --cluster-id=3 --nodekey=9d995250f9ba6dd23cc0ad28dce4d9ac578d10f9febf8ca7839eaf6ca01becbb --shard=0 --metrics-server=true --metrics-server-address=0.0.0.0 --metrics-server-port=42532 --metrics-logging=true --discv5-bootstrap-node=enr:-L24QCwIWZBmGcx9QnR4r5FsX-BNbmSOYgbdv-bf92J6ENIhFvZSTBmTdi-Kuz6MCzD6VLCuP0BI3_6lywSdCXMyBSACgmlkgnY0gmlwhKwS1tOKbXVsdGlhZGRyc5YACASsEtbTBr7pAAoErBLW0wa-6t0DgnJzhQADAQAAiXNlY3AyNTZrMaECGe3a9sv3zatOMmG4LlGgP4p5q4OspV4qwTUnwHGXGjiDdGNwgr7pg3VkcIK-64V3YWt1Mg0 --lightpushnode=/ip4/172.18.214.211/tcp/48873/p2p/16Uiu2HAkwAtXrwVfm9HRRfTvX1T1xR7JLjcZ12go8RFyHYRQcPx3 --lightpush=true --relay=false
+2026-01-16 04:18:06.358 DEBUG [src.node.docker_mananger] docker network connect --ip 172.18.32.236 waku 7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4
+2026-01-16 04:18:06.389 DEBUG [src.node.docker_mananger] Container started with ID 7b50412ad10d. Setting up logs at ./log/docker/lightpush_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:18:06.390 DEBUG [src.node.waku_node] Started container from image wakuorg/nwaku:latest. REST: 42528
+2026-01-16 04:18:06.390 DEBUG [src.libs.common] Sleeping for 1 seconds
+2026-01-16 04:18:07.390 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:07.492 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:07.593 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:07.695 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:07.702 ERROR [src.node.docker_mananger] Max retries reached for container 7b50412ad10d. Exiting log stream.
+2026-01-16 04:18:07.796 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:07.897 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:07.999 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.100 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.202 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.303 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.405 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.506 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.608 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.709 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.811 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:08.912 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.013 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.115 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.216 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.317 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.419 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.520 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.622 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.723 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.824 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:09.925 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.027 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.128 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.230 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.331 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.433 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.534 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.635 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.737 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.838 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:10.940 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.041 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.143 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.244 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.345 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.447 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.548 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.649 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.751 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.852 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:11.953 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.055 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.156 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.257 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.358 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.459 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.561 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.662 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.763 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.864 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:12.965 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.067 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.168 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.269 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.371 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.472 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.573 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.674 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.775 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.877 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:13.978 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.079 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.180 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.281 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.382 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.484 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.585 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.686 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.788 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.889 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:14.990 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.092 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.193 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.294 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.395 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.496 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.598 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.699 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.800 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:15.901 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.002 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.103 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.204 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.306 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.407 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.508 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.610 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.711 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.812 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:16.913 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.014 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.115 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.217 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.318 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.419 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.521 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.622 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.723 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.825 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:17.926 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.027 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.129 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.230 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.331 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.433 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.534 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.635 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.737 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.838 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:18.939 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.040 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.141 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.243 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.344 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.446 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.547 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.648 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.749 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.851 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:19.952 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.053 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.154 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.256 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.357 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.458 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.560 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.661 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.762 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.864 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:20.965 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.066 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.168 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.269 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.371 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.472 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.573 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.674 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.775 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.876 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:21.977 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.079 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.180 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.281 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.382 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.484 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.591 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.692 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.793 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.894 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:22.996 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.097 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.198 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.299 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.400 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.502 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.603 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.704 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.806 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:23.907 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.008 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.109 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.211 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.312 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.413 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.514 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.615 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.716 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.818 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:24.919 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.020 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.121 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.222 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.324 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.425 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.527 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.628 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.729 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.831 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:25.932 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.034 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.135 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.236 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.337 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.439 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.540 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.641 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.743 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.844 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:26.945 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:27.046 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:27.147 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:27.248 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:27.350 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:27.451 INFO [src.node.api_clients.base_client] curl -v -X GET "http://127.0.0.1:42528/health" -H "Content-Type: application/json" -d 'None'
+2026-01-16 04:18:27.452 ERROR [src.node.waku_node] REST service did not become ready in time: HTTPConnectionPool(host='127.0.0.1', port=42528): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f214c973530>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2026-01-16 04:18:27.694 DEBUG [tests.conftest] Running fixture teardown: test_setup
+2026-01-16 04:18:27.695 DEBUG [tests.conftest] Running fixture teardown: close_open_nodes
+2026-01-16 04:18:27.695 DEBUG [src.node.waku_node] Stopping container with id 52ffa104d57c
+2026-01-16 04:18:28.232 DEBUG [src.node.waku_node] Container stopped.
+2026-01-16 04:18:28.233 DEBUG [src.node.waku_node] Stopping container with id 0af9b2200bee
+2026-01-16 04:18:28.766 DEBUG [src.node.waku_node] Container stopped.
+2026-01-16 04:18:28.767 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:28.869 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:28.971 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.045 ERROR [src.node.docker_mananger] Max retries reached for container 52ffa104d57c. Exiting log stream.
+2026-01-16 04:18:29.072 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.174 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.275 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.377 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.478 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.578 ERROR [src.node.docker_mananger] Max retries reached for container 0af9b2200bee. Exiting log stream.
+2026-01-16 04:18:29.579 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.680 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.782 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.883 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:29.985 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.086 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.187 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.289 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.391 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.492 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.594 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.695 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.796 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:30.898 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.000 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.101 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.203 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.304 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.406 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.508 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.609 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.711 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.812 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:31.913 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.015 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.116 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.218 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.320 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.422 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.523 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.625 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.726 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.828 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:32.929 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.031 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.132 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.234 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.335 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.436 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.538 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.640 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.741 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.843 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.844 ERROR [tests.conftest] Failed to stop container because of error 404 Client Error for http+docker://localhost/v1.48/containers/7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4/stop: Not Found ("No such container: 7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4")
+2026-01-16 04:18:33.844 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:33.945 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.047 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.148 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.250 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.351 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.453 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.555 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.656 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.758 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.859 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:34.961 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.062 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.163 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.265 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.366 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.468 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.570 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.672 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.773 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.875 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:35.977 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.078 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.180 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.282 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.383 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.485 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.586 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.688 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.789 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.891 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:36.992 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.094 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.195 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.297 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.398 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.500 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.602 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.703 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.804 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:37.906 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.008 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.109 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.210 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.312 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.413 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.515 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.616 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.718 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.819 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.921 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:38.922 ERROR [tests.conftest] Failed to stop container because of error 404 Client Error for http+docker://localhost/v1.48/containers/7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4/stop: Not Found ("No such container: 7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4")
+2026-01-16 04:18:38.922 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.024 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.125 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.226 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.328 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.429 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.531 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.632 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.734 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.835 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:39.937 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.038 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.140 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.241 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.343 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.444 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.546 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.648 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.749 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.850 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:40.952 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.053 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.155 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.257 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.358 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.460 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.562 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.663 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.764 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.866 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:41.967 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.069 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.170 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.272 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.373 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.474 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.576 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.677 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.778 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.880 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:42.981 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.082 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.184 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.285 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.387 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.489 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.590 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.692 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.793 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.895 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.996 DEBUG [src.node.waku_node] Stopping container with id 7b50412ad10d
+2026-01-16 04:18:43.998 ERROR [tests.conftest] Failed to stop container because of error 404 Client Error for http+docker://localhost/v1.48/containers/7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4/stop: Not Found ("No such container: 7b50412ad10d5fa1f6555d62c247a11e4b40d8cacd5d69cbf5e0c7cea73b6ab4")
+2026-01-16 04:18:43.999 DEBUG [tests.conftest] Running fixture teardown: check_waku_log_errors
+2026-01-16 04:18:44.019 DEBUG [src.node.docker_mananger] No errors found in the waku logs.
+2026-01-16 04:18:44.037 DEBUG [src.node.docker_mananger] No errors found in the waku logs.
+2026-01-16 04:18:44.037 DEBUG [src.node.docker_mananger] No errors found in the waku logs.
+2026-01-16 04:18:44.038 DEBUG [src.node.docker_mananger] No errors found in the waku logs.
+2026-01-16 04:18:44.038 DEBUG [src.node.docker_mananger] No errors found in the waku logs.
+2026-01-16 04:18:44.038 DEBUG [tests.conftest] Running fixture teardown: attach_logs_on_fail
+2026-01-16 04:18:44.039 DEBUG [tests.conftest] Test failed, attempting to attach logs to the allure reports
+2026-01-16 04:18:44.039 DEBUG [src.libs.common] Attaching file ./log/docker/receiving_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:18:44.040 DEBUG [src.libs.common] Attaching file ./log/docker/receiving_node2_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
+2026-01-16 04:18:44.040 DEBUG [src.libs.common] Attaching file ./log/docker/lightpush_node1_2026-01-16_04-17-20__c9fb859e-fb4f-43d4-bfbf-a25c07521970__wakuorg_nwaku:latest.log
