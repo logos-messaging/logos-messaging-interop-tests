@@ -58,7 +58,6 @@ class TrafficController:
     def add_packet_loss(self, node, percent: float, iface: str = "eth0"):
         self.clear(node, iface=iface)
 
-        # Apply loss
         self._exec(
             node,
             ["qdisc", "add", "dev", iface, "root", "netem", "loss", f"{percent}%"],
@@ -66,7 +65,6 @@ class TrafficController:
         )
         try:
             stats = self._exec(node, ["-s", "qdisc", "show", "dev", iface], iface=iface)
-            # _exec might return bytes/str/None depending on your implementation.
             if stats is not None:
                 if isinstance(stats, (bytes, bytearray)):
                     stats = stats.decode(errors="replace")
