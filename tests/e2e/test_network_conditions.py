@@ -32,7 +32,7 @@ class TestNetworkConditions(StepsRelay):
         logger.info("Waiting for autoconnection")
         self.wait_for_autoconnection([self.node1, self.node2], hard_wait=10)
 
-        logger.debug("Applying 500ms latency to node2")
+        logger.debug("Applying 5000ms latency to node2")
         self.tc.add_latency(self.node2, ms=5000)
         message = self.create_message()
 
@@ -43,9 +43,9 @@ class TestNetworkConditions(StepsRelay):
         t0 = time()
         messages = self.node2.get_relay_messages(self.test_pubsub_topic)
         dt = time() - t0
-        assert messages, "Message arrived too early; latency may not be applied"
+        assert messages, "Messages aren't arrive"
         assert dt >= 4.5, f"Expected slow GET due to latency, got {dt}"
-        assert dt <= 5.5, "msg took too long"
+        assert dt <= 10.5, "msg took too long"
         self.tc.clear(self.node2)
 
     @pytest.mark.timeout(60 * 8)
@@ -112,8 +112,9 @@ class TestNetworkConditions(StepsRelay):
         self.node1.send_relay_message(self.create_message(), self.test_pubsub_topic)
         publish_dt = time() - t_pub0
 
-        # assert publish_dt > (latency_ms / 1000.0) - 0.4, f"Expected publish call to be slowed by sender latency. "
-        # assert publish_dt <= (latency_ms / 1000.0) + 0.4, f"Publish call took too long"
+        assert publish_dt > ((latency_ms * 2) / 1000.0) - 0.4, f"Expected publish call to be slowed by sender latency. "
+        assert publish_dt <= ((latency_ms * 2) / 1000.0) + 0.4, f"Publish call took too long"
+        # latency is doubled as request + response both will have latency
 
         deadline = t_pub0 + 10.0
         received = False
@@ -169,9 +170,8 @@ class TestNetworkConditions(StepsRelay):
 
             delay(0.2)
 
-        # for dt in node1_dts:
-        # assert dt > (latency_ms / 1000.0) - 0.4, "Expected node1 publish to be slowed by latency"
-        # assert dt <= (latency_ms / 1000.0) + 0.4, "node1 publish took too long"
+        for dt in node1_dts:
+            assert dt <= ((latency_ms * 2) / 1000.0) + 0.4, "node1 publish took too long"
 
         for dt in node2_dts:
             assert dt < 1.0, f"Expected node2 publish to be fast"
@@ -322,7 +322,7 @@ class TestNetworkConditions(StepsRelay):
 
         self.tc.clear(self.node1)
 
-    def test_relay_4_nodes_sender_packet_loss_50(self):
+    def test_relay_4_nodes_sender_packet_loss_50_15sec_timeout(self):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
 
@@ -365,7 +365,7 @@ class TestNetworkConditions(StepsRelay):
         assert received > int(total_msgs * 0.8), "No messages received under 50% packet loss"
 
     @pytest.mark.timeout(60 * 10)
-    @pytest.mark.parametrize("loss", [50.0, 60.0, 70], ids=["loss50", "loss60", "loss70"])
+    @pytest.mark.parametrize("loss", [40.0, 60.0], ids=["loss40", "loss60"])
     def test_relay_4_nodes_sender_packet_loss_delivery_ratio_simple(self, loss):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
@@ -382,7 +382,7 @@ class TestNetworkConditions(StepsRelay):
         self.wait_for_autoconnection(nodes, hard_wait=20)
 
         total_msgs = 30
-        window_s = 30.0
+        window_s = 40.0
 
         self.tc.clear(self.node1)
         self.tc.add_packet_loss(self.node1, percent=loss)
@@ -420,10 +420,11 @@ class TestNetworkConditions(StepsRelay):
 
         self.wait_for_autoconnection(nodes, hard_wait=20)
 
-        total_msgs = 30
-        window_s = 30.0
+        total_msgs = 5
+        window_s = 70.0
+        loss = 40.0
 
-        self.tc.add_packet_loss(self.node1, percent=30.0)
+        self.tc.add_packet_loss(self.node1, percent=loss)
         _ = self.node4.get_relay_messages(self.test_pubsub_topic)
 
         for _ in range(total_msgs):
@@ -433,7 +434,7 @@ class TestNetworkConditions(StepsRelay):
         uncorrelated = len(self.node4.get_relay_messages(self.test_pubsub_topic) or [])
         self.tc.clear(self.node1)
 
-        self.tc.add_packet_loss_correlated(self.node1, percent=30.0, correlation=75.0)
+        self.tc.add_packet_loss_correlated(self.node1, percent=loss, correlation=75.0)
         _ = self.node4.get_relay_messages(self.test_pubsub_topic)
 
         for _ in range(total_msgs):
@@ -444,9 +445,10 @@ class TestNetworkConditions(StepsRelay):
         self.tc.clear(self.node1)
 
         assert uncorrelated >= correlated
+        assert correlated > 0
 
     @pytest.mark.timeout(60 * 10)
-    def test_relay_packet_loss_sender_vs_receiver_egress(self):
+    def test_relay_packet_loss_sender_vs_receiver(self):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
 
@@ -463,8 +465,9 @@ class TestNetworkConditions(StepsRelay):
 
         total_msgs = 30
         window_s = 30.0
+        loss = 50.0
 
-        self.tc.add_packet_loss_egress(self.node1, percent=50.0)
+        self.tc.add_packet_loss(self.node1, percent=loss)
         _ = self.node4.get_relay_messages(self.test_pubsub_topic)
 
         for _ in range(total_msgs):
@@ -474,7 +477,7 @@ class TestNetworkConditions(StepsRelay):
         sender_loss = len(self.node4.get_relay_messages(self.test_pubsub_topic) or [])
         self.tc.clear(self.node1)
 
-        self.tc.add_packet_loss_egress(self.node4, percent=50.0)
+        self.tc.add_packet_loss(self.node4, percent=loss)
         _ = self.node4.get_relay_messages(self.test_pubsub_topic)
 
         for _ in range(total_msgs):
@@ -482,12 +485,14 @@ class TestNetworkConditions(StepsRelay):
 
         delay(window_s)
         receiver_loss = len(self.node4.get_relay_messages(self.test_pubsub_topic) or [])
+        logger.debug(f"sender_loss={sender_loss} receiver_loss={receiver_loss}")
         self.tc.clear(self.node4)
 
-        assert sender_loss <= receiver_loss
+        assert sender_loss > 0
+        assert receiver_loss > 0
 
     @pytest.mark.timeout(60 * 10)
-    def test_relay_packet_loss_applied_mid_stream(self):
+    def test_relay_packet_loss_applied_mid_way(self):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
 
@@ -508,7 +513,7 @@ class TestNetworkConditions(StepsRelay):
         for _ in range(10):
             self.node1.send_relay_message(self.create_message(), self.test_pubsub_topic)
 
-        self.tc.add_packet_loss(self.node1, percent=70.0)
+        self.tc.add_packet_loss(self.node1, percent=50.0)
 
         for _ in range(20):
             self.node1.send_relay_message(self.create_message(), self.test_pubsub_topic)

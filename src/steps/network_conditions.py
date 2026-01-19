@@ -105,25 +105,3 @@ class TrafficController:
             ],
             iface=iface,
         )
-
-    def add_packet_loss_egress(
-        self,
-        node,
-        percent: float,
-        iface: str = "eth0",
-    ):
-        self.clear(node, iface=iface)
-        self._exec(
-            node,
-            [
-                "qdisc",
-                "add",
-                "dev",
-                iface,
-                "root",
-                "netem",
-                "loss",
-                f"{percent}%",
-            ],
-            iface=iface,
-        )
