@@ -577,3 +577,9 @@ class WakuNode:
 
     def get_peer_info(self, peer_id: str):
         return self._api.get_peer(peer_id)
+
+    @property
+    def container_id(self) -> str:
+        if not self._container:
+            raise RuntimeError("Node container not started yet")
+        return self._container.id
