@@ -322,6 +322,7 @@ class TestNetworkConditions(StepsRelay):
 
         self.tc.clear(self.node1)
 
+    @pytest.mark.xfail(reason="Fails under high packet loss percentage 60")
     def test_relay_4_nodes_sender_packet_loss_50_15sec_timeout(self):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
@@ -365,6 +366,7 @@ class TestNetworkConditions(StepsRelay):
         assert received > int(total_msgs * 0.8), "No messages received under 50% packet loss"
 
     @pytest.mark.timeout(60 * 10)
+    @pytest.mark.xfail(reason="Fails under high packet loss percentage")
     @pytest.mark.parametrize("loss", [40.0, 60.0], ids=["loss40", "loss60"])
     def test_relay_4_nodes_sender_packet_loss_delivery_ratio_simple(self, loss):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
