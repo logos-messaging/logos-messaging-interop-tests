@@ -322,7 +322,7 @@ class TestNetworkConditions(StepsRelay):
 
         self.tc.clear(self.node1)
 
-    @pytest.mark.xfail(reason="Fails under high packet loss percentage")
+    @pytest.mark.xfail(reason="Fails under high packet loss percentage 60")
     def test_relay_4_nodes_sender_packet_loss_50_15sec_timeout(self):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
