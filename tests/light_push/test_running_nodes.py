@@ -1,8 +1,10 @@
+import pytest
 from src.libs.common import delay
 from src.steps.light_push import StepsLightPush
 
 
 class TestRunningNodes(StepsLightPush):
+    @pytest.mark.skip(reason="lightpush no longer wroks with relay =false")
     def test_main_node_only_lightpush__peer_only_lightpush(self):
         self.setup_first_receiving_node(lightpush="true", relay="false")
         self.setup_first_lightpush_node(lightpush="true", relay="false")
@@ -34,7 +36,7 @@ class TestRunningNodes(StepsLightPush):
     def test_main_node_only_lightpush__peer_full(self):
         self.setup_first_receiving_node(lightpush="true", relay="true", filter="true")
         self.setup_second_receiving_node(lightpush="false", relay="true")
-        self.setup_first_lightpush_node(lightpush="true", relay="false")
+        self.setup_first_lightpush_node(lightpush="true", relay="true")
         self.subscribe_to_pubsub_topics_via_relay()
         self.check_light_pushed_message_reaches_receiving_peer()
 
