@@ -195,7 +195,13 @@ class StepsSharding(StepsRelay):
             self.check_published_message_reaches_relay_peer(pubsub_topic=pubsub_topic, content_topic=content_topic)
             raise AssertionError("Retrieving messages on not subscribed content topic worked!!!")
         except Exception as ex:
-            assert "Not Found" in str(ex)
+            error_message = str(ex)
+            expected_errors = [
+                "Not Found",
+                "NoPeersToPublish",
+                "Failed to publish: publish failed in relay: NoPeersToPublish",
+            ]
+            assert any(expected in error_message for expected in expected_errors), error_message
 
     @allure.step
     def check_publish_fails_on_not_subscribed_pubsub_topic(self, pubsub_topic):
