@@ -106,22 +106,23 @@ class TrafficController:
             iface=iface,
         )
 
-    def add_packet_reordering(self, node, percent: int = 25, correlation: int = 50, delay_ms: int = 10):
+    def add_packet_reordering(
+        self,
+        node,
+        percent: int = 25,
+        correlation: int = 50,
+        delay_ms: int = 10,
+        iface: str = "eth0",
+    ):
+        self.clear(node, iface=iface)
+
         self._exec(
-            ["sudo", "-n", "nsenter", "-t", "-n", "tc", "qdisc", "del", "dev", "eth0", "root"],
-        )
-        self._exec(
+            node,
             [
-                "sudo",
-                "-n",
-                "nsenter",
-                "-t",
-                "-n",
-                "tc",
                 "qdisc",
                 "add",
                 "dev",
-                "eth0",
+                iface,
                 "root",
                 "netem",
                 "delay",
@@ -129,5 +130,6 @@ class TrafficController:
                 "reorder",
                 f"{percent}%",
                 f"{correlation}%",
-            ]
+            ],
+            iface=iface,
         )

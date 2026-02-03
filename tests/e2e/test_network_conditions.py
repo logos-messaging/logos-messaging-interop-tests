@@ -683,7 +683,7 @@ class TestNetworkConditions(StepsRelay):
 
     @pytest.mark.timeout(60 * 6)
     def test_relay_2_nodes_packet_reordering(self):
-        msg_count = 100
+        msg_count = 200
         cache_capacity = "200"
         poll_sleep = 0.5
         max_wait = 120
@@ -720,3 +720,52 @@ class TestNetworkConditions(StepsRelay):
         logger.info(f"packet_reordering " f"reorder=25% corr=50% " f"msg_count={msg_count} received={received} " f"elapsed={elapsed:.2f}s")
 
         assert received >= msg_count
+
+    @pytest.mark.timeout(60 * 6)
+    def test_relay_2_nodes_temporary_blackout_recovers_no_helpers(self):
+        msgs_count = 100
+        self.node1 = WakuNode(NODE_1, f"node1_{self.test_id}")
+        self.node2 = WakuNode(NODE_2, f"node2_{self.test_id}")
+        self.tc = TrafficController()
+
+        logger.info("Starting node1 and node2 with relay enabled")
+        self.node1.start(relay="true")
+        self.node2.start(relay="true", discv5_bootstrap_node=self.node1.get_enr_uri())
+
+        logger.info("Subscribing both nodes to relay topic")
+        self.node1.set_relay_subscriptions([self.test_pubsub_topic])
+        self.node2.set_relay_subscriptions([self.test_pubsub_topic])
+
+        logger.info("Waiting for autoconnection")
+        self.wait_for_autoconnection([self.node1, self.node2], hard_wait=15)
+        logger.info(f"Applying 100%% packet loss on both nodes ")
+        self.tc.clear(self.node1)
+        self.tc.clear(self.node2)
+        self.tc.add_packet_loss(self.node1, percent=100.0)
+        self.tc.add_packet_loss(self.node2, percent=100.0)
+
+        delay(5)
+        logger.info("Clearing tc rules (restore connectivity)")
+        self.tc.clear(self.node1)
+        self.tc.clear(self.node2)
+
+        logger.info("Waiting for peer list recovery on both nodes")
+        peers1 = 0
+        while time() < time() + 30.0:
+            peers1 = self.node1.get_peers() or []
+            peers2 = self.node2.get_peers() or []
+            if len(peers1) > 0 and len(peers2) > 0:
+                break
+            delay(0.5)
+
+        assert len(peers1) > 0, "Peers did not recover after blackout (would require restart)"
+
+        logger.info("Publishing after recovery")
+        for _ in range(msgs_count):
+            self.node1.send_relay_message(self.create_message(), self.test_pubsub_topic)
+        delay(5)
+        msgs = self.node2.get_relay_messages(self.test_pubsub_topic) or []
+        assert len(msgs) >= msgs_count - 10, "Post-recovery message was not delivered"
+        logger.info(f"{len(msgs)} messages were delivered")
+        self.tc.clear(self.node1)
+        self.tc.clear(self.node2)
