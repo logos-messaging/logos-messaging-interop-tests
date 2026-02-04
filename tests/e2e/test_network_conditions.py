@@ -424,7 +424,7 @@ class TestNetworkConditions(StepsRelay):
 
         total_msgs = 5
         window_s = 30.0
-        loss = 40.0
+        loss = 50.0
 
         self.tc.add_packet_loss(self.node1, percent=loss)
         _ = self.node4.get_relay_messages(self.test_pubsub_topic)
@@ -525,7 +525,7 @@ class TestNetworkConditions(StepsRelay):
         received = len(self.node4.get_relay_messages(self.test_pubsub_topic) or [])
         self.tc.clear(self.node1)
 
-        assert received > 0 @ pytest.mark.timeout(60 * 4)
+        assert received > 0
 
     @pytest.mark.timeout(60 * 2)
     def test_relay_2_nodes_low_bandwidth_reliability(self):
