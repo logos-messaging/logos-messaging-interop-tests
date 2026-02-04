@@ -322,7 +322,7 @@ class TestNetworkConditions(StepsRelay):
 
         self.tc.clear(self.node1)
 
-    @pytest.mark.xfail(reason="Fails under high packet loss percentage 60")
+    @pytest.mark.xfail(reason="Fails under high packet loss percentage 50")
     def test_relay_4_nodes_sender_packet_loss_50_15sec_timeout(self):
         self.node3 = WakuNode(NODE_2, f"node3_{self.test_id}")
         self.node4 = WakuNode(NODE_2, f"node4_{self.test_id}")
@@ -423,7 +423,7 @@ class TestNetworkConditions(StepsRelay):
         self.wait_for_autoconnection(nodes, hard_wait=20)
 
         total_msgs = 5
-        window_s = 70.0
+        window_s = 30.0
         loss = 40.0
 
         self.tc.add_packet_loss(self.node1, percent=loss)
@@ -446,6 +446,7 @@ class TestNetworkConditions(StepsRelay):
         correlated = len(self.node4.get_relay_messages(self.test_pubsub_topic) or [])
         self.tc.clear(self.node1)
 
+        logger.debug(f"uncorrelated={uncorrelated} correlated={correlated}")
         assert uncorrelated >= correlated
         assert correlated > 0
 
