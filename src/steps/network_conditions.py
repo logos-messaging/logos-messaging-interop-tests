@@ -105,3 +105,31 @@ class TrafficController:
             ],
             iface=iface,
         )
+
+    def add_packet_reordering(
+        self,
+        node,
+        percent: int = 25,
+        correlation: int = 50,
+        delay_ms: int = 10,
+        iface: str = "eth0",
+    ):
+        self.clear(node, iface=iface)
+
+        self._exec(
+            node,
+            [
+                "qdisc",
+                "add",
+                "dev",
+                iface,
+                "root",
+                "netem",
+                "delay",
+                f"{delay_ms}ms",
+                "reorder",
+                f"{percent}%",
+                f"{correlation}%",
+            ],
+            iface=iface,
+        )
